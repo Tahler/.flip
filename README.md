@@ -1,5 +1,5 @@
 # .flip
-Flip Book Creation Studio
+A WPF application to give the feel of sitting at a desk doodling on sticky notes to create a flip book.
 
 ### Requirements Document
 https://docs.google.com/document/d/1ZhSReFP5r8yNvFIRpykKaGO3QkwebFDiMM2QwSN4-lk/edit?usp=sharing
