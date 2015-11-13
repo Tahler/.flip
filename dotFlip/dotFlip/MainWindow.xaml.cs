@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -23,6 +24,11 @@ namespace dotFlip
         public MainWindow()
         {
             InitializeComponent();
+            stickyNote.DefaultDrawingAttributes = new DrawingAttributes
+            {
+                Color = Colors.Black,
+                FitToCurve = true,
+            };
         }
     }
 }

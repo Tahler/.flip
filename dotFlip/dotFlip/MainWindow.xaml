@@ -5,10 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dotFlip"
         mc:Ignorable="d"
-        Title=".flip Demo" Height="350" Width="525">
-    <StackPanel x:Name="MainPanel"
+        Title=".flip Demo"
+        Width="719"
+        Height="600">
+    <StackPanel x:Name="mainPanel"
                 Orientation="Horizontal">
-        <StackPanel x:Name="ControlPanel" Width="170" Background="Bisque"></StackPanel>
-        <InkCanvas Width="350"></InkCanvas>
+        <StackPanel x:Name="controlPanel" 
+                    Width="150" 
+                    Background="WhiteSmoke">
+                <!--Label tool-->
+                <!--Radio Buttons-->
+                <!--Label tool color-->
+                <!--Textbox-->
+                <!--Label tool thickness-->
+                <!--Slider-->
+                <!--Label canvas color-->
+                <!--Textbox-->
+        </StackPanel>
+        <InkCanvas x:Name="stickyNote"
+                   Width="560"
+                   Background="LightYellow"/>
     </StackPanel>
 </Window>
