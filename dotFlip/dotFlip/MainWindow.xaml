@@ -8,10 +8,15 @@
         Title=".flip Demo"
         Width="719"
         Height="600">
-    <StackPanel x:Name="mainPanel"
-                Orientation="Horizontal">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"
+                              MinWidth="200"
+                              MaxWidth="400"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
         <StackPanel x:Name="controlPanel" 
-                    Width="150" 
+                    Grid.Column="0"
                     Background="WhiteSmoke">
                 <!--Label tool-->
                 <!--Radio Buttons-->
@@ -23,7 +28,8 @@
                 <!--Textbox-->
         </StackPanel>
         <InkCanvas x:Name="stickyNote"
-                   Width="560"
+                   Grid.Column="1"
+                   Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"
                    Background="LightYellow"/>
-    </StackPanel>
+    </Grid>
 </Window>
