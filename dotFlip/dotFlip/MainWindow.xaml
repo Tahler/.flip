@@ -13,7 +13,9 @@
         <StackPanel x:Name="controlPanel" 
                     Width="150" 
                     Background="WhiteSmoke">
-                <!--Label tool-->
+            <Image x:Name="PencilImage" Height="100" Source="pencil.jpg"/>
+            <Image x:Name="PenImage" Height="100" Source="pen.jpg"/>
+            <!--Label tool-->
                 <!--Radio Buttons-->
                 <!--Label tool color-->
                 <!--Textbox-->
