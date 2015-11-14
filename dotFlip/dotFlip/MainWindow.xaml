@@ -22,8 +22,10 @@
             <RadioButton GroupName="Tools" x:Name="RadioMarker" Content="Marker"/>
             <RadioButton GroupName="Tools" x:Name="RadioCrayon" Content="Crayon"/>
             <RadioButton GroupName="Tools" x:Name="Eraser" Content="Eraser"/>
+            <Label x:Name="ColorLabel" Content="Color:"/>
             <TextBox x:Name="ColorSelector" Height="23" TextWrapping="Wrap" Text="Color"/>
-            <TextBox x:Name="CanvasColorSelector" Height="23" TextWrapping="Wrap" Text="Canvas Color"/>
+            <Label x:Name="CanvasColorLabel" Content="Canvas Color:"/>
+            <TextBox x:Name="CanvasColorSelector" Height="23" TextWrapping="Wrap" Text="#123123"/>
             <StackPanel x:Name="ThicknessPanel" 
                     Width="150" 
                     Background="WhiteSmoke">
@@ -32,16 +34,19 @@
             </StackPanel>
 
             <!--Label tool-->
-                <!--Radio Buttons-->
-                <!--Label tool color-->
-                <!--Textbox-->
-                <!--Label tool thickness-->
-                <!--Slider-->
-                <!--Label canvas color-->
-                <!--Textbox-->
+            <!--Radio Buttons-->
+            <!--Label tool color-->
+            <!--Textbox-->
+            <!--Label tool thickness-->
+            <!--Slider-->
+            <!--Label canvas color-->
+            <!--Textbox-->
         </StackPanel>
         <InkCanvas x:Name="stickyNote"
                    Width="560"
-                   Background="LightYellow"/>
+                   Background="LightYellow"
+                   >
+        </InkCanvas>
+
     </StackPanel>
 </Window>
