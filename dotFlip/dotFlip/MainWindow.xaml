@@ -71,6 +71,6 @@
         <local:StickyNoteCanvas
                    Grid.Column="1"
                    Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"
-                   Background="LightYellow"/>
+                   Background="{Binding ElementName=CanvasColorSelector, Path=Text}"/>
     </Grid>
 </Window>
