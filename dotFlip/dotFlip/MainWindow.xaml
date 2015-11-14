@@ -44,9 +44,6 @@
         </StackPanel>
         <InkCanvas x:Name="stickyNote"
                    Width="560"
-                   Background="LightYellow"
-                   >
-        </InkCanvas>
-
+                   Background="{Binding ElementName=CanvasColorSelector, Path=Text}"/>
     </StackPanel>
 </Window>
