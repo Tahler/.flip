@@ -8,6 +8,9 @@
         Title=".flip Demo"
         Width="719"
         Height="600">
+    <Window.Resources>
+        <local:SliderConverter x:Key="brushConverter" />
+    </Window.Resources>
     <StackPanel x:Name="mainPanel"
                 Orientation="Horizontal">
         <StackPanel x:Name="controlPanel" 
@@ -22,16 +25,36 @@
             <RadioButton GroupName="Tools" x:Name="RadioMarker" Content="Marker"/>
             <RadioButton GroupName="Tools" x:Name="RadioCrayon" Content="Crayon"/>
             <RadioButton GroupName="Tools" x:Name="Eraser" Content="Eraser"/>
-            <Label x:Name="ColorLabel" Content="Color:"/>
-            <TextBox x:Name="ColorSelector" Height="23" TextWrapping="Wrap" Text="Color"/>
-            <Label x:Name="CanvasColorLabel" Content="Canvas Color:"/>
-            <TextBox x:Name="CanvasColorSelector" Height="23" TextWrapping="Wrap" Text="#123123"/>
             <StackPanel x:Name="ThicknessPanel" 
                     Width="150" 
                     Background="WhiteSmoke">
                 <Label x:Name="ThicknessLabel" Content="Thickness"/>
                 <Slider x:Name="ThicknessSlider" Minimum="3" Maximum="10"/>
             </StackPanel>
+            <Label x:Name="ColorLabel" Content="Color:"/>
+            <TextBox x:Name="ColorSelector" Height="23" TextWrapping="Wrap" Text="Color"/>
+            <Label x:Name="CanvasColorLabel" Content="Canvas Color:"/>
+            <TextBox x:Name="CanvasColorSelector" Height="23" TextWrapping="Wrap">
+                <TextBox.Text>
+                    <MultiBinding Converter="{StaticResource brushConverter}">
+                        <Binding Path="Value" ElementName="RedSlider" />
+                        <Binding Path="Value" ElementName="GreenSlider" />
+                        <Binding Path="Value" ElementName="BlueSlider" />
+                    </MultiBinding>
+                </TextBox.Text>
+            </TextBox>
+            
+            <UniformGrid Columns="3"
+                         Rows="2"
+                         >
+
+                <Label x:Name="RedLabel" Content="Red"/>
+                <Label x:Name="GreenLabel" Content="Green"/>
+                <Label x:Name="BlueLabel" Content="Blue"/>
+                <Slider x:Name="RedSlider" Minimum="1" Maximum="255"/>
+                <Slider x:Name="GreenSlider" Minimum="1" Maximum="255"/>
+                <Slider x:Name="BlueSlider" Minimum="1" Maximum="255"/>
+            </UniformGrid>
 
             <!--Label tool-->
             <!--Radio Buttons-->

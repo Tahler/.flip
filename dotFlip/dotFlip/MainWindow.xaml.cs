@@ -32,30 +32,31 @@ namespace dotFlip
             };
         }
     }
-    public class RadioButtonValueConverter : IValueConverter
+    public class SliderConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null || parameter == null)
-                return false;
-
-            string checkValue = value.ToString();
-            string targetValue = parameter.ToString();
-            return checkValue.Equals(targetValue,
-                     StringComparison.InvariantCultureIgnoreCase);
+            string redVal = "";
+            string greenVal = "";
+            string blueVal = "";
+            for(int index = 0; index < values.Length; index++)
+            {
+                if(values[index] == null)
+                {
+                    values[index] = 0;
+                }
+            }
+            redVal = ((int)((double)values[0])).ToString("X2");
+            greenVal = ((int)((double)values[1])).ToString("X2");
+            blueVal = ((int)((double)values[2])).ToString("X2");
+            return ("#" + redVal + greenVal + blueVal);
+           // return Color.FromArgb(255, 255, 255, 255);
+           // return Color.FromArgb(255, System.Convert.ToByte(values[0]), System.Convert.ToByte(values[1]), System.Convert.ToByte(values[2]));
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            if (value == null || parameter == null)
-                return null;
-
-            bool useValue = (bool)value;
-            string targetValue = parameter.ToString();
-            if (useValue)
-                return Enum.Parse(targetType, targetValue);
-
-            return null;
+            throw new NotImplementedException();
         }
     }
 }
