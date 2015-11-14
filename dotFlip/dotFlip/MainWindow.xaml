@@ -47,15 +47,13 @@
                 </TextBox.Text>
             </TextBox>
             <UniformGrid Columns="3"
-                         Rows="2"
-                         >
-
+                         Rows="2">
                 <Label Content="Red"/>
                 <Label Content="Green"/>
                 <Label Content="Blue"/>
-                <Slider x:Name="ToolRedSlider" Minimum="1" Maximum="255"/>
-                <Slider x:Name="ToolGreenSlider" Minimum="1" Maximum="255"/>
-                <Slider x:Name="ToolBlueSlider" Minimum="1" Maximum="255"/>
+                <Slider x:Name="ToolRedSlider" Minimum="0" Maximum="255"/>
+                <Slider x:Name="ToolGreenSlider" Minimum="0" Maximum="255"/>
+                <Slider x:Name="ToolBlueSlider" Minimum="0" Maximum="255"/>
             </UniformGrid>
             <Label x:Name="CanvasColorLabel" Content="Canvas Color:"/>
             <TextBox x:Name="CanvasColorSelector" Height="23" TextWrapping="Wrap">
@@ -71,9 +69,9 @@
                 <Label Content="Red"/>
                 <Label Content="Green"/>
                 <Label Content="Blue"/>
-                <Slider x:Name="CanvasRedSlider" Minimum="1" Maximum="255"/>
-                <Slider x:Name="CanvasGreenSlider" Minimum="1" Maximum="255"/>
-                <Slider x:Name="CanvasBlueSlider" Minimum="1" Maximum="255"/>
+                <Slider x:Name="CanvasRedSlider" Minimum="0" Maximum="255" Value="255"/>
+                <Slider x:Name="CanvasGreenSlider" Minimum="0" Maximum="255" Value="255"/>
+                <Slider x:Name="CanvasBlueSlider" Minimum="0" Maximum="255" Value="224"/>
             </UniformGrid>
         </StackPanel>
         <local:StickyNoteCanvas x:Name="canvas"
