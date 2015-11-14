@@ -37,26 +37,43 @@
                 <Slider x:Name="ThicknessSlider" Minimum="3" Maximum="10"/>
             </StackPanel>
             <Label x:Name="ColorLabel" Content="Color:"/>
-            <TextBox x:Name="ColorSelector" Height="23" TextWrapping="Wrap" Text="Color"/>
+            <TextBox x:Name="ColorSelector" Height="23" TextWrapping="Wrap">
+                <TextBox.Text>
+                    <MultiBinding Converter="{StaticResource brushConverter}">
+                        <Binding Path="Value" ElementName="ToolRedSlider" />
+                        <Binding Path="Value" ElementName="ToolGreenSlider" />
+                        <Binding Path="Value" ElementName="ToolBlueSlider" />
+                    </MultiBinding>
+                </TextBox.Text>
+            </TextBox>
+            <UniformGrid Columns="3"
+                         Rows="2"
+                         >
+
+                <Label Content="Red"/>
+                <Label Content="Green"/>
+                <Label Content="Blue"/>
+                <Slider x:Name="ToolRedSlider" Minimum="1" Maximum="255"/>
+                <Slider x:Name="ToolGreenSlider" Minimum="1" Maximum="255"/>
+                <Slider x:Name="ToolBlueSlider" Minimum="1" Maximum="255"/>
+            </UniformGrid>
             <Label x:Name="CanvasColorLabel" Content="Canvas Color:"/>
             <TextBox x:Name="CanvasColorSelector" Height="23" TextWrapping="Wrap">
                 <TextBox.Text>
                     <MultiBinding Converter="{StaticResource brushConverter}">
-                        <Binding Path="Value" ElementName="RedSlider" />
-                        <Binding Path="Value" ElementName="GreenSlider" />
-                        <Binding Path="Value" ElementName="BlueSlider" />
+                        <Binding Path="Value" ElementName="CanvasRedSlider" />
+                        <Binding Path="Value" ElementName="CanvasGreenSlider" />
+                        <Binding Path="Value" ElementName="CanvasBlueSlider" />
                     </MultiBinding>
                 </TextBox.Text>
             </TextBox>
-
-            <UniformGrid Columns="3"
-                         Rows="2">
-                <Label x:Name="RedLabel" Content="Red"/>
-                <Label x:Name="GreenLabel" Content="Green"/>
-                <Label x:Name="BlueLabel" Content="Blue"/>
-                <Slider x:Name="RedSlider" Minimum="1" Maximum="255"/>
-                <Slider x:Name="GreenSlider" Minimum="1" Maximum="255"/>
-                <Slider x:Name="BlueSlider" Minimum="1" Maximum="255"/>
+            <UniformGrid>
+                <Label Content="Red"/>
+                <Label Content="Green"/>
+                <Label Content="Blue"/>
+                <Slider x:Name="CanvasRedSlider" Minimum="1" Maximum="255"/>
+                <Slider x:Name="CanvasGreenSlider" Minimum="1" Maximum="255"/>
+                <Slider x:Name="CanvasBlueSlider" Minimum="1" Maximum="255"/>
             </UniformGrid>
 
             <!--Label tool-->
