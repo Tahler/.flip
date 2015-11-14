@@ -27,7 +27,7 @@
                 <!--Label canvas color-->
                 <!--Textbox-->
         </StackPanel>
-        <InkCanvas x:Name="stickyNote"
+        <local:StickyNoteCanvas
                    Grid.Column="1"
                    Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"
                    Background="LightYellow"/>
