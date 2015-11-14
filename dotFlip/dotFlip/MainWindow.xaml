@@ -11,10 +11,15 @@
     <Window.Resources>
         <local:SliderConverter x:Key="brushConverter" />
     </Window.Resources>
-    <StackPanel x:Name="mainPanel"
-                Orientation="Horizontal">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"
+                              MinWidth="200"
+                              MaxWidth="400"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
         <StackPanel x:Name="controlPanel" 
-                    Width="150" 
+                    Grid.Column="0"
                     Background="WhiteSmoke">
             <!--<RadioButton Content="Option 1" GroupName="Options1" 
              IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
@@ -62,11 +67,7 @@
                     </MultiBinding>
                 </TextBox.Text>
             </TextBox>
-            
-            <UniformGrid Columns="3"
-                         Rows="2"
-                         >
-
+            <UniformGrid>
                 <Label Content="Red"/>
                 <Label Content="Green"/>
                 <Label Content="Blue"/>
@@ -84,9 +85,9 @@
             <!--Label canvas color-->
             <!--Textbox-->
         </StackPanel>
-        <InkCanvas x:Name="stickyNote"
-                   Width="560"
-                   Background="{Binding ElementName=CanvasColorSelector, Path=Text}"
-       ></InkCanvas>
-    </StackPanel>
+        <local:StickyNoteCanvas
+                   Grid.Column="1"
+                   Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"
+                   Background="LightYellow"/>
+        </Grid>
 </Window>
