@@ -13,24 +13,43 @@ namespace dotFlip.Tools
 {
     public class Pencil : ITool
     {
-        Brush brush;
-        System.Windows.Media.Pen pen;
+        private Color color;
 
-        public Color Color { get; set; }
+        public Color Color
+        {
+            get { return color; }
+            set
+            {
+                color = value;
+                Brush = new SolidColorBrush(color);
+            }
+        }
+
         public double Thickness { get; set; }
+        public Brush Brush { get; private set; }
 
         public Pencil()
         {
-            // Create the Brush and Pen used for drawing.
-            brush = new LinearGradientBrush(Colors.Red, Colors.Blue, 20d);
-            pen = new System.Windows.Media.Pen(brush, 2d);
-        }
+            Color = Colors.Black;
+            Thickness = 1;
 
-        public void Draw(StylusPoint point, DrawingContext drawingContext)
-        {
-            double radius = point.PressureFactor * 10d;
-            // create a bunch of small alpha-cized ellipses around point
-            drawingContext.DrawEllipse(brush, pen, (Point)point, radius, radius);
+            // Create Brush - Brandon, this is on you to change
+            DrawingBrush drawingBrush = new DrawingBrush();
+
+            GeometryDrawing geometryDrawing = new GeometryDrawing();
+            geometryDrawing.Brush = Brushes.LightBlue;
+            geometryDrawing.Pen = new System.Windows.Media.Pen(Brushes.Gray, 1);
+
+            GeometryGroup ellipses = new GeometryGroup();
+            ellipses.Children.Add(new EllipseGeometry(new Point(25, 50), 12.5, 25));
+            ellipses.Children.Add(new EllipseGeometry(new Point(50, 50), 12.5, 25));
+            ellipses.Children.Add(new EllipseGeometry(new Point(75, 50), 12.5, 25));
+
+            geometryDrawing.Geometry = ellipses;
+
+            drawingBrush.Drawing = geometryDrawing;
+
+            Brush = drawingBrush;
         }
     }
 }

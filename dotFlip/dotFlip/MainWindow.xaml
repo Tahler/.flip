@@ -75,17 +75,8 @@
                 <Slider x:Name="CanvasGreenSlider" Minimum="1" Maximum="255"/>
                 <Slider x:Name="CanvasBlueSlider" Minimum="1" Maximum="255"/>
             </UniformGrid>
-
-            <!--Label tool-->
-            <!--Radio Buttons-->
-            <!--Label tool color-->
-            <!--Textbox-->
-            <!--Label tool thickness-->
-            <!--Slider-->
-            <!--Label canvas color-->
-            <!--Textbox-->
         </StackPanel>
-        <local:StickyNoteCanvas
+        <local:StickyNoteCanvas x:Name="canvas"
                    Grid.Column="1"
                    Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"
                    Background="{Binding ElementName=CanvasColorSelector, Path=Text}"/>

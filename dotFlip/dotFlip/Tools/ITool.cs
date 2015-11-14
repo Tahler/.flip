@@ -7,6 +7,6 @@ namespace dotFlip.Tools
     {
         Color Color { get; set; }
         double Thickness { get; set; }
-        void Draw(StylusPoint stylusPoint, DrawingContext drawingContext);
+        Brush Brush { get; }
     }
 }

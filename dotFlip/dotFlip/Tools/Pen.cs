@@ -7,36 +7,44 @@ namespace dotFlip.Tools
 {
     public class Pen : ITool
     {
-        private Brush brush;
-        private System.Windows.Media.Pen pen;
+        private Color color;
 
-        public Color Color { get; set; }
+        public Color Color
+        {
+            get { return color; }
+            set
+            {
+                color = value;
+                Brush = new SolidColorBrush(color);
+            }
+        }
+
         public double Thickness { get; set; }
+        public Brush Brush { get; private set; }
 
         public Pen()
         {
-            brush = new SolidColorBrush(Colors.Black);
-            pen = new System.Windows.Media.Pen(brush, 1);
-            Thickness = 1d;
-        }
+            Color = Colors.Black;
+            Thickness = 1;
+            //Brush = new SolidColorBrush(Colors.Black);
 
-        Point previousPoint;
-        public void Draw(StylusPoint point, DrawingContext drawingContext)
-        {
-            double radius = point.PressureFactor * Thickness;
-            // fill in
-            if (previousPoint != null)
-            {
-                double x = previousPoint.X;
-                double y = previousPoint.Y;
-                while (x != point.X || y != point.Y)
-                {
-                    
-                }
-            }
-            drawingContext.DrawEllipse(brush, pen, (Point) point, radius, radius);
+            //////////////////// Brandon - Play with this part to make a pencil ///////////////////////////////
+            //DrawingBrush drawingBrush = new DrawingBrush();
 
-            previousPoint = (Point) point;
+            //GeometryDrawing geometryDrawing = new GeometryDrawing();
+            //geometryDrawing.Brush = Brushes.LightBlue;
+            //geometryDrawing.Pen = new System.Windows.Media.Pen(Brushes.Gray, 1);
+
+            //GeometryGroup ellipses = new GeometryGroup();
+            //ellipses.Children.Add(new EllipseGeometry(new Point(25, 50), 12.5, 25));
+            //ellipses.Children.Add(new EllipseGeometry(new Point(50, 50), 12.5, 25));
+            //ellipses.Children.Add(new EllipseGeometry(new Point(75, 50), 12.5, 25));
+
+            //geometryDrawing.Geometry = ellipses;
+
+            //drawingBrush.Drawing = geometryDrawing;
+
+            //Brush = drawingBrush;
         }
     }
 }

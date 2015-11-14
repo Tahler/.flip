@@ -1,34 +1,54 @@
 using System.Windows.Controls;
 using dotFlip.Tools;
 using Pen = dotFlip.Tools.Pen;
+using System.Windows.Input;
+using System.Windows;
+using System.Windows.Shapes;
 
 namespace dotFlip
 {
-    public class StickyNoteCanvas : InkCanvas
+    public class StickyNoteCanvas : Canvas
     {
-        private ITool currentTool;
+        public ITool CurrentTool { get; set; }
+
+        private Point previousPoint;
 
         public StickyNoteCanvas()
         {
-            UseTool(new Pen());
+            CurrentTool = new Pen();
+
+            MouseDown += StickyNoteCanvas_MouseDown;
+            MouseMove += StickyNoteCanvas_MouseMove;
         }
 
-        public void UseTool(ITool tool)
+        private void StickyNoteCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            currentTool = tool;
-            this.DynamicRenderer = new ToolRenderer(tool);
+            if (e.ButtonState == MouseButtonState.Pressed)
+            {
+                previousPoint = e.GetPosition(this);
+            }
         }
 
-        protected override void OnStrokeCollected(InkCanvasStrokeCollectedEventArgs e)
+        private void StickyNoteCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            // Remove the original stroke and add the custom stroke.
-            this.Strokes.Remove(e.Stroke);
-            ToolStroke stroke = new ToolStroke(currentTool, e.Stroke.StylusPoints);
-            this.Strokes.Add(stroke);
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Point currentPoint = e.GetPosition(this);
 
-            // Pass the custom stroke to base class' OnStrokeCollected method.
-            InkCanvasStrokeCollectedEventArgs args = new InkCanvasStrokeCollectedEventArgs(stroke);
-            base.OnStrokeCollected(args);
+                Line line = new Line
+                {
+                    Stroke = CurrentTool.Brush,
+                    StrokeThickness = CurrentTool.Thickness,
+                    X1 = previousPoint.X,
+                    Y1 = previousPoint.Y,
+                    X2 = currentPoint.X,
+                    Y2 = currentPoint.Y
+                };
+
+                previousPoint = currentPoint;
+
+                this.Children.Add(line);
+            }
         }
     }
 }

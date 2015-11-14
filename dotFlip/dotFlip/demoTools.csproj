@@ -56,8 +56,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="StickyNoteCanvas.cs" />
-    <Compile Include="ToolRenderer.cs" />
-    <Compile Include="ToolStroke.cs" />
     <Compile Include="Tools\ITool.cs" />
     <Compile Include="Tools\Pen.cs" />
     <Compile Include="Tools\Pencil.cs" />
@@ -101,12 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="pencil.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="pen.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
