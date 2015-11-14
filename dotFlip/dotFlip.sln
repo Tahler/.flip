@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demoTools", "dotFlip\demoTools.csproj", "{82D1405C-991D-4CD1-A50E-F8428B445B0B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoCanvas", "DemoCanvas\DemoCanvas.csproj", "{6CD7E94D-0BBD-4EFF-9AA1-099828AA0D18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{82D1405C-991D-4CD1-A50E-F8428B445B0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82D1405C-991D-4CD1-A50E-F8428B445B0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82D1405C-991D-4CD1-A50E-F8428B445B0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CD7E94D-0BBD-4EFF-9AA1-099828AA0D18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD7E94D-0BBD-4EFF-9AA1-099828AA0D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CD7E94D-0BBD-4EFF-9AA1-099828AA0D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CD7E94D-0BBD-4EFF-9AA1-099828AA0D18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
