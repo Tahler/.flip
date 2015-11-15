@@ -21,7 +21,7 @@ namespace dotFlip.Tools
             set
             {
                 color = value;
-                Brush = new SolidColorBrush(color);
+                //Brush = new SolidColorBrush(color);
             }
         }
 
@@ -30,24 +30,26 @@ namespace dotFlip.Tools
 
         public Pencil()
         {
-            Color = Colors.Black;
-            Thickness = 1;
-
-            // Create Brush - Brandon, this is on you to change
-            DrawingBrush drawingBrush = new DrawingBrush();
-
-            GeometryDrawing geometryDrawing = new GeometryDrawing();
-            geometryDrawing.Brush = Brushes.LightBlue;
-            geometryDrawing.Pen = new System.Windows.Media.Pen(Brushes.Gray, 1);
+            Color = Colors.Gray;
+            Thickness = 2;
 
             GeometryGroup ellipses = new GeometryGroup();
             ellipses.Children.Add(new EllipseGeometry(new Point(25, 50), 12.5, 25));
             ellipses.Children.Add(new EllipseGeometry(new Point(50, 50), 12.5, 25));
             ellipses.Children.Add(new EllipseGeometry(new Point(75, 50), 12.5, 25));
 
-            geometryDrawing.Geometry = ellipses;
+            GeometryDrawing geometryDrawing = new GeometryDrawing
+            {
+                Brush = Brushes.Gray,
+                Pen = new System.Windows.Media.Pen(Brushes.Gray, 1),
+                Geometry = ellipses,
+            };
 
-            drawingBrush.Drawing = geometryDrawing;
+            // Create Brush - Brandon, this is on you to change
+            DrawingBrush drawingBrush = new DrawingBrush
+            {
+                Drawing = geometryDrawing
+            };
 
             Brush = drawingBrush;
         }
