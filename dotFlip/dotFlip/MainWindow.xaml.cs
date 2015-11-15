@@ -40,6 +40,12 @@ namespace dotFlip
                 Console.WriteLine("Invalid Color");
             }
         }
+
+        private void ThicknessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (ThicknessSlider != null && canvas != null)
+            canvas.CurrentTool.Thickness = ThicknessSlider.Value;
+        }
     }
     public class SliderConverter : IMultiValueConverter
     {
