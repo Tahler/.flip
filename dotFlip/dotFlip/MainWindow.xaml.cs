@@ -27,6 +27,19 @@ namespace dotFlip
             //    FitToCurve = true,
             //};
         }
+
+        private void ColorSelector_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                Color c = (Color) ColorConverter.ConvertFromString(ColorSelector.Text);
+                canvas.CurrentTool.Color = c;
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid Color");
+            }
+        }
     }
     public class SliderConverter : IMultiValueConverter
     {

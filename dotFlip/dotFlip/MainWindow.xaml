@@ -37,7 +37,7 @@
                 <Slider x:Name="ThicknessSlider" Minimum="3" Maximum="10"/>
             </StackPanel>
             <Label x:Name="ColorLabel" Content="Color:"/>
-            <TextBox x:Name="ColorSelector" Height="23" TextWrapping="Wrap">
+            <TextBox x:Name="ColorSelector" Height="23" TextWrapping="Wrap" TextChanged="ColorSelector_TextChanged">
                 <TextBox.Text>
                     <MultiBinding Converter="{StaticResource brushConverter}">
                         <Binding Path="Value" ElementName="ToolRedSlider" />
