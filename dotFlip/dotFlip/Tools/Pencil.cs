@@ -33,7 +33,6 @@ namespace dotFlip.Tools
             Color = Colors.Black;
             Thickness = 5;
 
-            DrawingBrush drawingBrush = new DrawingBrush();
 
             GeometryDrawing geometryDrawing = new GeometryDrawing();
             geometryDrawing.Brush = Brushes.Gray;
@@ -42,11 +41,10 @@ namespace dotFlip.Tools
             GeometryGroup ellipses = new GeometryGroup();
             ellipses.Children.Add(new RectangleGeometry(new Rect(new Point(0,45), new Point(100,89))));
            // ellipses.Children.Add(new RectangleGeometry(new Rect(new Point(0, 100), new Point(25, 89))));
-
-
-
-
+           
             geometryDrawing.Geometry = ellipses;
+
+
 
             // Create Brush - Brandon, this is on you to change
             DrawingBrush drawingBrush = new DrawingBrush
