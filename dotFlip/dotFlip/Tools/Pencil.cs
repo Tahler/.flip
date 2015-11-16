@@ -21,7 +21,7 @@ namespace dotFlip.Tools
             set
             {
                 color = value;
-                Brush = new SolidColorBrush(color);
+                //Brush = new SolidColorBrush(color);
             }
         }
 
@@ -48,7 +48,11 @@ namespace dotFlip.Tools
 
             geometryDrawing.Geometry = ellipses;
 
-            drawingBrush.Drawing = geometryDrawing;
+            // Create Brush - Brandon, this is on you to change
+            DrawingBrush drawingBrush = new DrawingBrush
+            {
+                Drawing = geometryDrawing
+            };
 
             Brush = drawingBrush;
         }

@@ -24,8 +24,8 @@ namespace dotFlip.Tools
 
         public Pen()
         {
-            Color = Colors.Black;
-            Thickness = 1;
+            Color = Colors.Black; // Also sets Brush
+            Thickness = 10;
         }
     }
 }

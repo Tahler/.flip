@@ -27,6 +27,25 @@ namespace dotFlip
             //    FitToCurve = true,
             //};
         }
+
+        private void ColorSelector_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                Color c = (Color) ColorConverter.ConvertFromString(ColorSelector.Text);
+                canvas.CurrentTool.Color = c;
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid Color");
+            }
+        }
+
+        private void ThicknessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (ThicknessSlider != null && canvas != null)
+            canvas.CurrentTool.Thickness = ThicknessSlider.Value;
+        }
     }
     public class SliderConverter : IMultiValueConverter
     {
