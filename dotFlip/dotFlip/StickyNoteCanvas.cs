@@ -15,7 +15,7 @@ namespace dotFlip
 
         public StickyNoteCanvas()
         {
-            CurrentTool = new Pen();
+            CurrentTool = new Pencil();
 
             MouseDown += StickyNoteCanvas_MouseDown;
             MouseMove += StickyNoteCanvas_MouseMove;
