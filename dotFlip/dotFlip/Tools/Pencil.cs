@@ -33,8 +33,6 @@ namespace dotFlip.Tools
             Color = Colors.Black;
             Thickness = 5;
 
-            DrawingBrush drawingBrush = new DrawingBrush();
-
             GeometryDrawing geometryDrawing = new GeometryDrawing();
             geometryDrawing.Brush = Brushes.Gray;
             geometryDrawing.Pen = new System.Windows.Media.Pen(Brushes.Gray, 1);
