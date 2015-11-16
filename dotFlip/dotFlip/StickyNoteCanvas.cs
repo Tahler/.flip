@@ -1,6 +1,5 @@
 using System.Windows.Controls;
 using dotFlip.Tools;
-using Pen = dotFlip.Tools.Pen;
 using System.Windows.Input;
 using System.Windows;
 using System.Windows.Media;
