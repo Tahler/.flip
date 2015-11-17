@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -8,44 +9,39 @@ namespace dotFlip
 {
     public class Stroke : FrameworkElement
     {
-        public Path Path { get; private set; }
-        private PathGeometry geometry;
-        private PathFigure figure;
+        private IList<Point> points;
 
-        public Stroke(Point startingPoint, Brush brush, double thickness)
+        public IEnumerable<Point> Points => points;
+
+        public Stroke(Point startingPoint)
         {
-            this.figure = new PathFigure {StartPoint = startingPoint};
-
-            this.geometry = new PathGeometry();
-            this.geometry.Figures.Add(figure);
-
-            this.Path = new Path
-            {
-                Stroke = brush,
-                StrokeThickness = thickness
-            };
+            points = new List<Point> {startingPoint};
         }
 
-        public void ConnectTo(Point point)
+        public void ConnectTo(Point point, double error = 0)
         {
-            // Create the new PathSegment
-            LineSegment segment = new LineSegment(point, true);
-            figure.Segments.Add(segment);
+            Point start = points[points.Count - 1];
+            Point end = point;
 
-            // Replace the PathFigure
-            geometry.Figures.RemoveAt(geometry.Figures.Count - 1);
-            geometry.Figures.Add(figure);
+            double deltaX = end.X - start.X;
+            double deltaY = end.Y - start.Y;
 
-            // Replace the Path on the canvas
-            var stroke = Path.Stroke;
-            var thickness = Path.StrokeThickness;
+            double deltaError = Math.Abs(deltaY / deltaX);
 
-            Path = new Path
+            int y = (int) start.Y;
+            for (int x = (int)start.X;                          // Start one closer than the start
+                x != (int) end.X;                               // Stop when at the end
+                x += (deltaX > 0) ? +1 : -1)                    // Get closer to the end each iteration
             {
-                Stroke = Path.Stroke,
-                StrokeThickness = Path.StrokeThickness,
-                Data = geometry
-            };
+                points.Add(new Point(x, y));
+                error = error + deltaError;
+                while (error >= 0.5)
+                {
+                    points.Add(new Point(x, y));
+                    y += (deltaY > 0) ? +1 : -1;
+                    error--;
+                }
+            }
         }
     }
 }

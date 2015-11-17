@@ -37,6 +37,7 @@ namespace dotFlip
 
         private void StickyNoteCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            previousPoint = e.GetPosition(this);
             DrawAt(e.GetPosition(this));
         }
 
@@ -45,15 +46,23 @@ namespace dotFlip
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 DrawAt(e.GetPosition(this));
+                previousPoint = e.GetPosition(this);
             }
         }
 
+        Point previousPoint;
         private void DrawAt(Point point)
         {
-            Shape shape = CurrentTool.Shape;
-            Canvas.SetLeft(shape, point.X);
-            Canvas.SetTop(shape, point.Y);
-            Children.Add(shape);
+            Stroke stroke = new Stroke(previousPoint);
+            stroke.ConnectTo(point);
+
+            foreach (Point p in stroke.Points)
+            {
+                Shape shape = CurrentTool.Shape;
+                Canvas.SetLeft(shape, p.X);
+                Canvas.SetTop(shape, p.Y);
+                Children.Add(shape);
+            }
         }
     }
 }
