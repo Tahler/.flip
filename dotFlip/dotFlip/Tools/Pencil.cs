@@ -30,19 +30,21 @@ namespace dotFlip.Tools
 
         public Pencil()
         {
-            Color = Colors.Black;
+            Color = Colors.Gray;
             Thickness = 5;
 
             GeometryDrawing geometryDrawing = new GeometryDrawing();
             geometryDrawing.Brush = Brushes.Gray;
             geometryDrawing.Pen = new System.Windows.Media.Pen(Brushes.Gray, 1);
 
+            //GeometryGroup ellipses = new GeometryGroup();
+            //ellipses.Children.Add(new RectangleGeometry(new Rect(new Point(0,45), new Point(100,89))));
+            //// ellipses.Children.Add(new RectangleGeometry(new Rect(new Point(0, 100), new Point(25, 89))));
+
             GeometryGroup ellipses = new GeometryGroup();
-            ellipses.Children.Add(new RectangleGeometry(new Rect(new Point(0,45), new Point(100,89))));
-           // ellipses.Children.Add(new RectangleGeometry(new Rect(new Point(0, 100), new Point(25, 89))));
-
-
-
+            ellipses.Children.Add(new EllipseGeometry(new Point(25, 50), 12.5, 25));
+            ellipses.Children.Add(new EllipseGeometry(new Point(50, 50), 12.5, 25));
+            ellipses.Children.Add(new EllipseGeometry(new Point(75, 50), 12.5, 25));
 
             geometryDrawing.Geometry = ellipses;
 
