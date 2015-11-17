@@ -13,12 +13,27 @@ namespace dotFlip
 
         private Point previousPoint;
 
+        private ITool[] tools;
+
         public StickyNoteCanvas()
         {
-            CurrentTool = new Pencil();
+            tools = new ITool[5];
+            tools[0] = new Pencil();
+            tools[1] = new Tools.Pen();
 
+            CurrentTool = tools[0];
             MouseDown += StickyNoteCanvas_MouseDown;
             MouseMove += StickyNoteCanvas_MouseMove;
+        }
+
+        public void usePen()
+        {
+            CurrentTool = tools[1];
+        }
+
+        public void usePencil()
+        {
+            CurrentTool = tools[0];
         }
 
         private void StickyNoteCanvas_MouseDown(object sender, MouseButtonEventArgs e)

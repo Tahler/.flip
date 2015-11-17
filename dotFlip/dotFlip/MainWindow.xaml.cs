@@ -30,7 +30,9 @@ namespace dotFlip
         {
             try
             {
+
                 Color c = (Color) ColorConverter.ConvertFromString(ColorSelector.Text);
+                if (canvas != null)
                 canvas.CurrentTool.Color = c;
             }
             catch (FormatException)
@@ -43,6 +45,36 @@ namespace dotFlip
         {
             if (ThicknessSlider != null && canvas != null)
             canvas.CurrentTool.Thickness = ThicknessSlider.Value;
+        }
+
+        private void RadioPencil_Checked(object sender, RoutedEventArgs e)
+        {
+            var selection = sender as RadioButton;
+            if(selection != null)
+            {
+                var title = selection.Content as string;
+                if (title != null && canvas != null)
+                {
+                    switch (title)
+                    {
+                        case "Pencil":
+                            canvas.usePencil();
+                            break;
+                        case "Pen":
+                            canvas.usePen();
+                            break;
+                        case "Marker":
+                            break;
+                        case "Crayon":
+                            break;
+                        case "Eraser":
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
         }
     }
 }

@@ -25,8 +25,8 @@
              IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
                                  Converter={StaticResource enumConverter},
                                  ConverterParameter=Option1}"  />-->
-            <RadioButton GroupName="Tools" x:Name="RadioPencil" Content="Pencil"/>
-            <RadioButton GroupName="Tools" x:Name="RadioPen" Content="Pen"/>
+            <RadioButton GroupName="Tools" x:Name="RadioPencil" Content="Pencil" IsChecked="True" Checked="RadioPencil_Checked"/>
+            <RadioButton GroupName="Tools" x:Name="RadioPen" Content="Pen" Checked="RadioPencil_Checked"/>
             <RadioButton GroupName="Tools" x:Name="RadioMarker" Content="Marker"/>
             <RadioButton GroupName="Tools" x:Name="RadioCrayon" Content="Crayon"/>
             <RadioButton GroupName="Tools" x:Name="Eraser" Content="Eraser"/>
