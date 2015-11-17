@@ -55,23 +55,7 @@ namespace dotFlip
                 var title = selection.Content as string;
                 if (title != null && canvas != null)
                 {
-                    switch (title)
-                    {
-                        case "Pencil":
-                            canvas.usePencil();
-                            break;
-                        case "Pen":
-                            canvas.usePen();
-                            break;
-                        case "Marker":
-                            break;
-                        case "Crayon":
-                            break;
-                        case "Eraser":
-                            break;
-                        default:
-                            break;
-                    }
+                    canvas.useTool(title);
                 }
             }
 

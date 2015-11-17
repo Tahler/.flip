@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Collections.Generic;
 
 namespace dotFlip
 {
@@ -12,28 +13,25 @@ namespace dotFlip
         public ITool CurrentTool { get; set; }
 
         private Point previousPoint;
-
-        private ITool[] tools;
+        private Dictionary<string, ITool> tools;
 
         public StickyNoteCanvas()
         {
-            tools = new ITool[5];
-            tools[0] = new Pencil();
-            tools[1] = new Tools.Pen();
+            tools = new Dictionary<string, ITool>();
+            tools.Add("Pencil", new Pencil());
+            tools.Add("Pen", new Tools.Pen());
 
-            CurrentTool = tools[0];
+            CurrentTool = tools["Pencil"];
             MouseDown += StickyNoteCanvas_MouseDown;
             MouseMove += StickyNoteCanvas_MouseMove;
         }
 
-        public void usePen()
+        public void useTool(string toolToUse)
         {
-            CurrentTool = tools[1];
-        }
-
-        public void usePencil()
-        {
-            CurrentTool = tools[0];
+            if(tools.ContainsKey(toolToUse))
+            {
+                CurrentTool = tools[toolToUse];
+            }
         }
 
         private void StickyNoteCanvas_MouseDown(object sender, MouseButtonEventArgs e)
