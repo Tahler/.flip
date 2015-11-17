@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace dotFlip.Tools
 {
@@ -12,17 +13,33 @@ namespace dotFlip.Tools
             set
             {
                 color = value;
-                Brush = new SolidColorBrush(color);
+                Shape.Fill = new SolidColorBrush(color);
+            }
+        }
+        private double thickness;
+
+        public double Thickness
+        {
+            get { return thickness; }
+            set
+            {
+                thickness = value;
+                Shape.Width = thickness;
+                Shape.Height = thickness;
             }
         }
 
-        public double Thickness { get; set; }
-        public Brush Brush { get; private set; }
+        public Shape Shape => new Ellipse
+        {
+            Fill = new SolidColorBrush(color),
+            Width = thickness,
+            Height = thickness,
+        };
 
         public Pen()
         {
-            Color = Colors.Black; // Also sets Brush
-            Thickness = 10;
+            color = Colors.Black;
+            thickness = 5;
         }
     }
 }

@@ -2,8 +2,6 @@ using System.Windows.Controls;
 using dotFlip.Tools;
 using System.Windows.Input;
 using System.Windows;
-using System.Windows.Ink;
-using System.Windows.Media;
 using System.Windows.Shapes;
 using Pen = dotFlip.Tools.Pen;
 using System.Collections.Generic;
@@ -14,14 +12,13 @@ namespace dotFlip
     {
         public ITool CurrentTool { get; private set; }
 
-        private Stroke currentStroke;
         private Dictionary<string, ITool> tools;
         
         public StickyNoteCanvas()
         {
             tools = new Dictionary<string, ITool>
             {
-                {"Pencil", new Pencil()},
+                //{"Pencil", new Pencil()},
                 {"Pen", new Pen()}
             };
 
@@ -40,26 +37,23 @@ namespace dotFlip
 
         private void StickyNoteCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ButtonState == MouseButtonState.Pressed)
-            {
-                // Set up for new path
-                this.Children.Add(new Path());
-                currentStroke = new Stroke(e.GetPosition(this), CurrentTool.Brush, CurrentTool.Thickness);
-            }
+            DrawAt(e.GetPosition(this));
         }
 
         private void StickyNoteCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                Point currentPoint = e.GetPosition(this);
-
-                currentStroke.ConnectTo(currentPoint);
-
-                // Replace the Path on the canvas
-                Children.RemoveAt(Children.Count - 1);
-                Children.Add(currentStroke.Path);
+                DrawAt(e.GetPosition(this));
             }
+        }
+
+        private void DrawAt(Point point)
+        {
+            Shape shape = CurrentTool.Shape;
+            Canvas.SetLeft(shape, point.X);
+            Canvas.SetTop(shape, point.Y);
+            Children.Add(shape);
         }
     }
 }

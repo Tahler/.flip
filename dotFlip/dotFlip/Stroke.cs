@@ -6,10 +6,8 @@ using dotFlip.Tools;
 
 namespace dotFlip
 {
-    public class Stroke : Shape
+    public class Stroke : FrameworkElement
     {
-        protected override Geometry DefiningGeometry => geometry;
-
         public Path Path { get; private set; }
         private PathGeometry geometry;
         private PathFigure figure;
@@ -44,8 +42,8 @@ namespace dotFlip
 
             Path = new Path
             {
-                Stroke = stroke,
-                StrokeThickness = thickness,
+                Stroke = Path.Stroke,
+                StrokeThickness = Path.StrokeThickness,
                 Data = geometry
             };
         }
