@@ -19,18 +19,12 @@ namespace dotFlip
         public MainWindow()
         {
             InitializeComponent();
-            //stickyNote.DefaultDrawingAttributes = new DrawingAttributes
-            //{
-            //    Color = Colors.Black,
-            //    FitToCurve = true,
-            //};
         }
 
         private void ColorSelector_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-
                 Color c = (Color) ColorConverter.ConvertFromString(ColorSelector.Text);
                 if (canvas != null)
                 canvas.CurrentTool.Color = c;
@@ -50,12 +44,12 @@ namespace dotFlip
         private void RadioPencil_Checked(object sender, RoutedEventArgs e)
         {
             var selection = sender as RadioButton;
-            if(selection != null)
+            if (selection != null)
             {
                 var title = selection.Content as string;
                 if (title != null && canvas != null)
                 {
-                    canvas.useTool(title);
+                    canvas.UseTool(title);
                 }
             }
 
