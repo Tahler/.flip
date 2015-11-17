@@ -59,10 +59,10 @@ namespace dotFlip
                     X2 = currentPoint.X,
                     Y2 = currentPoint.Y,
                     
-                    // potential fix for line cracks
-                    StrokeDashCap = PenLineCap.Round,
-                    StrokeStartLineCap = PenLineCap.Round,
-                    StrokeEndLineCap = PenLineCap.Round
+                    //// potential fix for line cracks
+                    //StrokeDashCap = PenLineCap.Round,
+                    //StrokeStartLineCap = PenLineCap.Round,
+                    //StrokeEndLineCap = PenLineCap.Round
                 };
 
 
