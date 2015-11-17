@@ -55,11 +55,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SliderConverter.cs" />
     <Compile Include="StickyNoteCanvas.cs" />
     <Compile Include="Tools\ITool.cs" />
     <Compile Include="Tools\Pen.cs" />
     <Compile Include="Tools\Pencil.cs" />
-    <Compile Include="RadioButtonValueConverter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
