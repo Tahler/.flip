@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Pen = dotFlip.Tools.Pen;
 
 namespace dotFlip
 {
@@ -15,7 +16,7 @@ namespace dotFlip
 
         public StickyNoteCanvas()
         {
-            CurrentTool = new Pencil();
+            CurrentTool = new Pen();
 
             MouseDown += StickyNoteCanvas_MouseDown;
             MouseMove += StickyNoteCanvas_MouseMove;
@@ -49,7 +50,6 @@ namespace dotFlip
                     //StrokeStartLineCap = PenLineCap.Round,
                     //StrokeEndLineCap = PenLineCap.Round
                 };
-
 
                 previousPoint = currentPoint;
 
