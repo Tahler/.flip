@@ -39,10 +39,10 @@
             <Label x:Name="ColorLabel" Content="Color:"/>
             <TextBox x:Name="ColorSelector" Height="23" TextWrapping="Wrap" TextChanged="ColorSelector_TextChanged">
                 <TextBox.Text>
-                    <MultiBinding Converter="{StaticResource brushConverter}">
-                        <Binding Path="Value" ElementName="ToolRedSlider" />
-                        <Binding Path="Value" ElementName="ToolGreenSlider" />
-                        <Binding Path="Value" ElementName="ToolBlueSlider" />
+                    <MultiBinding Converter="{StaticResource brushConverter}" Mode="TwoWay"  UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="Value" ElementName="ToolRedSlider"/>
+                        <Binding Path="Value" ElementName="ToolGreenSlider"/>
+                        <Binding Path="Value" ElementName="ToolBlueSlider"/>
                     </MultiBinding>
                 </TextBox.Text>
             </TextBox>
@@ -58,7 +58,7 @@
             <Label x:Name="CanvasColorLabel" Content="Canvas Color:"/>
             <TextBox x:Name="CanvasColorSelector" Height="23" TextWrapping="Wrap">
                 <TextBox.Text>
-                    <MultiBinding Converter="{StaticResource brushConverter}">
+                    <MultiBinding Converter="{StaticResource brushConverter}" Mode="TwoWay"  UpdateSourceTrigger="PropertyChanged">
                         <Binding Path="Value" ElementName="CanvasRedSlider" />
                         <Binding Path="Value" ElementName="CanvasGreenSlider" />
                         <Binding Path="Value" ElementName="CanvasBlueSlider" />

@@ -1,6 +1,9 @@
 using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Navigation;
 
 namespace dotFlip
 {
@@ -11,24 +14,41 @@ namespace dotFlip
             string redVal = "";
             string greenVal = "";
             string blueVal = "";
-            for(int index = 0; index < values.Length; index++)
+            
+            for (int index = 0; index < values.Length; index++)
             {
-                if(values[index] == null)
+                if (values[index] == null)
                 {
                     values[index] = 0;
                 }
             }
-            redVal = ((int)((double)values[0])).ToString("X2");
-            greenVal = ((int)((double)values[1])).ToString("X2");
-            blueVal = ((int)((double)values[2])).ToString("X2");
+
+            int red = System.Convert.ToInt32(values[0]);
+            redVal = red.ToString("X2");
+
+            int green = System.Convert.ToInt32(values[1]); 
+            greenVal = green.ToString("X2");
+
+            int blue = System.Convert.ToInt32(values[2]); ;
+            blueVal = blue.ToString("X2");
             return ("#" + redVal + greenVal + blueVal);
-            // return Color.FromArgb(255, 255, 255, 255);
-            // return Color.FromArgb(255, System.Convert.ToByte(values[0]), System.Convert.ToByte(values[1]), System.Convert.ToByte(values[2]));
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            return null;
+            Color c;
+            object[] val = null;
+            try
+            {
+                c = (Color) ColorConverter.ConvertFromString((string) value);
+                val = new object[] { System.Convert.ToDouble(c.R), System.Convert.ToDouble(c.G), System.Convert.ToDouble(c.B) };
+            }
+            catch (FormatException)
+            {
+                c = new Color();
+            }
+            
+            return val;
         }
     }
 }
