@@ -14,8 +14,7 @@ namespace dotFlip
     {
         public ITool CurrentTool { get; private set; }
 
-        private PathGeometry currentPathGeometry;
-        private PathFigure currentPathFigure;
+        private Stroke currentStroke;
         private Dictionary<string, ITool> tools;
         
         public StickyNoteCanvas()
@@ -45,9 +44,7 @@ namespace dotFlip
             {
                 // Set up for new path
                 this.Children.Add(new Path());
-                currentPathGeometry = new PathGeometry();
-                currentPathFigure = new PathFigure {StartPoint = e.GetPosition(this)};
-                currentPathGeometry.Figures.Add(currentPathFigure);
+                currentStroke = new Stroke(e.GetPosition(this), CurrentTool.Brush, CurrentTool.Thickness);
             }
         }
 
@@ -57,22 +54,11 @@ namespace dotFlip
             {
                 Point currentPoint = e.GetPosition(this);
 
-                // Create the new PathSegment
-                LineSegment segment = new LineSegment(currentPoint, true);
-                currentPathFigure.Segments.Add(segment);
-
-                // Replace the PathFigure
-                currentPathGeometry.Figures.RemoveAt(currentPathGeometry.Figures.Count - 1);
-                currentPathGeometry.Figures.Add(currentPathFigure);
+                currentStroke.ConnectTo(currentPoint);
 
                 // Replace the Path on the canvas
                 Children.RemoveAt(Children.Count - 1);
-                Children.Add(new Path
-                {
-                    Stroke = CurrentTool.Brush,
-                    StrokeThickness = CurrentTool.Thickness,
-                    Data = currentPathGeometry
-                });
+                Children.Add(currentStroke.Path);
             }
         }
     }
