@@ -5,10 +5,78 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dotFlip"
         mc:Ignorable="d"
-        Title=".flip Demo" Height="350" Width="525">
-    <StackPanel x:Name="MainPanel"
-                Orientation="Horizontal">
-        <StackPanel x:Name="ControlPanel" Width="170" Background="Bisque"></StackPanel>
-        <InkCanvas Width="350"></InkCanvas>
-    </StackPanel>
+        Title=".flip Demo"
+        Width="719"
+        Height="600">
+    <Window.Resources>
+        <local:SliderConverter x:Key="brushConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"
+                              MinWidth="200"
+                              MaxWidth="400"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel x:Name="controlPanel" 
+                    Grid.Column="0"
+                    Background="WhiteSmoke">
+            <!--<RadioButton Content="Option 1" GroupName="Options1" 
+             IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
+                                 Converter={StaticResource enumConverter},
+                                 ConverterParameter=Option1}"  />-->
+            <RadioButton GroupName="Tools" x:Name="RadioPencil" Content="Pencil" IsChecked="True" Checked="RadioPencil_Checked"/>
+            <RadioButton GroupName="Tools" x:Name="RadioPen" Content="Pen" Checked="RadioPencil_Checked"/>
+            <RadioButton GroupName="Tools" x:Name="RadioMarker" Content="Marker"/>
+            <RadioButton GroupName="Tools" x:Name="RadioCrayon" Content="Crayon"/>
+            <RadioButton GroupName="Tools" x:Name="Eraser" Content="Eraser"/>
+            <StackPanel x:Name="ThicknessPanel" 
+                    Width="150" 
+                    Background="WhiteSmoke">
+                <Label x:Name="ThicknessLabel" Content="Thickness"/>
+                <Slider x:Name="ThicknessSlider" Minimum="2" Maximum="20" ValueChanged="ThicknessSlider_ValueChanged"/>
+            </StackPanel>
+            <Label x:Name="ColorLabel" Content="Color:"/>
+            <TextBox x:Name="ColorSelector" Height="23" TextWrapping="Wrap" TextChanged="ColorSelector_TextChanged">
+                <TextBox.Text>
+                    <MultiBinding Converter="{StaticResource brushConverter}" Mode="TwoWay"  UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="Value" ElementName="ToolRedSlider"/>
+                        <Binding Path="Value" ElementName="ToolGreenSlider"/>
+                        <Binding Path="Value" ElementName="ToolBlueSlider"/>
+                    </MultiBinding>
+                </TextBox.Text>
+            </TextBox>
+            <UniformGrid Columns="3"
+                         Rows="2">
+                <Label Content="Red"/>
+                <Label Content="Green"/>
+                <Label Content="Blue"/>
+                <Slider x:Name="ToolRedSlider" Minimum="0" Maximum="255"/>
+                <Slider x:Name="ToolGreenSlider" Minimum="0" Maximum="255"/>
+                <Slider x:Name="ToolBlueSlider" Minimum="0" Maximum="255"/>
+            </UniformGrid>
+            <Label x:Name="CanvasColorLabel" Content="Canvas Color:"/>
+            <TextBox x:Name="CanvasColorSelector" Height="23" TextWrapping="Wrap">
+                <TextBox.Text>
+                    <MultiBinding Converter="{StaticResource brushConverter}" Mode="TwoWay"  UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="Value" ElementName="CanvasRedSlider" />
+                        <Binding Path="Value" ElementName="CanvasGreenSlider" />
+                        <Binding Path="Value" ElementName="CanvasBlueSlider" />
+                    </MultiBinding>
+                </TextBox.Text>
+            </TextBox>
+            <UniformGrid>
+                <Label Content="Red"/>
+                <Label Content="Green"/>
+                <Label Content="Blue"/>
+                <Slider x:Name="CanvasRedSlider" Minimum="0" Maximum="255" Value="255"/>
+                <Slider x:Name="CanvasGreenSlider" Minimum="0" Maximum="255" Value="255"/>
+                <Slider x:Name="CanvasBlueSlider" Minimum="0" Maximum="255" Value="224"/>
+            </UniformGrid>
+        </StackPanel>
+        <local:StickyNoteCanvas x:Name="canvas"
+                   Grid.Column="1"
+                   Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"
+                   Background="{Binding ElementName=CanvasColorSelector, Path=Text}"/>
+    </Grid>
 </Window>

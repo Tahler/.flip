@@ -55,6 +55,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SliderConverter.cs" />
+    <Compile Include="StickyNoteCanvas.cs" />
+    <Compile Include="Stroke.cs" />
+    <Compile Include="Tools\ITool.cs" />
+    <Compile Include="Tools\Pen.cs" />
+    <Compile Include="Tools\Pencil.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
