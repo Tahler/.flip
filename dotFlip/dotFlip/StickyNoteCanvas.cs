@@ -12,6 +12,7 @@ namespace dotFlip
     {
         public ITool CurrentTool { get; private set; }
 
+        private Stroke currentStroke;
         private Dictionary<string, ITool> tools;
         
         public StickyNoteCanvas()
@@ -37,26 +38,24 @@ namespace dotFlip
 
         private void StickyNoteCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            previousPoint = e.GetPosition(this);
-            DrawAt(e.GetPosition(this));
+            Point point = e.GetPosition(this);
+            currentStroke = new Stroke(point);
         }
 
         private void StickyNoteCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                DrawAt(e.GetPosition(this));
-                previousPoint = e.GetPosition(this);
+                Point point = e.GetPosition(this);
+                // Connect to a new point and only draw the new points
+                IEnumerable<Point> newPoints = currentStroke.ConnectTo(point);
+                Draw(newPoints);
             }
         }
-
-        Point previousPoint;
-        private void DrawAt(Point point)
+        
+        private void Draw(IEnumerable<Point> pointsToBeDrawn)
         {
-            Stroke stroke = new Stroke(previousPoint);
-            stroke.ConnectTo(point);
-
-            foreach (Point p in stroke.Points)
+            foreach (Point p in pointsToBeDrawn)
             {
                 Shape shape = CurrentTool.Shape;
                 Canvas.SetLeft(shape, p.X);
