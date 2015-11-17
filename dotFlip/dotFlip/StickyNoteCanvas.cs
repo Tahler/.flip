@@ -2,8 +2,10 @@ using System.Windows.Controls;
 using dotFlip.Tools;
 using System.Windows.Input;
 using System.Windows;
+using System.Windows.Ink;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Pen = dotFlip.Tools.Pen;
 
 namespace dotFlip
 {
@@ -12,17 +14,16 @@ namespace dotFlip
         public ITool CurrentTool { get; set; }
 
         private Point previousPoint;
+        private PathGeometry currentPathGeometry;
+        private PathFigure currentPathFigure;
 
         public StickyNoteCanvas()
         {
-            CurrentTool = new Pencil();
+            CurrentTool = new Pen();
 
             MouseDown += StickyNoteCanvas_MouseDown;
             MouseMove += StickyNoteCanvas_MouseMove;
         }
-
-        PathGeometry currentPathGeometry;
-        PathFigure currentPathFigure;
 
         private void StickyNoteCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -30,11 +31,7 @@ namespace dotFlip
             {
                 previousPoint = e.GetPosition(this);
 
-                this.Children.Add(new Path
-                {
-                    Stroke = CurrentTool.Brush,
-                    StrokeThickness = CurrentTool.Thickness
-                });
+                this.Children.Add(new Path());
 
                 currentPathGeometry = new PathGeometry();
                 currentPathFigure = new PathFigure {StartPoint = previousPoint};
@@ -48,25 +45,22 @@ namespace dotFlip
             {
                 Point currentPoint = e.GetPosition(this);
 
-                //Line line = new Line
-                //{
-                //    Stroke = CurrentTool.Brush,
-                //    StrokeThickness = CurrentTool.Thickness,
-                //    X1 = previousPoint.X,
-                //    Y1 = previousPoint.Y,
-                //    X2 = currentPoint.X,
-                //    Y2 = currentPoint.Y,
-                    
-                //    // potential fix for line cracks
-                //    StrokeDashCap = PenLineCap.Round,
-                //    StrokeStartLineCap = PenLineCap.Round,
-                //    StrokeEndLineCap = PenLineCap.Round
-                //};
-
+                // Create the new PathSegment
                 LineSegment segment = new LineSegment(currentPoint, true);
                 currentPathFigure.Segments.Add(segment);
+
+                // Replace the PathFigure
+                currentPathGeometry.Figures.RemoveAt(currentPathGeometry.Figures.Count - 1);
                 currentPathGeometry.Figures.Add(currentPathFigure);
-                ((Path)Children[Children.Count - 1]).Data = currentPathGeometry;
+
+                // Replace the Path on the canvas
+                Children.RemoveAt(Children.Count - 1);
+                Children.Add(new Path
+                {
+                    Stroke = CurrentTool.Brush,
+                    StrokeThickness = CurrentTool.Thickness,
+                    Data = currentPathGeometry
+                });
 
                 previousPoint = currentPoint;
             }
