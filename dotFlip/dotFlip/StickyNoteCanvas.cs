@@ -92,7 +92,7 @@ namespace dotFlip
             {
                 Shape shape = CurrentTool.Shape;
                 double halfThickness = CurrentTool.Thickness / 2;
-                // Center the shape
+                // Center the shape on point
                 Canvas.SetLeft(shape, point.X - halfThickness);
                 Canvas.SetTop(shape, point.Y - halfThickness);
                 Children.Add(shape);
@@ -101,7 +101,12 @@ namespace dotFlip
 
         private void Erase(Point point)
         {
-            Rect eraserRect = new Rect(point, new Point(point.X + CurrentTool.Thickness, point.Y + CurrentTool.Thickness));
+            // Center rectangle on point
+            double halfThickness = CurrentTool.Thickness / 2;
+            Rect eraserRect = new Rect(
+                new Point(point.X - halfThickness, point.Y - halfThickness),
+                new Point(point.X + halfThickness, point.Y + halfThickness));
+
             for (int i = 0; i < Children.Count; i++)
             {
                 Shape shape = (Shape) Children[i];
