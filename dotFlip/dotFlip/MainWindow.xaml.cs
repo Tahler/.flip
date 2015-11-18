@@ -50,6 +50,7 @@ namespace dotFlip
                 if (title != null && canvas != null)
                 {
                     canvas.UseTool(title);
+                    ThicknessSlider.Value = canvas.CurrentTool.Thickness;
                 }
             }
 
