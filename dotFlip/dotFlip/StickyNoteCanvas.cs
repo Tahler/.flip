@@ -77,8 +77,9 @@ namespace dotFlip
 
         private bool PointIsOnCanvas(Point p)
         {
-            bool xOnCanvas = p.X - (CurrentTool.Thickness/2) - 3 > 0 && p.Y - (CurrentTool.Thickness / 2) - 3 < ActualHeight;
-            bool yOnCanvas = p.Y - (CurrentTool.Thickness/2) - 3 > 0 && p.Y - (CurrentTool.Thickness/2) - 3 < ActualWidth;
+            //These are kind of magic numbers, not quite happy with this yet
+            bool xOnCanvas = p.X - (CurrentTool.Thickness/2) - 3 > 0 && p.X - (CurrentTool.Thickness / 2)  < ActualWidth - 30;
+            bool yOnCanvas = p.Y - (CurrentTool.Thickness/2) - 3 > 0 && p.Y - (CurrentTool.Thickness/2) < ActualHeight- 30;
             return xOnCanvas && yOnCanvas;
         }
 
