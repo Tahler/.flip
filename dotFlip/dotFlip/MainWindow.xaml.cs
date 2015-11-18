@@ -50,6 +50,10 @@ namespace dotFlip
                 if (title != null && canvas != null)
                 {
                     canvas.UseTool(title);
+                    ThicknessSlider.Value = canvas.CurrentTool.Thickness;
+                    Color c = canvas.CurrentTool.Color;
+                    string hexOfColor = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+                    ColorSelector.Text = hexOfColor;
                 }
             }
 
