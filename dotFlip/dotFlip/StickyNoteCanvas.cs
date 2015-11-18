@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Controls;
 using dotFlip.Tools;
 using System.Windows.Input;
@@ -16,6 +17,7 @@ namespace dotFlip
         private Point previousPoint;
 
         private bool erasing;
+        private bool mouseDown;
 
         public StickyNoteCanvas()
         {
@@ -30,6 +32,7 @@ namespace dotFlip
             CurrentTool = tools["Pencil"];
             MouseDown += StickyNoteCanvas_MouseDown;
             MouseMove += StickyNoteCanvas_MouseMove;
+            MouseUp += StickyNoteCanvas_MouseUp;
         }
 
         public void UseTool(string toolToUse)
@@ -43,24 +46,29 @@ namespace dotFlip
 
         private void StickyNoteCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Point point = e.GetPosition(this);
-
-            if (erasing)
+            if (!mouseDown)
             {
-                Erase(point);
-            }
-            else
-            {
-                Draw(point);
-            }
+                mouseDown = true;
 
-            previousPoint = point;
+                Point point = e.GetPosition(this);
+
+                if (erasing)
+                {
+                    Erase(point);
+                }
+                else
+                {
+                    Draw(point);
+                }
+
+                previousPoint = point;
+            }
         }
 
 
         private void StickyNoteCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (mouseDown)
             {
                 Point nextPoint = e.GetPosition(this);
 
@@ -79,10 +87,16 @@ namespace dotFlip
             }
         }
 
+        private void StickyNoteCanvas_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            mouseDown = false;
+        }
+
         private bool PointIsOnCanvas(Point point)
         {
-            bool xOnCanvas = point.X - (CurrentTool.Thickness/2) - 3 > 0 && point.X - (CurrentTool.Thickness / 2)  < ActualWidth - 30;
-            bool yOnCanvas = point.Y - (CurrentTool.Thickness/2) - 3 > 0 && point.Y - (CurrentTool.Thickness/2) < ActualHeight- 30;
+            double halfThickness = CurrentTool.Thickness / 2;
+            bool xOnCanvas = point.X - halfThickness - 3 > 0 && point.X - halfThickness < ActualWidth - 30;
+            bool yOnCanvas = point.Y - halfThickness - 3 > 0 && point.Y - halfThickness < ActualHeight- 30;
             return xOnCanvas && yOnCanvas;
         }
 
