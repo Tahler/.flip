@@ -13,88 +13,48 @@ namespace dotFlip
         /// Uses Bresenham's algorithm to create many points between two points.
         /// </summary>
         /// <returns>IEnumerable of the points on the line between the two inputted points.</returns>
-        //public static IEnumerable<Point> GetPointsOnLine(int startX, int startY, int endX, int endY)
-        //{
-        //    bool isSteep = Math.Abs(endY - startY) > Math.Abs(endX - startX);
-
-        //    if (isSteep)
-        //    {
-        //        // Swap startX and startY
-        //        int temp = startX;
-        //        startX = startY;
-        //        startY = temp;
-        //        // Swap endX and endY 
-        //        temp = endX;
-        //        endX = endY;
-        //        endY = temp;
-        //    }
-        //    if (startX > endX)
-        //    {
-        //        // Swap startX and endX
-        //        int temp = startX;
-        //        startX = endX;
-        //        endX = temp;
-        //        // Swap startY and endY
-        //        temp = startY;
-        //        startY = endY;
-        //        endY = temp;
-        //    }
-
-        //    int deltaX = endX - startX;
-        //    int deltaY = Math.Abs(endY - startY);
-
-        //    int error = deltaX / 2;
-
-        //    int yStep = (startY < endY) ? 1 : -1;
-        //    int y = startY;
-        //    for (int x = startX; x <= endX; x++)
-        //    {
-        //        yield return new Point((isSteep ? y : x), (isSteep ? x : y));
-        //        error = error - deltaY;
-        //        if (error < 0)
-        //        {
-        //            y += yStep;
-        //            error += deltaX;
-        //        }
-        //    }
-        //}
-
-        public static IEnumerable<Point> GetPointsOnLine(int startX, int startY, int endX, int endY)
+        public static IEnumerable<Point> GetPointsOnLine(int x0, int y0, int x1, int y1)
         {
-            /*
-                real deltax := x1 - x0
-                real deltay := y1 - y0
-                real error := 0
-                real deltaerr := abs (deltay / deltax)    // Assume deltax != 0 (line is not vertical),
-                      // note that this division needs to be done in a way that preserves the fractional part
-                int y := y0
-                for x from x0 to x1
-                    plot(x,y)
-                    error := error + deltaerr
-                    while error ≥ 0.5 then
-                        plot(x, y)
-                        y := y + sign(y1 - y0)
-                        error := error - 1.0
-            */
+            bool isSteep = Math.Abs(y1 - y0) > Math.Abs(x1 - x0);
 
-            int deltaX = endX - startX;
-            int deltaY = endY - startY;
-
-            int deltaError = (deltaX == 0) ? 0 : Math.Abs(deltaY/deltaX);
-
-            int xStep = (deltaX > 0) ? 1 : -1;
-            int yStep = (deltaY > 0) ? 1 : -1;
-
-            int y = startY;
-            for (int x = startX; x != endX; x += xStep)
+            if (isSteep)
             {
-                yield return new Point(x, y);
-                int error = deltaError;
-                while (error >= 0)
+                int temp = x0;
+                x0 = y0;
+                y0 = temp;
+
+                temp = x1;
+                x1 = y1;
+                y1 = temp;
+            }
+
+            if (x0 > x1)
+            {
+                int temp = x0;
+                x0 = x1;
+                x1 = temp;
+
+                temp = y0;
+                y0 = y1;
+                y1 = temp;
+            }
+
+            int dX = x1 - x0;
+            int dY = Math.Abs(y1 - y0);
+
+            int error = dX / 2;
+
+            int yStep = (y0 < y1) ? 1 : -1;
+            int y = y0;
+
+            for (int x = x0; x <= x1; ++x)
+            {
+                yield return isSteep ? new Point(y, x) : new Point(x, y);
+                error = error - dY;
+                if (error < 0)
                 {
-                    yield return new Point(x, y);
                     y += yStep;
-                    error--;
+                    error += dX;
                 }
             }
         }

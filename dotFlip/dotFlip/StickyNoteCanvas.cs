@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Controls;
 using dotFlip.Tools;
 using System.Windows.Input;
@@ -61,26 +60,27 @@ namespace dotFlip
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                Point point = e.GetPosition(this);
+                Point nextPoint = e.GetPosition(this);
 
-                foreach (var p in Bresenham.GetPointsOnLine(currentStroke.LastPoint, point)) 
+                IEnumerable<Point> line = Bresenham.GetPointsOnLine(currentStroke.LastPoint, nextPoint);
+
+                foreach (var point in line) 
                 {
-                    currentStroke.AddPoint(p);
                     if (erasing)
                     {
-                        Erase(p);
+                        Erase(point);
                     }
                     else
                     {
-                        Draw(p);
+                        Draw(point);
                     }
+                    currentStroke.AddPoint(point);
                 }
             }
         }
 
         private bool PointIsOnCanvas(Point point)
         {
-            // My name's Carver and I hate Brandon.
             bool xOnCanvas = point.X - (CurrentTool.Thickness/2) - 3 > 0 && point.X - (CurrentTool.Thickness / 2)  < ActualWidth - 30;
             bool yOnCanvas = point.Y - (CurrentTool.Thickness/2) - 3 > 0 && point.Y - (CurrentTool.Thickness/2) < ActualHeight- 30;
             return xOnCanvas && yOnCanvas;
@@ -92,7 +92,6 @@ namespace dotFlip
             {
                 Shape shape = CurrentTool.Shape;
                 double halfThickness = CurrentTool.Thickness / 2;
-                Console.WriteLine(halfThickness);
                 // Center the shape
                 Canvas.SetLeft(shape, point.X - halfThickness);
                 Canvas.SetTop(shape, point.Y - halfThickness);
