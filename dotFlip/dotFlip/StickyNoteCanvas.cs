@@ -75,14 +75,24 @@ namespace dotFlip
             }
         }
 
+        private bool PointIsOnCanvas(Point p)
+        {
+            bool xOnCanvas = p.X - (CurrentTool.Thickness/2) - 3 > 0 && p.Y - (CurrentTool.Thickness / 2) - 3 < ActualHeight;
+            bool yOnCanvas = p.Y - (CurrentTool.Thickness/2) - 3 > 0 && p.Y - (CurrentTool.Thickness/2) - 3 < ActualWidth;
+            return xOnCanvas && yOnCanvas;
+        }
+
         private void Draw(Point point)
         {
-            Shape shape = CurrentTool.Shape;
-            // Center the shape
-            Canvas.SetLeft(shape, point.X - shape.Width / 2);
-            Canvas.SetTop(shape, point.Y - shape.Height / 2);
-            Children.Add(shape);
-        }
+            if (PointIsOnCanvas(point))
+            {
+                Shape shape = CurrentTool.Shape;
+                // Center the shape
+                Canvas.SetLeft(shape, point.X - shape.Width/2);
+                Canvas.SetTop(shape, point.Y - shape.Height/2);
+                Children.Add(shape);
+            }
+    }
 
         private void Draw(IEnumerable<Point> pointsToBeDrawn)
         {
