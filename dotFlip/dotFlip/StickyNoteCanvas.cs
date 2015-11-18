@@ -21,12 +21,12 @@ namespace dotFlip
         {
             tools = new Dictionary<string, ITool>
             {
-                //{"Pencil", new Pencil()},
+                {"Pencil", new Pencil()},
                 {"Pen", new Pen()},
                 {"Eraser", new Eraser()},
             };
 
-            CurrentTool = tools["Pen"];
+            CurrentTool = tools["Pencil"];
             MouseDown += StickyNoteCanvas_MouseDown;
             MouseMove += StickyNoteCanvas_MouseMove;
         }
