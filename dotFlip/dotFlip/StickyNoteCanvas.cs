@@ -23,6 +23,7 @@ namespace dotFlip
             {
                 //{"Pencil", new Pencil()},
                 {"Pen", new Pen()},
+                {"Highlighter", new Highlighter() },
                 {"Eraser", new Eraser()},
             };
 
