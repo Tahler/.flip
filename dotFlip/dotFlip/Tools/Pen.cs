@@ -6,7 +6,6 @@ namespace dotFlip.Tools
     public class Pen : ITool
     {
         private Color color;
-
         public Color Color
         {
             get { return color; }
@@ -16,8 +15,8 @@ namespace dotFlip.Tools
                 Shape.Fill = new SolidColorBrush(color);
             }
         }
-        private double thickness;
 
+        private double thickness;
         public double Thickness
         {
             get { return thickness; }
