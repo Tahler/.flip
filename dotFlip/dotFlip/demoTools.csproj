@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Eraser.cs" />
     <Compile Include="SliderConverter.cs" />
     <Compile Include="StickyNoteCanvas.cs" />
     <Compile Include="Stroke.cs" />
