@@ -41,7 +41,7 @@ namespace dotFlip
             canvas.CurrentTool.Thickness = ThicknessSlider.Value;
         }
 
-        private void RadioPencil_Checked(object sender, RoutedEventArgs e)
+        private void Radio_Checked(object sender, RoutedEventArgs e)
         {
             var selection = sender as RadioButton;
             if (selection != null)
