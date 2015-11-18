@@ -59,6 +59,7 @@
     <Compile Include="SliderConverter.cs" />
     <Compile Include="StickyNoteCanvas.cs" />
     <Compile Include="Stroke.cs" />
+    <Compile Include="Tools\Highlighter.cs" />
     <Compile Include="Tools\ITool.cs" />
     <Compile Include="Tools\Pen.cs" />
     <Compile Include="Tools\Pencil.cs" />

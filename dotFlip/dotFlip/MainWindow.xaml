@@ -27,14 +27,14 @@
                                  ConverterParameter=Option1}"  />-->
             <RadioButton GroupName="Tools" x:Name="RadioPencil" Content="Pencil" IsChecked="True" Checked="Radio_Checked"/>
             <RadioButton GroupName="Tools" x:Name="RadioPen" Content="Pen" Checked="Radio_Checked"/>
-            <RadioButton GroupName="Tools" x:Name="RadioMarker" Content="Marker" Checked="Radio_Checked"/>
+            <RadioButton GroupName="Tools" x:Name="RadioMarker" Content="Highlighter" Checked="Radio_Checked"/>
             <RadioButton GroupName="Tools" x:Name="RadioCrayon" Content="Crayon" Checked="Radio_Checked"/>
             <RadioButton GroupName="Tools" x:Name="Eraser" Content="Eraser" Checked="Radio_Checked"/>
             <StackPanel x:Name="ThicknessPanel" 
                     Width="150" 
                     Background="WhiteSmoke">
                 <Label x:Name="ThicknessLabel" Content="Thickness"/>
-                <Slider x:Name="ThicknessSlider" Minimum="2" Maximum="100" ValueChanged="ThicknessSlider_ValueChanged"/>
+                <Slider x:Name="ThicknessSlider" Minimum="2" Maximum="100" ValueChanged="ThicknessSlider_ValueChanged" Value="5"/>
             </StackPanel>
             <Label x:Name="ColorLabel" Content="Color:"/>
             <TextBox x:Name="ColorSelector" Height="23" TextWrapping="Wrap" TextChanged="ColorSelector_TextChanged">
