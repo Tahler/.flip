@@ -77,8 +77,9 @@ namespace dotFlip
         private void Draw(Point point)
         {
             Shape shape = CurrentTool.Shape;
-            Canvas.SetLeft(shape, point.X);
-            Canvas.SetTop(shape, point.Y);
+            // Center the shape
+            Canvas.SetLeft(shape, point.X - shape.Width / 2);
+            Canvas.SetTop(shape, point.Y - shape.Height / 2);
             Children.Add(shape);
         }
 

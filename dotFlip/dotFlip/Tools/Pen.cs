@@ -12,7 +12,7 @@ namespace dotFlip.Tools
             set
             {
                 color = value;
-                Shape.Fill = new SolidColorBrush(color);
+                shape.Fill = new SolidColorBrush(color);
             }
         }
 
@@ -23,22 +23,31 @@ namespace dotFlip.Tools
             set
             {
                 thickness = value;
-                Shape.Width = thickness;
-                Shape.Height = thickness;
+                shape.Width = thickness;
+                shape.Height = thickness;
             }
         }
 
+        private Ellipse shape;
+        // Have to return a copy so the canvas does not get upset
         public Shape Shape => new Ellipse
         {
-            Fill = new SolidColorBrush(color),
-            Width = thickness,
-            Height = thickness,
+            Width = shape.Width,
+            Height = shape.Height,
+            Fill = shape.Fill
         };
 
         public Pen()
         {
             color = Colors.Black;
             thickness = 5;
+
+            shape = new Ellipse
+            {
+                Fill = new SolidColorBrush(color),
+                Width = thickness,
+                Height = thickness,
+            };
         }
     }
 }
