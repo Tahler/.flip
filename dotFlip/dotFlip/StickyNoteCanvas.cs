@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Controls;
 using dotFlip.Tools;
 using System.Windows.Input;
@@ -25,7 +24,7 @@ namespace dotFlip
             {
                 {"Pencil", new Pencil()},
                 {"Pen", new Pen()},
-                {"Highlighter", new Highlighter() },
+                {"Highlighter", new Highlighter()},
                 {"Eraser", new Eraser()},
             };
                 
@@ -115,8 +114,8 @@ namespace dotFlip
 
         private void Erase(Point point)
         {
-            // Center rectangle on point
             double halfThickness = CurrentTool.Thickness / 2;
+            // Center rectangle on point
             Rect eraserRect = new Rect(
                 new Point(point.X - halfThickness, point.Y - halfThickness),
                 new Point(point.X + halfThickness, point.Y + halfThickness));
