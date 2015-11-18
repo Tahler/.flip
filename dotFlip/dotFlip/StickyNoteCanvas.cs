@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Controls;
 using dotFlip.Tools;
 using System.Windows.Input;
@@ -13,7 +14,7 @@ namespace dotFlip
         public ITool CurrentTool { get; private set; }
         private Dictionary<string, ITool> tools;
 
-        private Stroke currentStroke;
+        private Point previousPoint;
 
         private bool erasing;
 
@@ -44,7 +45,6 @@ namespace dotFlip
         private void StickyNoteCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Point point = e.GetPosition(this);
-            currentStroke = new Stroke(point);
 
             if (erasing)
             {
@@ -54,7 +54,10 @@ namespace dotFlip
             {
                 Draw(point);
             }
+
+            previousPoint = point;
         }
+
 
         private void StickyNoteCanvas_MouseMove(object sender, MouseEventArgs e)
         {
@@ -62,20 +65,18 @@ namespace dotFlip
             {
                 Point nextPoint = e.GetPosition(this);
 
-                IEnumerable<Point> line = Bresenham.GetPointsOnLine(currentStroke.LastPoint, nextPoint);
+                IEnumerable<Point> line = Bresenham.GetPointsOnLine(previousPoint, nextPoint);
 
-                foreach (var point in line) 
+                if (erasing)
                 {
-                    if (erasing)
-                    {
-                        Erase(point);
-                    }
-                    else
-                    {
-                        Draw(point);
-                    }
-                    currentStroke.AddPoint(point);
+                    foreach (var point in line) Erase(point);
                 }
+                else
+                {
+                    foreach (var point in line) Draw(point);
+                }
+
+                previousPoint = nextPoint;
             }
         }
 

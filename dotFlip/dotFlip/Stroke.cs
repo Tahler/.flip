@@ -18,10 +18,5 @@ namespace dotFlip
         {
             points.Add(point);
         }
-
-        public void AddPointRange(IEnumerable<Point> points)
-        {
-            this.points.AddRange(points);
-        }
     }
 }
