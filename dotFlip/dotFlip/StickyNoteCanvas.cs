@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Shapes;
 using Pen = dotFlip.Tools.Pen;
 using System.Collections.Generic;
-using System.Windows.Media;
 
 namespace dotFlip
 {
@@ -16,7 +15,9 @@ namespace dotFlip
         private Dictionary<string, ITool> tools;
 
         private Stroke currentStroke;
-        
+
+        private bool erasing;
+
         public StickyNoteCanvas()
         {
             tools = new Dictionary<string, ITool>
@@ -26,19 +27,15 @@ namespace dotFlip
                 {"Highlighter", new Highlighter() },
                 {"Eraser", new Eraser()},
             };
-
+                
             CurrentTool = tools["Pencil"];
             MouseDown += StickyNoteCanvas_MouseDown;
             MouseMove += StickyNoteCanvas_MouseMove;
-
-            //Shape s = CurrentTool.Shape;
-            //Canvas.SetLeft(s, 10);
-            //Canvas.SetTop(s, 10);
-            //Children.Add(s);
         }
 
         public void UseTool(string toolToUse)
         {
+            erasing = (toolToUse == "Eraser");
             if (tools.ContainsKey(toolToUse))
             {
                 CurrentTool = tools[toolToUse];
@@ -50,7 +47,7 @@ namespace dotFlip
             Point point = e.GetPosition(this);
             currentStroke = new Stroke(point);
 
-            if (CurrentTool is Eraser)
+            if (erasing)
             {
                 Erase(point);
             }
@@ -69,7 +66,7 @@ namespace dotFlip
                 // Connect points to the new point
                 IEnumerable<Point> newPoints = currentStroke.ConnectTo(point);
 
-                if (CurrentTool is Eraser)
+                if (erasing)
                 {
                     Erase(newPoints);
                 }
@@ -82,14 +79,6 @@ namespace dotFlip
 
         private bool PointIsOnCanvas(Point point)
         {
-            Shape shape = CurrentTool.Shape;
-            double halfThickness = CurrentTool.Thickness / 2;
-            Console.WriteLine(halfThickness);
-            // Center the shape
-            Canvas.SetLeft(shape, point.X - halfThickness);
-            Canvas.SetTop(shape, point.Y - halfThickness);
-            Children.Add(shape);
-       
             // My name's Carver and I hate Brandon.
             bool xOnCanvas = point.X - (CurrentTool.Thickness/2) - 3 > 0 && point.X - (CurrentTool.Thickness / 2)  < ActualWidth - 30;
             bool yOnCanvas = point.Y - (CurrentTool.Thickness/2) - 3 > 0 && point.Y - (CurrentTool.Thickness/2) < ActualHeight- 30;
@@ -101,9 +90,11 @@ namespace dotFlip
             if (PointIsOnCanvas(point))
             {
                 Shape shape = CurrentTool.Shape;
+                double halfThickness = CurrentTool.Thickness / 2;
+                Console.WriteLine(halfThickness);
                 // Center the shape
-                Canvas.SetLeft(shape, point.X - shape.Width/2);
-                Canvas.SetTop(shape, point.Y - shape.Height/2);
+                Canvas.SetLeft(shape, point.X - halfThickness);
+                Canvas.SetTop(shape, point.Y - halfThickness);
                 Children.Add(shape);
             }
     }
@@ -137,7 +128,7 @@ namespace dotFlip
 
         private void Erase(IEnumerable<Point> pointsToBeErased)
         {
-            if (!(CurrentTool is Eraser)) return; // if not using eraser, cannot erase
+            if (!erasing) return; // if not using eraser, cannot erase
 
             foreach (Point point in pointsToBeErased)
             {

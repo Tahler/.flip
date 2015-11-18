@@ -10,7 +10,7 @@ namespace dotFlip.Tools
 
         public double Thickness { get; set; }
 
-        public Shape Shape => new Ellipse
+        public Shape Shape => new Rectangle
         {
             Width = Thickness,
             Height = Thickness,
