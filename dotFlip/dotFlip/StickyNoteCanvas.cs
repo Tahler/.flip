@@ -80,7 +80,7 @@ namespace dotFlip
             }
         }
 
-        private void Draw(Point point)
+        private bool PointIsOnCanvas(Point point)
         {
             Shape shape = CurrentTool.Shape;
             double halfThickness = CurrentTool.Thickness / 2;
@@ -89,7 +89,24 @@ namespace dotFlip
             Canvas.SetLeft(shape, point.X - halfThickness);
             Canvas.SetTop(shape, point.Y - halfThickness);
             Children.Add(shape);
+       
+            // My name's Carver and I hate Brandon.
+            bool xOnCanvas = point.X - (CurrentTool.Thickness/2) - 3 > 0 && point.X - (CurrentTool.Thickness / 2)  < ActualWidth - 30;
+            bool yOnCanvas = point.Y - (CurrentTool.Thickness/2) - 3 > 0 && point.Y - (CurrentTool.Thickness/2) < ActualHeight- 30;
+            return xOnCanvas && yOnCanvas;
         }
+
+        private void Draw(Point point)
+        {
+            if (PointIsOnCanvas(point))
+            {
+                Shape shape = CurrentTool.Shape;
+                // Center the shape
+                Canvas.SetLeft(shape, point.X - shape.Width/2);
+                Canvas.SetTop(shape, point.Y - shape.Height/2);
+                Children.Add(shape);
+            }
+    }
 
         private void Draw(IEnumerable<Point> pointsToBeDrawn)
         {
