@@ -30,6 +30,11 @@ namespace dotFlip
             CurrentTool = tools["Pencil"];
             MouseDown += StickyNoteCanvas_MouseDown;
             MouseMove += StickyNoteCanvas_MouseMove;
+
+            //Shape s = CurrentTool.Shape;
+            //Canvas.SetLeft(s, 10);
+            //Canvas.SetTop(s, 10);
+            //Children.Add(s);
         }
 
         public void UseTool(string toolToUse)
@@ -78,9 +83,11 @@ namespace dotFlip
         private void Draw(Point point)
         {
             Shape shape = CurrentTool.Shape;
+            double halfThickness = CurrentTool.Thickness / 2;
+            Console.WriteLine(halfThickness);
             // Center the shape
-            Canvas.SetLeft(shape, point.X - shape.Width / 2);
-            Canvas.SetTop(shape, point.Y - shape.Height / 2);
+            Canvas.SetLeft(shape, point.X - halfThickness);
+            Canvas.SetTop(shape, point.Y - halfThickness);
             Children.Add(shape);
         }
 
