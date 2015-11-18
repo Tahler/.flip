@@ -63,16 +63,17 @@ namespace dotFlip
             {
                 Point point = e.GetPosition(this);
 
-                // Connect points to the new point
-                IEnumerable<Point> newPoints = currentStroke.ConnectTo(point);
-
-                if (erasing)
+                foreach (var p in Bresenham.GetPointsOnLine(currentStroke.LastPoint, point)) 
                 {
-                    Erase(newPoints);
-                }
-                else
-                {
-                    Draw(newPoints);
+                    currentStroke.AddPoint(p);
+                    if (erasing)
+                    {
+                        Erase(p);
+                    }
+                    else
+                    {
+                        Draw(p);
+                    }
                 }
             }
         }
@@ -97,14 +98,6 @@ namespace dotFlip
                 Canvas.SetTop(shape, point.Y - halfThickness);
                 Children.Add(shape);
             }
-    }
-
-        private void Draw(IEnumerable<Point> pointsToBeDrawn)
-        {
-            foreach (Point point in pointsToBeDrawn)
-            {
-                Draw(point);
-            }
         }
 
         private void Erase(Point point)
@@ -123,16 +116,6 @@ namespace dotFlip
                     Children.RemoveAt(i);
                     i--;
                 }
-            }
-        }
-
-        private void Erase(IEnumerable<Point> pointsToBeErased)
-        {
-            if (!erasing) return; // if not using eraser, cannot erase
-
-            foreach (Point point in pointsToBeErased)
-            {
-                Erase(point);
             }
         }
     }
