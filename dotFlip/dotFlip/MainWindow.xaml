@@ -74,7 +74,7 @@
                 <Slider x:Name="CanvasBlueSlider" Minimum="0" Maximum="255" Value="224"/>
             </UniformGrid>
         </StackPanel>
-        <local:StickyNoteCanvas x:Name="canvas"
+        <local:PageCanvas x:Name="canvas"
                    Grid.Column="1"
                    Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"
                    Background="{Binding ElementName=CanvasColorSelector, Path=Text}"/>
