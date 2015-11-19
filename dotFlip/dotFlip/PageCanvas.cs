@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace dotFlip
 {
-    public class StickyNoteCanvas : Canvas
+    public class PageCanvas : Canvas
     {
         // Undo / redo could be implemented with an undo stack of indices and a redo stack of shapes
         public ITool CurrentTool { get; private set; }
@@ -20,7 +20,7 @@ namespace dotFlip
         private bool erasing;
         private bool mouseDown;
 
-        public StickyNoteCanvas()
+        public PageCanvas()
         {
             tools = new Dictionary<string, ITool>
             {
