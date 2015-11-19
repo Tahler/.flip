@@ -35,6 +35,19 @@ namespace dotFlip
             MouseUp += StickyNoteCanvas_MouseUp;
         }
 
+        public void DisplayPage(Page page)
+        {
+            this.Children.Clear();
+            foreach(Stroke stroke in page)
+            {
+                foreach(Shape shape in stroke)
+                {
+                    this.Children.Add(shape);
+
+                }
+            }
+        }
+
         public void UseTool(string toolToUse)
         {
             erasing = (toolToUse == "Eraser");
