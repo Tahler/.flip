@@ -16,8 +16,10 @@ namespace dotFlip
     /// </summary>
     public partial class MainWindow : Window
     {
+        private FlipBook flipBook;
         public MainWindow()
         {
+            flipBook = new FlipBook();
             InitializeComponent();
         }
 
@@ -56,8 +58,20 @@ namespace dotFlip
                     ColorSelector.Text = hexOfColor;
                 }
             }
-
         }
+
+        private void NextPage()
+        {
+            int indexOfNextPage = flipBook.GetPageNumber(canvas.CurrentPage) + 1;
+            MoveToPage(indexOfNextPage);
+        }
+
+        private void PreviousPage()
+        {
+            int indexOfPreviousPage = flipBook.GetPageNumber(canvas.CurrentPage) - 1;
+            MoveToPage(indexOfPreviousPage);
+        }
+
 
         private void CanvasColorSelector_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -75,5 +89,11 @@ namespace dotFlip
             }
 
         }
+
+        private void MoveToPage(int index)
+        {
+            canvas.DisplayPage(flipBook.GetPageAt(index));
+        }
+
     }
 }

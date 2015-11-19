@@ -56,6 +56,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bresenham.cs" />
+    <Compile Include="FlipBook.cs" />
+    <Compile Include="Page.cs" />
     <Compile Include="Tools\Eraser.cs" />
     <Compile Include="SliderConverter.cs" />
     <Compile Include="StickyNoteCanvas.cs" />

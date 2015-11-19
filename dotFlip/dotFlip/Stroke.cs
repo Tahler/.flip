@@ -1,22 +1,31 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.Windows;
+using System.Windows.Shapes;
 
 namespace dotFlip
 {
-    // Unused for now
-    public class Stroke : FrameworkElement // Extending FrameworkElement does nothing right now... I would hope it can eventually be drawn as one piece.
+    public class Stroke : IEnumerable<Shape>
     {
-        private List<Point> points;
-        public Point LastPoint => points[points.Count - 1];
+        private IList<Shape> shapes;
 
-        public Stroke(Point startingPoint)
+        public Stroke()
         {
-            points = new List<Point> {startingPoint};
+            shapes = new List<Shape>();
         }
 
-        public void AddPoint(Point point)
+        public void AddShape(Shape shape)
         {
-            points.Add(point);
+            shapes.Add(shape);
+        }
+
+        public IEnumerator<Shape> GetEnumerator()
+        {
+            return shapes.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return shapes.GetEnumerator();
         }
     }
 }

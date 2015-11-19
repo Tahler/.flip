@@ -17,6 +17,8 @@ namespace dotFlip
         private Dictionary<string, ITool> tools;
 
         private Point previousPoint;
+        public Page CurrentPage { get; private set; }
+
         private bool mouseDown;
 
         public StickyNoteCanvas()
@@ -38,10 +40,18 @@ namespace dotFlip
             
         }
 
-        public void UpdateEraser()
+        public void DisplayPage(Page page)
         {
-//            if (Background != null)
-//                tools["Eraser"].Color = ((SolidColorBrush) Background).Color;
+            CurrentPage = page;
+            this.Children.Clear();
+            foreach(Stroke stroke in page)
+            {
+                foreach(Shape shape in stroke)
+                {
+                    this.Children.Add(shape);
+
+                }
+            }
         }
 
         public void UseTool(string toolToUse)
@@ -98,36 +108,12 @@ namespace dotFlip
             if (PointIsOnCanvas(point))
             {
                 Shape shape = CurrentTool.Shape;
-                double halfThickness = CurrentTool.Thickness / 2;
+                double halfThickness = CurrentTool.Thickness/2;
                 // Center the shape on point
                 Canvas.SetLeft(shape, point.X - halfThickness);
                 Canvas.SetTop(shape, point.Y - halfThickness);
                 Children.Add(shape);
             }
         }
-
-//        private void Erase(Point point)
-//        {
-//            double halfThickness = CurrentTool.Thickness / 2;
-//            // Center rectangle on point
-//            Rect eraserRect = new Rect(
-//                new Point(point.X - halfThickness, point.Y - halfThickness),
-//                new Point(point.X + halfThickness, point.Y + halfThickness));
-//
-//            for (int i = 0; i < Children.Count; i++)
-//            {
-//                Shape shape = (Shape) Children[i];
-//
-//                double shapeX = Canvas.GetLeft(shape);
-//                double shapeY = Canvas.GetTop(shape);
-//                Rect shapeBounds = new Rect(new Point(shapeX, shapeY), new Point(shapeX + shape.ActualWidth, shapeY + shape.ActualHeight));
-//
-//                if (eraserRect.IntersectsWith(shapeBounds))
-//                {
-//                    Children.RemoveAt(i);
-//                    i--;
-//                }
-//            }
-//        }
     }
 }
