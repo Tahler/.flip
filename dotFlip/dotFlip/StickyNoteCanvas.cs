@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Controls;
 using dotFlip.Tools;
 using System.Windows.Input;
@@ -5,6 +6,7 @@ using System.Windows;
 using System.Windows.Shapes;
 using Pen = dotFlip.Tools.Pen;
 using System.Collections.Generic;
+using System.Windows.Media;
 
 namespace dotFlip
 {
@@ -15,29 +17,35 @@ namespace dotFlip
         private Dictionary<string, ITool> tools;
 
         private Point previousPoint;
-
-        private bool erasing;
         private bool mouseDown;
 
         public StickyNoteCanvas()
         {
+            SolidColorBrush brush = new SolidColorBrush(Colors.LightYellow);
+            Background = brush;
             tools = new Dictionary<string, ITool>
             {
                 {"Pencil", new Pencil()},
                 {"Pen", new Pen()},
                 {"Highlighter", new Highlighter()},
-                {"Eraser", new Eraser()},
+                {"Eraser", new Eraser(ref brush)},
             };
-                
+            
             CurrentTool = tools["Pencil"];
             MouseDown += StickyNoteCanvas_MouseDown;
             MouseMove += StickyNoteCanvas_MouseMove;
             MouseUp += StickyNoteCanvas_MouseUp;
+            
+        }
+
+        public void UpdateEraser()
+        {
+//            if (Background != null)
+//                tools["Eraser"].Color = ((SolidColorBrush) Background).Color;
         }
 
         public void UseTool(string toolToUse)
         {
-            erasing = (toolToUse == "Eraser");
             if (tools.ContainsKey(toolToUse))
             {
                 CurrentTool = tools[toolToUse];
@@ -52,14 +60,7 @@ namespace dotFlip
 
                 Point point = e.GetPosition(this);
 
-                if (erasing)
-                {
-                    Erase(point);
-                }
-                else
-                {
-                    Draw(point);
-                }
+                Draw(point);
 
                 previousPoint = point;
             }
@@ -73,15 +74,7 @@ namespace dotFlip
                 Point nextPoint = e.GetPosition(this);
 
                 IEnumerable<Point> line = Bresenham.GetPointsOnLine(previousPoint, nextPoint);
-
-                if (erasing)
-                {
-                    foreach (var point in line) Erase(point);
-                }
-                else
-                {
-                    foreach (var point in line) Draw(point);
-                }
+                foreach (var point in line) Draw(point);
 
                 previousPoint = nextPoint;
             }
@@ -113,28 +106,28 @@ namespace dotFlip
             }
         }
 
-        private void Erase(Point point)
-        {
-            double halfThickness = CurrentTool.Thickness / 2;
-            // Center rectangle on point
-            Rect eraserRect = new Rect(
-                new Point(point.X - halfThickness, point.Y - halfThickness),
-                new Point(point.X + halfThickness, point.Y + halfThickness));
-
-            for (int i = 0; i < Children.Count; i++)
-            {
-                Shape shape = (Shape) Children[i];
-
-                double shapeX = Canvas.GetLeft(shape);
-                double shapeY = Canvas.GetTop(shape);
-                Rect shapeBounds = new Rect(new Point(shapeX, shapeY), new Point(shapeX + shape.ActualWidth, shapeY + shape.ActualHeight));
-
-                if (eraserRect.IntersectsWith(shapeBounds))
-                {
-                    Children.RemoveAt(i);
-                    i--;
-                }
-            }
-        }
+//        private void Erase(Point point)
+//        {
+//            double halfThickness = CurrentTool.Thickness / 2;
+//            // Center rectangle on point
+//            Rect eraserRect = new Rect(
+//                new Point(point.X - halfThickness, point.Y - halfThickness),
+//                new Point(point.X + halfThickness, point.Y + halfThickness));
+//
+//            for (int i = 0; i < Children.Count; i++)
+//            {
+//                Shape shape = (Shape) Children[i];
+//
+//                double shapeX = Canvas.GetLeft(shape);
+//                double shapeY = Canvas.GetTop(shape);
+//                Rect shapeBounds = new Rect(new Point(shapeX, shapeY), new Point(shapeX + shape.ActualWidth, shapeY + shape.ActualHeight));
+//
+//                if (eraserRect.IntersectsWith(shapeBounds))
+//                {
+//                    Children.RemoveAt(i);
+//                    i--;
+//                }
+//            }
+//        }
     }
 }

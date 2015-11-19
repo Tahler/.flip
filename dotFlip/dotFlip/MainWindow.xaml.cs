@@ -27,7 +27,7 @@ namespace dotFlip
             {
                 Color c = (Color) ColorConverter.ConvertFromString(ColorSelector.Text);
                 if (canvas != null)
-                canvas.CurrentTool.Color = c;
+                    canvas.CurrentTool.Color = c;
             }
             catch (FormatException)
             {
@@ -38,7 +38,7 @@ namespace dotFlip
         private void ThicknessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (ThicknessSlider != null && canvas != null)
-            canvas.CurrentTool.Thickness = ThicknessSlider.Value;
+                canvas.CurrentTool.Thickness = ThicknessSlider.Value;
         }
 
         private void Radio_Checked(object sender, RoutedEventArgs e)
@@ -54,6 +54,23 @@ namespace dotFlip
                     Color c = canvas.CurrentTool.Color;
                     string hexOfColor = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
                     ColorSelector.Text = hexOfColor;
+                }
+            }
+
+        }
+
+        private void CanvasColorSelector_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (canvas != null && CanvasColorSelector != null)
+            {
+                try
+                {
+                    ((SolidColorBrush) canvas.Background).Color =
+                        (Color) ColorConverter.ConvertFromString(CanvasColorSelector.Text);
+                }
+                catch (FormatException)
+                {
+
                 }
             }
 
