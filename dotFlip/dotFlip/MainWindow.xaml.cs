@@ -62,23 +62,19 @@ namespace dotFlip
 
         private void NextPage()
         {
-            int indexOfNextPage = flipBook.GetPageNumber();
+            int indexOfNextPage = flipBook.GetPageNumber(canvas.CurrentPage) + 1;
+            MoveToPage(indexOfNextPage);
         }
 
         private void PreviousPage()
         {
-
-
+            int indexOfPreviousPage = flipBook.GetPageNumber(canvas.CurrentPage) - 1;
+            MoveToPage(indexOfPreviousPage);
         }
 
         private void MoveToPage(int index)
         {
-
-        }
-
-        private void savePage()
-        {
-
+            canvas.DisplayPage(flipBook.GetPageAt(index));
         }
 
     }

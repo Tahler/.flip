@@ -30,7 +30,7 @@ namespace dotFlip
             pages.RemoveAt(index);
         }
 
-        public Page GetPage(int index)
+        public Page GetPageAt(int index)
         {
             return pages[index];
         }

@@ -38,7 +38,7 @@ namespace dotFlip
 
         public void DisplayPage(Page page)
         {
-            currentPage = page;
+            CurrentPage = page;
             this.Children.Clear();
             foreach(Stroke stroke in page)
             {
