@@ -15,6 +15,7 @@ namespace dotFlip
         private Dictionary<string, ITool> tools;
 
         private Point previousPoint;
+        public Page CurrentPage { get; private set; }
 
         private bool erasing;
         private bool mouseDown;
@@ -37,6 +38,7 @@ namespace dotFlip
 
         public void DisplayPage(Page page)
         {
+            currentPage = page;
             this.Children.Clear();
             foreach(Stroke stroke in page)
             {

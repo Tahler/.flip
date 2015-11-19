@@ -16,8 +16,10 @@ namespace dotFlip
     /// </summary>
     public partial class MainWindow : Window
     {
+        private FlipBook flipBook;
         public MainWindow()
         {
+            flipBook = new FlipBook();
             InitializeComponent();
         }
 
@@ -56,7 +58,28 @@ namespace dotFlip
                     ColorSelector.Text = hexOfColor;
                 }
             }
+        }
+
+        private void NextPage()
+        {
+            int indexOfNextPage = flipBook.GetPageNumber();
+        }
+
+        private void PreviousPage()
+        {
+
 
         }
+
+        private void MoveToPage(int index)
+        {
+
+        }
+
+        private void savePage()
+        {
+
+        }
+
     }
 }
