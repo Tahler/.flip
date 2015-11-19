@@ -10,6 +10,7 @@ namespace dotFlip
 {
     public class StickyNoteCanvas : Canvas
     {
+        // Undo / redo could be implemented with an undo stack of indices and a redo stack of shapes
         public ITool CurrentTool { get; private set; }
         private Dictionary<string, ITool> tools;
 
