@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Shapes;
 
 namespace dotFlip
 {
-    public class Page
+    public class Page : IEnumerable<Stroke>
     {
         private IList<Stroke> strokes;
         private Stack<Stroke> redoStack;
@@ -36,5 +38,16 @@ namespace dotFlip
             Stroke redoStroke = redoStack.Pop();
             strokes.Add(redoStroke);
         }
+
+        public IEnumerator<Stroke> GetEnumerator()
+        {
+            return strokes.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return strokes.GetEnumerator();
+        }
+
     }
 }
