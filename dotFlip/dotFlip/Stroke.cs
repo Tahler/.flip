@@ -5,7 +5,7 @@ namespace dotFlip
 {
     public class Stroke
     {
-        private List<Shape> shapes;
+        private IList<Shape> shapes;
 
         public Stroke()
         {
