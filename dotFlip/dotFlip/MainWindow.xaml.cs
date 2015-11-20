@@ -23,14 +23,20 @@ namespace dotFlip
             flipbook = new Flipbook(Colors.LightYellow);
             flipbook.CurrentPageChanged += Flipbook_CurrentPageChanged;
 
-            Flipbook_CurrentPageChanged(flipbook.CurrentPage);
+            Page currentPage = flipbook.CurrentPage;
+            Grid.SetColumn(currentPage, 1);
+            grid.Children.Add(currentPage);
         }
 
         private void ColorSelector_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                if (flipbook != null) flipbook.CurrentTool.Color = (Color)ColorConverter.ConvertFromString(ColorSelector.Text);
+                if (flipbook != null)
+                {
+                    var convertFromString = ColorConverter.ConvertFromString(ColorSelector.Text);
+                    if (convertFromString != null) flipbook.CurrentTool.Color = (Color)convertFromString;
+                }
             }
             catch (FormatException)
             {
@@ -64,22 +70,29 @@ namespace dotFlip
         {
             if (CanvasColorSelector != null)
             {
-                try
+                if (flipbook != null)
                 {
-                    if (flipbook != null) flipbook.BackgroundColor = (Color)ColorConverter.ConvertFromString(CanvasColorSelector.Text);
-                }
-                catch (Exception)
-                {
-                    // ignored
+                    var convertFromString = ColorConverter.ConvertFromString(CanvasColorSelector.Text);
+                    if (convertFromString != null) flipbook.BackgroundColor = (Color)convertFromString;
                 }
             }
         }
 
         private void Flipbook_CurrentPageChanged(Page currentPage)
         {
-            //grid.Children.RemoveAt(1); // scary magic number :O
+            grid.Children.RemoveAt(1); // scary magic number :O
             Grid.SetColumn(currentPage, 1);
             grid.Children.Add(currentPage);
+        }
+
+        private void previousPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            flipbook.PreviousPage();
+        }
+
+        private void nextPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            flipbook.NextPage();
         }
     }
 }

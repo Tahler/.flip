@@ -68,6 +68,15 @@
                 <Slider x:Name="CanvasGreenSlider" Minimum="0" Maximum="255" Value="254"/>
                 <Slider x:Name="CanvasBlueSlider" Minimum="0" Maximum="255" Value="120"/>
             </UniformGrid>
+            <UniformGrid>
+                <Button x:Name="previousPageButton"
+                        Height="40"
+                        Content="Previous Page" Click="previousPageButton_Click"/>
+                <Button x:Name="nextPageButton"
+                        Height="40"
+                        Content="Next Page" Click="nextPageButton_Click"/>
+            </UniformGrid>
         </StackPanel>
     </Grid>
+    <!--<local:Page/>-->
 </Window>
