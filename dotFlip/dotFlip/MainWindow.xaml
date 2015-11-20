@@ -69,13 +69,13 @@
                 <Label Content="Green"/>
                 <Label Content="Blue"/>
                 <Slider x:Name="CanvasRedSlider" Minimum="0" Maximum="255" Value="255"/>
-                <Slider x:Name="CanvasGreenSlider" Minimum="0" Maximum="255" Value="255"/>
-                <Slider x:Name="CanvasBlueSlider" Minimum="0" Maximum="255" Value="224"/>
+                <Slider x:Name="CanvasGreenSlider" Minimum="0" Maximum="255" Value="254"/>
+                <Slider x:Name="CanvasBlueSlider" Minimum="0" Maximum="255" Value="120"/>
             </UniformGrid>
         </StackPanel>
-        <local:PageCanvas x:Name="canvas"
-                   Grid.Column="1"
-                   Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"
-                   />
+        <local:Flipbook x:Name="page"
+                    Grid.Column="1"
+                    Background="#fffe78"
+                    Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"/>
     </Grid>
 </Window>

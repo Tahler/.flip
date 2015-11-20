@@ -40,19 +40,19 @@ namespace dotFlip
             
         }
 
-        public void DisplayPage(Page page)
-        {
-            CurrentPage = page;
-            this.Children.Clear();
-            foreach(Stroke stroke in page)
-            {
-                foreach(Shape shape in stroke)
-                {
-                    this.Children.Add(shape);
+        //public void DisplayPage(Page page)
+        //{
+        //    CurrentPage = page;
+        //    this.Children.Clear();
+        //    foreach(Stroke stroke in page)
+        //    {
+        //        foreach(Shape shape in stroke)
+        //        {
+        //            this.Children.Add(shape);
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
 
         public void UseTool(string toolToUse)
         {

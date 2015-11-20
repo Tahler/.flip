@@ -8,6 +8,8 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Ink;
 using System.Windows.Media;
+using dotFlip.Tools;
+using Pen = dotFlip.Tools.Pen;
 
 namespace dotFlip
 {
@@ -16,20 +18,38 @@ namespace dotFlip
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Flipbook flipBook;
+        public ITool CurrentTool { get; private set; }
+        private Dictionary<string, ITool> tools;
+
         public MainWindow()
         {
-            flipBook = new Flipbook();
+            SolidColorBrush brush = new SolidColorBrush(Colors.LightYellow);
+            
+            tools = new Dictionary<string, ITool>
+            {
+                {"Pencil", new Pencil()},
+                {"Pen", new Pen()},
+                {"Highlighter", new Highlighter()},
+                {"Eraser", new Eraser(ref brush)},
+            };
+            CurrentTool = tools["Pencil"];
+
             InitializeComponent();
+        }
+
+        public void UseTool(string toolToUse)
+        {
+            if (tools.ContainsKey(toolToUse))
+            {
+                CurrentTool = tools[toolToUse];
+            }
         }
 
         private void ColorSelector_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                Color c = (Color) ColorConverter.ConvertFromString(ColorSelector.Text);
-                if (canvas != null)
-                    canvas.CurrentTool.Color = c;
+                CurrentTool.Color = (Color) ColorConverter.ConvertFromString(ColorSelector.Text);
             }
             catch (FormatException)
             {
@@ -39,8 +59,7 @@ namespace dotFlip
 
         private void ThicknessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (ThicknessSlider != null && canvas != null)
-                canvas.CurrentTool.Thickness = ThicknessSlider.Value;
+            if (ThicknessSlider != null) CurrentTool.Thickness = ThicknessSlider.Value;
         }
 
         private void Radio_Checked(object sender, RoutedEventArgs e)
@@ -49,51 +68,48 @@ namespace dotFlip
             if (selection != null)
             {
                 var title = selection.Content as string;
-                if (title != null && canvas != null)
+                if (title != null && page != null)
                 {
-                    canvas.UseTool(title);
-                    ThicknessSlider.Value = canvas.CurrentTool.Thickness;
-                    Color c = canvas.CurrentTool.Color;
+                    UseTool(title);
+                    ThicknessSlider.Value = CurrentTool.Thickness;
+                    Color c = CurrentTool.Color;
                     string hexOfColor = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
                     ColorSelector.Text = hexOfColor;
                 }
             }
         }
 
-        private void NextPage()
-        {
-            int indexOfNextPage = flipBook.GetPageNumber(canvas.CurrentPage) + 1;
-            MoveToPage(indexOfNextPage);
-        }
-
-        private void PreviousPage()
-        {
-            int indexOfPreviousPage = flipBook.GetPageNumber(canvas.CurrentPage) - 1;
-            MoveToPage(indexOfPreviousPage);
-        }
-
-
         private void CanvasColorSelector_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (canvas != null && CanvasColorSelector != null)
+            if (page != null && CanvasColorSelector != null)
             {
                 try
                 {
-                    ((SolidColorBrush) canvas.Background).Color =
-                        (Color) ColorConverter.ConvertFromString(CanvasColorSelector.Text);
-                }
-                catch (FormatException)
-                {
+                    ((SolidColorBrush)page.Background).Color = (Color)ColorConverter.ConvertFromString(CanvasColorSelector.Text);
 
+                }
+                catch (Exception)
+                {
+                    // ignored
                 }
             }
-
         }
 
-        private void MoveToPage(int index)
-        {
-            canvas.DisplayPage(flipBook.GetPageAt(index));
-        }
+        //private void NextPage()
+        //{
+        //    int indexOfNextPage = flipBook.GetPageNumber(page.CurrentPage) + 1;
+        //    MoveToPage(indexOfNextPage);
+        //}
 
+        //private void PreviousPage()
+        //{
+        //    int indexOfPreviousPage = flipBook.GetPageNumber(page.CurrentPage) - 1;
+        //    MoveToPage(indexOfPreviousPage);
+        //}
+
+        //private void MoveToPage(int index)
+        //{
+        //    page.DisplayPage(flipBook.GetPageAt(index));
+        //}
     }
 }

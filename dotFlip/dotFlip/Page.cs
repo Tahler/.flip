@@ -4,50 +4,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace dotFlip
 {
-    public class Page : IEnumerable<Stroke>
+    public class Page
     {
-        private IList<Stroke> strokes;
-        private Stack<Stroke> redoStack;
+        private IList<Visual> visuals;
+
+        public int VisualCount { get; set; }
 
         public Page()
         {
-            strokes = new List<Stroke>();
-            redoStack = new Stack<Stroke>();
+            visuals = new List<Visual>();
         }
 
-        public void AddStroke(Stroke stroke)
+        public Visual this[int index] => visuals[index];
+
+        public void DrawAt(Point point) // will probably need to pass the tool
         {
-            strokes.Add(stroke);
-            redoStack.Clear();
+            DrawingVisual path = new DrawingVisual();
+            using (var context = path.RenderOpen())
+            {
+                context.DrawEllipse(Brushes.Black, null, point, 20, 20);
+            }
+            visuals.Add(path);
         }
-
-        public void Undo()
-        {
-            int count = strokes.Count;
-            if (count == 0) return;
-            redoStack.Push(strokes[count - 1]);
-            strokes.RemoveAt(count - 1);
-        }
-
-        public void Redo()
-        {
-            Stroke redoStroke = redoStack.Pop();
-            strokes.Add(redoStroke);
-        }
-
-        public IEnumerator<Stroke> GetEnumerator()
-        {
-            return strokes.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return strokes.GetEnumerator();
-        }
-
     }
 }

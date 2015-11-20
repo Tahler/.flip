@@ -36,8 +36,10 @@ namespace DemoDrawingContext
 
         protected override int VisualChildrenCount => visuals.Count;
 
+        static int count = 0;
         protected override Visual GetVisualChild(int index)
         {
+            Console.WriteLine("called" + (count++));
             return visuals[index];
         }
     }
