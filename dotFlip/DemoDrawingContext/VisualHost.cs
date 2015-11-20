@@ -14,16 +14,6 @@ namespace DemoDrawingContext
         {
             visuals = new List<Visual>();
             
-            DrawingVisual path = new DrawingVisual();
-            using (var context = path.RenderOpen())
-            {
-                Pen p = new Pen(Brushes.Black, 2);
-
-                // Ellipse included for "visual debugging"
-                context.DrawEllipse(Brushes.Red, p, new Point(50, 50), 20, 20);
-            }
-            visuals.Add(path);
-
             this.MouseDown += VisualHost_MouseDown;
         }
 
@@ -38,10 +28,7 @@ namespace DemoDrawingContext
             DrawingVisual path = new DrawingVisual();
             using (var context = path.RenderOpen())
             {
-                Pen p = new Pen(Brushes.Black, 2);
-
-                // Ellipse included for "visual debugging"
-                context.DrawEllipse(Brushes.Red, p, e.GetPosition(this), 20, 20);
+                context.DrawEllipse(Brushes.Black, null, e.GetPosition(this), 20, 20);
             }
             visuals.Add(path);
             AddVisualChild(path);
