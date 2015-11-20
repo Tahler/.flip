@@ -13,14 +13,8 @@ namespace DemoDrawingContext
         public VisualHost()
         {
             visuals = new List<Visual>();
-
-            int width = (int)this.Width;
-            int height = (int)this.Height;
-
-            Random random = new Random();
-
-            DrawingVisual path = new DrawingVisual();
             
+            DrawingVisual path = new DrawingVisual();
             using (var context = path.RenderOpen())
             {
                 Pen p = new Pen(Brushes.Black, 2);
@@ -41,7 +35,6 @@ namespace DemoDrawingContext
 
         private void VisualHost_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Console.WriteLine("here");
             DrawingVisual path = new DrawingVisual();
             using (var context = path.RenderOpen())
             {
