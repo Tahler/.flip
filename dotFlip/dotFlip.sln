@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoTools", "dotFlip\DemoTo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoDrawingContext", "DemoDrawingContext\DemoDrawingContext.csproj", "{076F0BB5-9A41-4A20-A369-4394D11820EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoMultiPanel", "DemoMultiPanel\DemoMultiPanel.csproj", "{0EDEFDD5-DDC8-4849-AC04-02C90782624A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{076F0BB5-9A41-4A20-A369-4394D11820EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{076F0BB5-9A41-4A20-A369-4394D11820EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{076F0BB5-9A41-4A20-A369-4394D11820EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EDEFDD5-DDC8-4849-AC04-02C90782624A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EDEFDD5-DDC8-4849-AC04-02C90782624A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EDEFDD5-DDC8-4849-AC04-02C90782624A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EDEFDD5-DDC8-4849-AC04-02C90782624A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
