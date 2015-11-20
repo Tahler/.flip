@@ -28,7 +28,6 @@
             <RadioButton GroupName="Tools" x:Name="RadioPencil" Content="Pencil" IsChecked="True" Checked="Radio_Checked"/>
             <RadioButton GroupName="Tools" x:Name="RadioPen" Content="Pen" Checked="Radio_Checked"/>
             <RadioButton GroupName="Tools" x:Name="RadioMarker" Content="Highlighter" Checked="Radio_Checked"/>
-            <RadioButton GroupName="Tools" x:Name="RadioCrayon" Content="Crayon" Checked="Radio_Checked"/>
             <RadioButton GroupName="Tools" x:Name="Eraser" Content="Eraser" Checked="Radio_Checked"/>
             <StackPanel x:Name="ThicknessPanel" 
                     Width="150" 
@@ -56,7 +55,7 @@
                 <Slider x:Name="ToolBlueSlider" Minimum="0" Maximum="255"/>
             </UniformGrid>
             <Label x:Name="CanvasColorLabel" Content="Canvas Color:"/>
-            <TextBox x:Name="CanvasColorSelector" Height="23" TextWrapping="Wrap">
+            <TextBox x:Name="CanvasColorSelector" Height="23" TextWrapping="Wrap" TextChanged="CanvasColorSelector_TextChanged">
                 <TextBox.Text>
                     <MultiBinding Converter="{StaticResource brushConverter}" Mode="TwoWay"  UpdateSourceTrigger="PropertyChanged">
                         <Binding Path="Value" ElementName="CanvasRedSlider" />
@@ -77,6 +76,6 @@
         <local:PageCanvas x:Name="canvas"
                    Grid.Column="1"
                    Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"
-                   Background="{Binding ElementName=CanvasColorSelector, Path=Text}"/>
+                   />
     </Grid>
 </Window>
