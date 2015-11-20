@@ -16,10 +16,10 @@ namespace dotFlip
     /// </summary>
     public partial class MainWindow : Window
     {
-        private FlipBook flipBook;
+        private Flipbook flipBook;
         public MainWindow()
         {
-            flipBook = new FlipBook();
+            flipBook = new Flipbook();
             InitializeComponent();
         }
 
