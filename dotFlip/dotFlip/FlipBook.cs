@@ -6,74 +6,97 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using dotFlip.Tools;
+using Pen = dotFlip.Tools.Pen;
 
 namespace dotFlip
 {
-    public class Flipbook : Panel
+    public delegate void PageChangedHandler(Page currentPage);
+
+    public class Flipbook
     {
         private IList<Page> pages;
-        public Page CurrentPage { get; private set; }
 
-        public Flipbook()
+        private Page currentPage;
+        public Page CurrentPage
         {
-            CurrentPage = new Page();
-            pages = new List<Page> {CurrentPage};
-            this.MouseDown += Flipbook_MouseDown;
+            get { return currentPage; }
+            set
+            {
+                currentPage = value;
+                CurrentPageChanged(currentPage); // Invoke event
+            }
         }
 
-        /// <summary>
-        /// Overrides Panel's OnRender, to draw the background color or, if the background is null, a transparent rectangle. 
-        /// Filling the window with this rectangle allows for Events such as MouseDown to be triggered.
-        /// </summary>
-        protected override void OnRender(DrawingContext drawingContext)
+        public event PageChangedHandler CurrentPageChanged = delegate { };
+
+        private SolidColorBrush background;
+
+        public Brush Brush => background;
+
+        public Color BackgroundColor
         {
-            Brush background = Background ?? Brushes.Transparent;
-            drawingContext.DrawRectangle(background, null, new Rect(RenderSize));
+            get { return background.Color; }
+            set
+            {
+                background.Color = value;
+            }
         }
 
-        private void Flipbook_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private Dictionary<string, ITool> tools;
+        private ITool currentTool;
+
+        public ITool CurrentTool
         {
-            Console.WriteLine("here");
-            //DrawingVisual path = new DrawingVisual();
-            //using (var context = path.RenderOpen())
-            //{
-            //    context.DrawEllipse(Brushes.Black, null, e.GetPosition(this), 20, 20);
-            //}
-            Point mouseClickPoint = e.GetPosition(this);
-            CurrentPage.DrawAt(mouseClickPoint);
+            get { return currentTool; }
+            set { currentTool = value; }
         }
 
-        protected override int VisualChildrenCount => CurrentPage.VisualCount;
-
-        protected override Visual GetVisualChild(int index)
+        public Flipbook(Color backgroundColor)
         {
-            Console.WriteLine("calling");
-            return CurrentPage[index];
+            background = new SolidColorBrush();
+            BackgroundColor = backgroundColor;
+
+            tools = new Dictionary<string, ITool>
+            {
+                {"Pencil", new Pencil()},
+                {"Pen", new Pen()},
+                {"Highlighter", new Highlighter()},
+                {"Eraser", new Eraser(ref background)},
+            };
+            CurrentTool = tools["Pen"];
+
+            CurrentPage = new Page(this);
+            pages = new List<Page> { CurrentPage };
+
         }
 
-        //public void AddPage(Page p)
-        //{
-        //    pages.Add(p);
-        //}
+        public void UseTool(string toolToUse)
+        {
+            if (tools.ContainsKey(toolToUse))
+            {
+                CurrentTool = tools[toolToUse];
+            }
+        }
 
-        //public void RemovePage(Page p)
-        //{
-        //    pages.Remove(p);
-        //}
+        public void NextPage()
+        {
+            int currentIndex = pages.IndexOf(CurrentPage);
 
-        //public void RemoveAt(int index)
-        //{
-        //    pages.RemoveAt(index);
-        //}
+            if (currentIndex == pages.Count - 1) // If at the end
+            {
+                pages.Add(new Page(this));
+            }
+            CurrentPage = pages[currentIndex + 1];
+        }
 
-        //public Page GetPageAt(int index)
-        //{
-        //    return pages[index];
-        //}
-
-        //public int GetPageNumber(Page p)
-        //{
-        //    return pages.IndexOf(p);
-        //}
+        public void PreviousPage()
+        {
+            int currentIndex = pages.IndexOf(CurrentPage);
+            if (currentIndex > 0)
+            {
+                CurrentPage = pages[currentIndex - 1];
+            }
+        }
     }
 }

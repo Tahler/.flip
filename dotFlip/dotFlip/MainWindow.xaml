@@ -11,7 +11,7 @@
     <Window.Resources>
         <local:SliderConverter x:Key="brushConverter" />
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"
                               MinWidth="200"
@@ -21,10 +21,6 @@
         <StackPanel x:Name="controlPanel" 
                     Grid.Column="0"
                     Background="WhiteSmoke">
-            <!--<RadioButton Content="Option 1" GroupName="Options1" 
-             IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, 
-                                 Converter={StaticResource enumConverter},
-                                 ConverterParameter=Option1}"  />-->
             <RadioButton GroupName="Tools" x:Name="RadioPencil" Content="Pencil" IsChecked="True" Checked="Radio_Checked"/>
             <RadioButton GroupName="Tools" x:Name="RadioPen" Content="Pen" Checked="Radio_Checked"/>
             <RadioButton GroupName="Tools" x:Name="RadioMarker" Content="Highlighter" Checked="Radio_Checked"/>
@@ -73,9 +69,5 @@
                 <Slider x:Name="CanvasBlueSlider" Minimum="0" Maximum="255" Value="120"/>
             </UniformGrid>
         </StackPanel>
-        <local:Flipbook x:Name="page"
-                    Grid.Column="1"
-                    Background="#fffe78"
-                    Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"/>
     </Grid>
 </Window>

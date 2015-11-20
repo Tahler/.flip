@@ -13,43 +13,24 @@ using Pen = dotFlip.Tools.Pen;
 
 namespace dotFlip
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        public ITool CurrentTool { get; private set; }
-        private Dictionary<string, ITool> tools;
+        private Flipbook flipbook;
 
         public MainWindow()
         {
-            SolidColorBrush brush = new SolidColorBrush(Colors.LightYellow);
-            
-            tools = new Dictionary<string, ITool>
-            {
-                {"Pencil", new Pencil()},
-                {"Pen", new Pen()},
-                {"Highlighter", new Highlighter()},
-                {"Eraser", new Eraser(ref brush)},
-            };
-            CurrentTool = tools["Pencil"];
-
             InitializeComponent();
-        }
+            flipbook = new Flipbook(Colors.LightYellow);
+            flipbook.CurrentPageChanged += Flipbook_CurrentPageChanged;
 
-        public void UseTool(string toolToUse)
-        {
-            if (tools.ContainsKey(toolToUse))
-            {
-                CurrentTool = tools[toolToUse];
-            }
+            Flipbook_CurrentPageChanged(flipbook.CurrentPage);
         }
 
         private void ColorSelector_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                CurrentTool.Color = (Color) ColorConverter.ConvertFromString(ColorSelector.Text);
+                if (flipbook != null) flipbook.CurrentTool.Color = (Color)ColorConverter.ConvertFromString(ColorSelector.Text);
             }
             catch (FormatException)
             {
@@ -59,7 +40,7 @@ namespace dotFlip
 
         private void ThicknessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (ThicknessSlider != null) CurrentTool.Thickness = ThicknessSlider.Value;
+            if (ThicknessSlider != null && flipbook != null) flipbook.CurrentTool.Thickness = ThicknessSlider.Value;
         }
 
         private void Radio_Checked(object sender, RoutedEventArgs e)
@@ -68,11 +49,11 @@ namespace dotFlip
             if (selection != null)
             {
                 var title = selection.Content as string;
-                if (title != null && page != null)
+                if (title != null && flipbook != null)
                 {
-                    UseTool(title);
-                    ThicknessSlider.Value = CurrentTool.Thickness;
-                    Color c = CurrentTool.Color;
+                    flipbook.UseTool(title);
+                    ThicknessSlider.Value = flipbook.CurrentTool.Thickness;
+                    Color c = flipbook.CurrentTool.Color;
                     string hexOfColor = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
                     ColorSelector.Text = hexOfColor;
                 }
@@ -81,12 +62,11 @@ namespace dotFlip
 
         private void CanvasColorSelector_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (page != null && CanvasColorSelector != null)
+            if (CanvasColorSelector != null)
             {
                 try
                 {
-                    ((SolidColorBrush)page.Background).Color = (Color)ColorConverter.ConvertFromString(CanvasColorSelector.Text);
-
+                    if (flipbook != null) flipbook.BackgroundColor = (Color)ColorConverter.ConvertFromString(CanvasColorSelector.Text);
                 }
                 catch (Exception)
                 {
@@ -95,21 +75,11 @@ namespace dotFlip
             }
         }
 
-        //private void NextPage()
-        //{
-        //    int indexOfNextPage = flipBook.GetPageNumber(page.CurrentPage) + 1;
-        //    MoveToPage(indexOfNextPage);
-        //}
-
-        //private void PreviousPage()
-        //{
-        //    int indexOfPreviousPage = flipBook.GetPageNumber(page.CurrentPage) - 1;
-        //    MoveToPage(indexOfPreviousPage);
-        //}
-
-        //private void MoveToPage(int index)
-        //{
-        //    page.DisplayPage(flipBook.GetPageAt(index));
-        //}
+        private void Flipbook_CurrentPageChanged(Page currentPage)
+        {
+            //grid.Children.RemoveAt(1); // scary magic number :O
+            Grid.SetColumn(currentPage, 1);
+            grid.Children.Add(currentPage);
+        }
     }
 }
