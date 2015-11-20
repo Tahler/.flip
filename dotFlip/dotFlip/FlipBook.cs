@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace dotFlip
 {
-    class FlipBook
+    public class Flipbook
     {
         private List<Page> pages;
 
-        public FlipBook()
+        public Flipbook()
         {
             pages = new List<Page>();
         }
