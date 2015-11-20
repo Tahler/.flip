@@ -58,9 +58,9 @@
     <Compile Include="Bresenham.cs" />
     <Compile Include="FlipBook.cs" />
     <Compile Include="Page.cs" />
+    <Compile Include="PageCanvas.cs" />
     <Compile Include="Tools\Eraser.cs" />
     <Compile Include="SliderConverter.cs" />
-    <Compile Include="StickyNoteCanvas.cs" />
     <Compile Include="Stroke.cs" />
     <Compile Include="Tools\Highlighter.cs" />
     <Compile Include="Tools\ITool.cs" />
