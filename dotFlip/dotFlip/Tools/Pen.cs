@@ -6,7 +6,7 @@ namespace dotFlip.Tools
 {
     public class Pen : ITool
     {
-        public Color Color { get; set; }
+        public Brush Brush { get; set; }
         public double Thickness { get; set; }
 
         public Geometry GetGeometry(Point p)
@@ -15,9 +15,14 @@ namespace dotFlip.Tools
             return geometry;
         }
 
+        public void ChangeColor(Color c)
+        {
+            Brush = new SolidColorBrush(c);
+        }
+
         public Pen()
         {
-            Color = Colors.Black;
+            Brush = new SolidColorBrush(Colors.Black);
             Thickness = 5;
         }
 

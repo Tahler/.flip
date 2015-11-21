@@ -79,7 +79,7 @@ namespace dotFlip
                     // TODO and eraser's color is bound to a hidden brush
                     //context.DrawEllipse(new SolidColorBrush(currentTool.Color), null, point, currentTool.Thickness, currentTool.Thickness);
                     //Use geometry and pass in point .... 
-                    context.DrawGeometry(new SolidColorBrush(currentTool.Color), null, currentTool.GetGeometry(point));
+                    context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
                 }
                 visuals.Add(path);
                 AddVisualChild(path);

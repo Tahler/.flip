@@ -35,7 +35,7 @@ namespace dotFlip
                 if (flipbook != null)
                 {
                     var convertFromString = ColorConverter.ConvertFromString(ColorSelector.Text);
-                    if (convertFromString != null) flipbook.CurrentTool.Color = (Color)convertFromString;
+                    if (convertFromString != null) flipbook.CurrentTool.ChangeColor((Color)convertFromString);
                 }
             }
             catch (FormatException)
@@ -59,9 +59,9 @@ namespace dotFlip
                 {
                     flipbook.UseTool(title);
                     ThicknessSlider.Value = flipbook.CurrentTool.Thickness;
-                    Color c = flipbook.CurrentTool.Color;
-                    string hexOfColor = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
-                    ColorSelector.Text = hexOfColor;
+//                    Color c = flipbook.CurrentTool.Color;
+//                    string hexOfColor = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+//                    ColorSelector.Text = hexOfColor;
                 }
             }
         }
