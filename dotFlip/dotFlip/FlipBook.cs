@@ -79,7 +79,7 @@ namespace dotFlip
             try
             {
                 CurrentPage = pages[index];
-            }catch (IndexOutOfRangeException)
+            }catch (ArgumentOutOfRangeException)
             {
                 int pagesToAdd = index = pages.Count;
                 for(int ii = pages.Count; ii <pagesToAdd; ii++)

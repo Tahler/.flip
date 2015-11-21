@@ -94,7 +94,11 @@ namespace dotFlip
 
         private void pageNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
+            int pageNumber = 1;
+            if(int.TryParse(pageNumberTextBox.Text, out pageNumber) && flipbook != null)
+            {
+                flipbook.MoveToPage(pageNumber);
+            }
         }
     }
 }
