@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
 using System.Windows.Media;
-using dotFlip.Tools;
-using Pen = dotFlip.Tools.Pen;
 
 namespace dotFlip
 {
@@ -88,11 +80,25 @@ namespace dotFlip
         private void previousPageButton_Click(object sender, RoutedEventArgs e)
         {
             flipbook.PreviousPage();
+            pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
+
         }
 
         private void nextPageButton_Click(object sender, RoutedEventArgs e)
         {
+            
             flipbook.NextPage();
+            pageNumberLabel.Content = "/" + flipbook.GetPageCount();
+            pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
+        }
+
+        private void pageNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int pageNumber = 1;
+            if(int.TryParse(pageNumberTextBox.Text, out pageNumber) && flipbook != null)
+            {
+                flipbook.MoveToPage(pageNumber);
+            }
         }
     }
 }

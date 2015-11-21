@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Collections.Generic;
 using System.Windows.Media;
 using dotFlip.Tools;
 using Pen = dotFlip.Tools.Pen;
+using System;
 
 namespace dotFlip
 {
@@ -56,7 +51,7 @@ namespace dotFlip
         {
             background = new SolidColorBrush();
             BackgroundColor = backgroundColor;
-
+            
             tools = new Dictionary<string, ITool>
             {
                 {"Pencil", new Pencil()},
@@ -79,6 +74,21 @@ namespace dotFlip
             }
         }
 
+        public void MoveToPage(int index)
+        {
+            try
+            {
+                CurrentPage = pages[index];
+            }catch (ArgumentOutOfRangeException)
+            {
+                int pagesToAdd = index = pages.Count;
+                for(int ii = pages.Count; ii <pagesToAdd; ii++)
+                {
+                    pages.Add(new Page(this));
+                }
+            }
+        }
+
         public void NextPage()
         {
             int currentIndex = pages.IndexOf(CurrentPage);
@@ -97,6 +107,16 @@ namespace dotFlip
             {
                 CurrentPage = pages[currentIndex - 1];
             }
+        }
+
+        public int GetPageCount()
+        {
+            return pages.Count;
+        }
+
+        public int GetPageNumber(Page page)
+        {
+            return pages.IndexOf(page) + 1;
         }
     }
 }
