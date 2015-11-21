@@ -14,7 +14,7 @@ namespace dotFlip.Tools
         private Point _center;
         private double _thickness;
 
-        public Brush Brush { get; }
+        public Brush Brush { get; private set; }
 
         public double Thickness
         {
@@ -30,7 +30,7 @@ namespace dotFlip.Tools
             var transform = new TransformGroup();
             transform.Children.Add(new ScaleTransform(_thickness, _thickness, _center.X, _center.Y));
             transform.Children.Add(new RotateTransform(Random.NextDouble() * 359, _center.X, _center.Y));
-            transform.Children.Add(new TranslateTransform(p.X, p.Y));
+            transform.Children.Add(new TranslateTransform(p.X - (_thickness/2), p.Y - (_thickness/2)));
             Geometry geometry = _geometry.Clone();
             geometry.Transform = transform;  
             return geometry;

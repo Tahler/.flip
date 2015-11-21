@@ -15,7 +15,7 @@ namespace dotFlip.Tools
             Thickness = 5;
         }
 
-        public Brush Brush { get; set; }
+        public Brush Brush { get; private set; }
         public double Thickness { get; set; }
         public Geometry GetGeometry(Point p)
         {

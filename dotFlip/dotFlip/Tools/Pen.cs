@@ -6,7 +6,7 @@ namespace dotFlip.Tools
 {
     public class Pen : ITool
     {
-        public Brush Brush { get; }
+        public Brush Brush { get; private set; }
         public double Thickness { get; set; }
 
         public Geometry GetGeometry(Point p)
