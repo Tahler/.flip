@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace dotFlip.Tools
@@ -8,38 +9,24 @@ namespace dotFlip.Tools
 
         public Highlighter()
         {
-            Color = Colors.Yellow;
+            Color c = Colors.Yellow;
+            c.A = 12;
+            Brush = new SolidColorBrush(c);
             Thickness = 5;
-            Shape.Fill = new SolidColorBrush(Color);
         }
 
-        private Color _color;
-
-        public Color Color
+        public Brush Brush { get; private set; }
+        public double Thickness { get; set; }
+        public Geometry GetGeometry(Point p)
         {
-            get { return _color;} 
-            set
-            {
-                _color = value;
-                _color.A = 12;
-            }
-
+            EllipseGeometry geometry = new EllipseGeometry(p, Thickness, Thickness);
+            return geometry;
         }
 
-        private double _thickness;
-        public double Thickness { get { return _thickness; }
-            set
-            {
-                _thickness = value;
-                Shape.Height = Thickness;
-                Shape.Width = Thickness;
-            }
-        }
-        public Shape Shape => new Ellipse
+        public void ChangeColor(Color c)
         {
-            Fill = new SolidColorBrush(Color),
-            Width = Thickness,
-            Height = Thickness,
-        };
+            c.A = 12;
+            Brush = new SolidColorBrush(c);
+        }
     }
 }
