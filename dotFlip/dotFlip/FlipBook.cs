@@ -51,7 +51,7 @@ namespace dotFlip
         {
             background = new SolidColorBrush();
             BackgroundColor = backgroundColor;
-
+            
             tools = new Dictionary<string, ITool>
             {
                 {"Pencil", new Pencil()},
@@ -87,7 +87,6 @@ namespace dotFlip
                     pages.Add(new Page(this));
                 }
             }
-            CurrentPage = pages[index];
         }
 
         public void NextPage()
