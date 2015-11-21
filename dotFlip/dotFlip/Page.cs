@@ -9,18 +9,20 @@ namespace dotFlip
 {
     public class Page : Panel
     {
-        private IList<Visual> visuals;
+        //private IList<Visual> visuals;
 
         private Point previousPoint;
         private bool mouseDown;
 
         private Flipbook parent;
 
+        public IList<Visual> Visuals { get; private set; }
+
         public Page(Flipbook parent)
         {
             this.parent = parent;
 
-            visuals = new List<Visual>();
+            Visuals = new List<Visual>();
 
             Background = parent.Brush;
 
@@ -68,13 +70,9 @@ namespace dotFlip
                 using (var context = path.RenderOpen())
                 {
                     ITool currentTool = parent.CurrentTool;
-                    // TODO this also causes problems with the eraser, since this method works with currentTool.Color
-                    // TODO and eraser's color is bound to a hidden brush
-                    //context.DrawEllipse(new SolidColorBrush(currentTool.Color), null, point, currentTool.Thickness, currentTool.Thickness);
-                    //Use geometry and pass in point .... 
                     context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
                 }
-                visuals.Add(path);
+                Visuals.Add(path);
                 AddVisualChild(path);
             }
         }
@@ -85,11 +83,11 @@ namespace dotFlip
             drawingContext.DrawRectangle(background, null, new Rect(RenderSize));
         }
 
-        protected override int VisualChildrenCount => visuals.Count;
+        protected override int VisualChildrenCount => Visuals.Count;
 
         protected override Visual GetVisualChild(int index)
         {
-            return visuals[index];
+            return Visuals[index];
         }
 
         private bool PointIsOnPage(Point point)
@@ -99,5 +97,6 @@ namespace dotFlip
             bool yOnCanvas = point.Y - halfThickness - 3 > 0 && point.Y - halfThickness < ActualHeight - 30;
             return xOnCanvas && yOnCanvas;
         }
+
     }
 }

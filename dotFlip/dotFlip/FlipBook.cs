@@ -3,6 +3,8 @@ using System.Windows.Media;
 using dotFlip.Tools;
 using Pen = dotFlip.Tools.Pen;
 using System;
+using System.Collections;
+using System.Windows;
 
 namespace dotFlip
 {
@@ -78,6 +80,7 @@ namespace dotFlip
         {
             if (index < 0)
                 index = pages.Count - 1;
+
             if (pages.Count - 1 <= index)
             { 
                 int pagesToAdd = index - (pages.Count - 1);
@@ -87,8 +90,8 @@ namespace dotFlip
                 }
                 CurrentPage = pages[pages.Count - 1];
             }
-            CurrentPage = pages[index];
 
+            CurrentPage = pages[index];
         }
 
         public void NextPage()
@@ -111,6 +114,21 @@ namespace dotFlip
         public int GetPageNumber(Page page)
         {
             return pages.IndexOf(page) + 1;
+        }
+
+        public void CopyPrevPage()
+        {
+            int index = pages.IndexOf(currentPage);
+            if (index > 0)
+            {
+                Page prevPage = pages[index - 1];
+                IList<Visual> content = prevPage.Visuals;
+                foreach (Visual v in content)
+                {
+                    CurrentPage.Visuals.Add(v);
+                }
+                CurrentPage.InvalidateVisual();
+            }
         }
     }
 }

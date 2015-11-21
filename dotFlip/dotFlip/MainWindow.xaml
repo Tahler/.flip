@@ -80,6 +80,7 @@
 
             </UniformGrid>
             <CheckBox x:Name="checkBox" Content="Ghost Strokes" Height="22"/>
+            <Button x:Name="btnCopyPrevPage" Content="Copy Previous Page" Click="btnCopyPrevPage_Click"/>
 
         </StackPanel>
     </Grid>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -102,6 +103,11 @@ namespace dotFlip
                 pageNumberLabel.Content = "/" + flipbook.GetPageCount();
                 //pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
             }
+        }
+
+        private void btnCopyPrevPage_Click(object sender, RoutedEventArgs e)
+        {
+            flipbook.CopyPrevPage();
         }
     }
 }
