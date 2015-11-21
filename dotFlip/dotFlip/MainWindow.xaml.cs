@@ -80,11 +80,21 @@ namespace dotFlip
         private void previousPageButton_Click(object sender, RoutedEventArgs e)
         {
             flipbook.PreviousPage();
+            pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
+
         }
 
         private void nextPageButton_Click(object sender, RoutedEventArgs e)
         {
+            
             flipbook.NextPage();
+            pageNumberLabel.Content = "/" + flipbook.GetPageCount();
+            pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
+        }
+
+        private void pageNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
         }
     }
 }
