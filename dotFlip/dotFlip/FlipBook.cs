@@ -92,5 +92,15 @@ namespace dotFlip
                 CurrentPage = pages[currentIndex - 1];
             }
         }
+
+        public int GetPageCount()
+        {
+            return pages.Count;
+        }
+
+        public int GetPageNumber(Page page)
+        {
+            return pages.IndexOf(page) + 1;
+        }
     }
 }
