@@ -2,6 +2,7 @@
 using System.Windows.Media;
 using dotFlip.Tools;
 using Pen = dotFlip.Tools.Pen;
+using System;
 
 namespace dotFlip
 {
@@ -71,6 +72,22 @@ namespace dotFlip
             {
                 CurrentTool = tools[toolToUse];
             }
+        }
+
+        public void MoveToPage(int index)
+        {
+            try
+            {
+                CurrentPage = pages[index];
+            }catch (IndexOutOfRangeException)
+            {
+                int pagesToAdd = index = pages.Count;
+                for(int ii = pages.Count; ii <pagesToAdd; ii++)
+                {
+                    pages.Add(new Page(this));
+                }
+            }
+            CurrentPage = pages[index];
         }
 
         public void NextPage()
