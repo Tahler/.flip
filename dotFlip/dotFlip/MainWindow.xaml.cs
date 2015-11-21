@@ -14,7 +14,7 @@ namespace dotFlip
         {
             InitializeComponent();
             flipbook = new Flipbook(Colors.LightYellow);
-            flipbook.CurrentPageChanged += Flipbook_CurrentPageChanged;
+            flipbook.PageChanged += Flipbook_PageChanged;
 
             Page currentPage = flipbook.CurrentPage;
             Grid.SetColumn(currentPage, 1);
@@ -71,7 +71,7 @@ namespace dotFlip
             }
         }
 
-        private void Flipbook_CurrentPageChanged(Page currentPage)
+        private void Flipbook_PageChanged(Page currentPage)
         {
             grid.Children.RemoveAt(1); // scary magic number :O
             Grid.SetColumn(currentPage, 1);

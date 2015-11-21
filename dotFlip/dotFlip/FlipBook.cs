@@ -21,11 +21,11 @@ namespace dotFlip
             set
             {
                 currentPage = value;
-                CurrentPageChanged(currentPage); // Invoke event
+                PageChanged(currentPage); // Invoke event
             }
         }
 
-        public event PageChangedHandler CurrentPageChanged = delegate { };
+        public event PageChangedHandler PageChanged = delegate { };
 
         private SolidColorBrush background;
 
