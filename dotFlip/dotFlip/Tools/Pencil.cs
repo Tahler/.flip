@@ -14,7 +14,7 @@ namespace dotFlip.Tools
         private Point _center;
         private double _thickness;
 
-        public Brush Brush { get; set; }
+        public Brush Brush { get; }
 
         public double Thickness
         {

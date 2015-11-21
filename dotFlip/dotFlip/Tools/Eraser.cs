@@ -14,7 +14,7 @@ namespace dotFlip.Tools
             EllipseGeometry geometry = new EllipseGeometry(p, Thickness, Thickness);
             return geometry;
         }
-        public Brush Brush { get; set; }
+        public Brush Brush { get; }
 
         public void ChangeColor(Color c)
         {

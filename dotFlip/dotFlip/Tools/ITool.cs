@@ -6,7 +6,7 @@ namespace dotFlip.Tools
 {
     public interface ITool
     {
-        Brush Brush { get; set; }
+        Brush Brush { get; }
         double Thickness { get; set; }
         Geometry GetGeometry(Point p);
         void ChangeColor(Color c);
