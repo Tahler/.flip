@@ -76,37 +76,31 @@ namespace dotFlip
 
         public void MoveToPage(int index)
         {
-            try
-            {
-                CurrentPage = pages[index];
-            }catch (ArgumentOutOfRangeException)
-            {
-                int pagesToAdd = index = pages.Count;
-                for(int ii = pages.Count; ii <pagesToAdd; ii++)
+            if (index < 0)
+                index = pages.Count - 1;
+            if (pages.Count - 1 <= index)
+            { 
+                int pagesToAdd = index - (pages.Count - 1);
+                for (int ii = 0; ii < pagesToAdd; ii++)
                 {
                     pages.Add(new Page(this));
                 }
+                CurrentPage = pages[pages.Count - 1];
             }
+            CurrentPage = pages[index];
+
         }
 
         public void NextPage()
         {
             int currentIndex = pages.IndexOf(CurrentPage);
-
-            if (currentIndex == pages.Count - 1) // If at the end
-            {
-                pages.Add(new Page(this));
-            }
-            CurrentPage = pages[currentIndex + 1];
+            MoveToPage(currentIndex + 1);
         }
 
         public void PreviousPage()
         {
             int currentIndex = pages.IndexOf(CurrentPage);
-            if (currentIndex > 0)
-            {
-                CurrentPage = pages[currentIndex - 1];
-            }
+            MoveToPage(currentIndex - 1);
         }
 
         public int GetPageCount()

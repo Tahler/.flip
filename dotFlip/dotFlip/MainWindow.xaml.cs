@@ -80,6 +80,7 @@ namespace dotFlip
         private void previousPageButton_Click(object sender, RoutedEventArgs e)
         {
             flipbook.PreviousPage();
+            pageNumberLabel.Content = "/" + flipbook.GetPageCount();
             pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
 
         }
@@ -94,10 +95,12 @@ namespace dotFlip
 
         private void pageNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            int pageNumber = 1;
-            if(int.TryParse(pageNumberTextBox.Text, out pageNumber) && flipbook != null)
+            int pageNumber = 0;
+            if (int.TryParse(pageNumberTextBox.Text, out pageNumber) && flipbook != null)
             {
-                flipbook.MoveToPage(pageNumber);
+                flipbook.MoveToPage(pageNumber - 1);
+                pageNumberLabel.Content = "/" + flipbook.GetPageCount();
+                //pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
             }
         }
     }
