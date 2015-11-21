@@ -75,11 +75,11 @@ namespace dotFlip
                 using (var context = path.RenderOpen())
                 {
                     ITool currentTool = parent.CurrentTool;
-                    // TODO won't be able to get the different tools with this...
-                    // Look into DrawingContext (context) .DrawGeometry()
                     // TODO this also causes problems with the eraser, since this method works with currentTool.Color
                     // TODO and eraser's color is bound to a hidden brush
-                    context.DrawEllipse(new SolidColorBrush(currentTool.Color), null, point, currentTool.Thickness, currentTool.Thickness);
+                    //context.DrawEllipse(new SolidColorBrush(currentTool.Color), null, point, currentTool.Thickness, currentTool.Thickness);
+                    //Use geometry and pass in point .... 
+                    context.DrawGeometry(new SolidColorBrush(currentTool.Color), null, currentTool.GetGeometry(point));
                 }
                 visuals.Add(path);
                 AddVisualChild(path);

@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace dotFlip.Tools
@@ -7,6 +8,6 @@ namespace dotFlip.Tools
     {
         Color Color { get; set; }
         double Thickness { get; set; }
-        Shape Shape { get; }
+        Geometry GetGeometry(Point p);
     }
 }

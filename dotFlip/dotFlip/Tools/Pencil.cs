@@ -15,25 +15,6 @@ namespace dotFlip.Tools
         private Point center;
         private double thickness;
 
-        public Shape Shape
-        {
-            get
-            {
-                var transform = new TransformGroup();
-                transform.Children.Add(new ScaleTransform(thickness, thickness, center.X, center.Y));
-                transform.Children.Add(new RotateTransform(random.NextDouble() * 359, center.X, center.Y));
-
-                return new Path
-                {
-                    // Copy the other path
-                    Data = path.Data,
-                    Fill = path.Fill,
-                    // Apply rotation and sizing
-                    RenderTransform = transform
-                };
-            }
-        }
-
         public Color Color
         {
             get { return color; }
@@ -51,6 +32,17 @@ namespace dotFlip.Tools
             {
                 thickness = value / 100;
             }
+        }
+
+        public Geometry GetGeometry(Point p)
+        {
+            var transform = new TransformGroup();
+            transform.Children.Add(new ScaleTransform(thickness, thickness, center.X, center.Y));
+            transform.Children.Add(new RotateTransform(random.NextDouble() * 359, center.X, center.Y));
+            transform.Children.Add(new TranslateTransform(p.X, p.Y));
+            Geometry geometry = path.Data.Clone();
+            geometry.Transform = transform;  
+            return geometry;
         }
 
         public Pencil()

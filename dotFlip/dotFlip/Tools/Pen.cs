@@ -1,53 +1,25 @@
-﻿using System.Windows.Media;
+﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace dotFlip.Tools
 {
     public class Pen : ITool
     {
-        private Color color;
-        public Color Color
-        {
-            get { return color; }
-            set
-            {
-                color = value;
-                shape.Fill = new SolidColorBrush(color);
-            }
-        }
+        public Color Color { get; set; }
+        public double Thickness { get; set; }
 
-        private double thickness;
-        public double Thickness
+        public Geometry GetGeometry(Point p)
         {
-            get { return thickness; }
-            set
-            {
-                thickness = value;
-                shape.Width = thickness;
-                shape.Height = thickness;
-            }
+            EllipseGeometry geometry = new EllipseGeometry(p, Thickness, Thickness);
+            return geometry;
         }
-
-        private Ellipse shape;
-        // Have to return a copy so the canvas does not get upset
-        public Shape Shape => new Ellipse
-        {
-            Width = shape.Width,
-            Height = shape.Height,
-            Fill = shape.Fill
-        };
 
         public Pen()
         {
-            color = Colors.Black;
-            thickness = 5;
-
-            shape = new Ellipse
-            {
-                Fill = new SolidColorBrush(color),
-                Width = thickness,
-                Height = thickness,
-            };
+            Color = Colors.Black;
+            Thickness = 5;
         }
+
     }
 }
