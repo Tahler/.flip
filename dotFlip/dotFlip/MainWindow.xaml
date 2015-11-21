@@ -75,7 +75,9 @@
                 <Button x:Name="nextPageButton"
                         Height="40"
                         Content="Next Page" Click="nextPageButton_Click"/>
+                <CheckBox x:Name="checkBox" Content="Ghost Strokes" Height="22"/>
             </UniformGrid>
+            
         </StackPanel>
     </Grid>
     <!--<local:Page/>-->
