@@ -88,7 +88,6 @@ namespace dotFlip
                 {
                     pages.Add(new Page(this));
                 }
-                CurrentPage = pages[pages.Count - 1];
             }
 
             CurrentPage = pages[index];

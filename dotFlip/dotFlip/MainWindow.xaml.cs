@@ -95,17 +95,6 @@ namespace dotFlip
             pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
         }
 
-        private void pageNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            int pageNumber = 0;
-            if (int.TryParse(pageNumberTextBox.Text, out pageNumber) && flipbook != null)
-            {
-                flipbook.MoveToPage(pageNumber - 1);
-                pageNumberLabel.Content = "/" + flipbook.GetPageCount();
-                //pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
-            }
-        }
-
         private void btnCopyPrevPage_Click(object sender, RoutedEventArgs e)
         {
             flipbook.CopyPrevPage();
@@ -142,6 +131,20 @@ namespace dotFlip
                 playing = true;
                 playAnimationButton.Content = "Play";
 
+            }
+        }
+
+        private void pageNumberTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                int pageNumber = 0;
+                if (int.TryParse(pageNumberTextBox.Text, out pageNumber) && flipbook != null)
+                {
+                    flipbook.MoveToPage(pageNumber - 1);
+                    pageNumberLabel.Content = "/" + flipbook.GetPageCount();
+                    //pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
+                }
             }
         }
     }
