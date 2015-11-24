@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title=".flip Demo"
         Width="719"
-        Height="600">
+        Height="600"
+        KeyDown="Window_ctrl">
     <Window.Resources>
         <local:SliderConverter x:Key="brushConverter" />
     </Window.Resources>
@@ -81,6 +82,10 @@
             </UniformGrid>
             <CheckBox x:Name="checkBox" Content="Ghost Strokes" Height="22"/>
             <Button x:Name="btnCopyPrevPage" Content="Copy Previous Page" Click="btnCopyPrevPage_Click"/>
+            <UniformGrid Columns="2">
+                <Button x:Name="undoButton" Content="Undo" Click="Undo_Click"/>
+                <Button x:Name="redoButton" Content="Redo" Click="Redo_Click"/>
+            </UniformGrid>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -89,7 +94,6 @@
                 <Button x:Name="playAnimationButton" Grid.Column="0"  Content="Play" Click="button_Click"/>
 
             </Grid>
-
 
         </StackPanel>
     </Grid>
