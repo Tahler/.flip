@@ -92,6 +92,7 @@ namespace dotFlip
             }
 
             CurrentPage = pages[index];
+            if(CurrentPage.ShowGhost) UpdateGhostStrokes();
         }
 
         public void NextPage()
@@ -123,6 +124,32 @@ namespace dotFlip
             {
                 Page prevPage = pages[index - 1];
                 currentPage.CopyPage(prevPage);
+            }
+        }
+
+
+        public void ToggleGhostStrokes()
+        {
+            currentPage.ShowGhost = !currentPage.ShowGhost;
+            int index = pages.IndexOf(currentPage);
+            if (currentPage.ShowGhost && index != 0)
+            {
+                UpdateGhostStrokes();
+            }
+            else
+            {
+                //Psuedo refresh the page
+                MoveToPage(index - 1);
+                MoveToPage(index);
+            }
+        }
+        private void UpdateGhostStrokes()
+        {
+            int index = pages.IndexOf(CurrentPage);
+            if (index > 0)
+            {
+                Page prevPage = pages[index - 1];
+                CurrentPage.UpdateGhostStrokes(prevPage);
             }
         }
     }

@@ -15,14 +15,38 @@ namespace dotFlip
         private bool mouseDown;
 
         private Flipbook parent;
+        private bool _showGhost;
+        public bool ShowGhost { get { return _showGhost; }
+            set
+            {
+                _showGhost = value;
+                if (_showGhost)
+                {
+                    foreach (Visual v in GhostVisuals)
+                    {
+                        AddVisualChild(v);
+                    }
+                }
+                else
+                {
+                    foreach (Visual v in GhostVisuals)
+                    {
+                        RemoveVisualChild(v);
+                    }
+                }
+                
+                InvalidateVisual();
+            } }
 
         public IList<Visual> Visuals { get; private set; }
+        public IList<Visual> GhostVisuals { get; private set; } 
 
         public Page(Flipbook parent)
         {
             this.parent = parent;
             ClipToBounds = true;
             Visuals = new List<Visual>();
+            GhostVisuals = new List<Visual>();
             visibleIndex = Visuals.Count;
 
             Background = parent.Brush;
@@ -30,7 +54,6 @@ namespace dotFlip
             MouseDown += Page_MouseDown;
             MouseMove += Page_MouseMove;
             MouseUp += Page_MouseUp;
-            
         }
 
         private void Page_MouseDown(object sender, MouseButtonEventArgs e)
@@ -89,7 +112,6 @@ namespace dotFlip
 
                 IEnumerable<Point> line = Bresenham.GetPointsOnLine(previousPoint, nextPoint);
                 foreach (var point in line) Draw(point);
-
                 previousPoint = nextPoint;
             }
         }
@@ -118,10 +140,14 @@ namespace dotFlip
             drawingContext.DrawRectangle(background, null, new Rect(RenderSize));
         }
 
-        protected override int VisualChildrenCount => Visuals.Count;
+        protected override int VisualChildrenCount => (ShowGhost) ? Visuals.Count + GhostVisuals.Count : Visuals.Count;
 
         protected override Visual GetVisualChild(int index)
         {
+            if (index > Visuals.Count - 1)
+            {
+                return GhostVisuals[index - Visuals.Count];
+            }
             return Visuals[index];
         }
 
@@ -139,6 +165,22 @@ namespace dotFlip
                 AddVisualChild(visual);
             }
             InvalidateVisual();
+        }
+
+        public void UpdateGhostStrokes(Page prevPage)
+        {
+            GhostVisuals.Clear();
+            foreach (Visual v in prevPage.Visuals)
+            {
+                DrawingVisual visual = new DrawingVisual();
+                visual.Opacity = 0.01;
+                DrawingGroup group = VisualTreeHelper.GetDrawing(v);
+                using (var context = visual.RenderOpen())
+                {
+                    context.DrawDrawing(group);
+                }
+                GhostVisuals.Add(visual);
+            }
         }
 
     }

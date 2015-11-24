@@ -80,7 +80,7 @@
                 <Label x:Name="pageNumberLabel" Content="/1" Margin="-68,0,126,0" Height="28"/>
 
             </UniformGrid>
-            <CheckBox x:Name="checkBox" Content="Ghost Strokes" Height="22"/>
+            <CheckBox x:Name="chkGhostStrokes" Content="Ghost Strokes" Height="22" Click="chkGhostStrokes_Click"/>
             <Button x:Name="btnCopyPrevPage" Content="Copy Previous Page" Click="btnCopyPrevPage_Click"/>
             <UniformGrid Columns="2">
                 <Button x:Name="undoButton" Content="Undo" Click="Undo_Click"/>

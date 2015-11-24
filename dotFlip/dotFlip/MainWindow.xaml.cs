@@ -40,6 +40,7 @@ namespace dotFlip
 
         private void ThicknessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            if (flipbook != null) { flipbook.CurrentPage.ShowGhost = false; flipbook.CurrentPage.InvalidateVisual();}
             if (ThicknessSlider != null && flipbook != null) flipbook.CurrentTool.Thickness = ThicknessSlider.Value;
         }
 
@@ -77,6 +78,7 @@ namespace dotFlip
             grid.Children.RemoveAt(1); // scary magic number :O
             Grid.SetColumn(currentPage, 1);
             grid.Children.Add(currentPage);
+            chkGhostStrokes.IsChecked = currentPage.ShowGhost;
         }
 
         private void previousPageButton_Click(object sender, RoutedEventArgs e)
@@ -143,6 +145,12 @@ namespace dotFlip
                 playAnimationButton.Content = "Play";
 
             }
+        }
+
+        private void chkGhostStrokes_Click(object sender, RoutedEventArgs e)
+        {
+            flipbook.ToggleGhostStrokes();
+            flipbook.CurrentPage.InvalidateVisual();
         }
     }
 }
