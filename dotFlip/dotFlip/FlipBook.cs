@@ -89,7 +89,6 @@ namespace dotFlip
                 {
                     pages.Add(new Page(this));
                 }
-                CurrentPage = pages[pages.Count - 1];
             }
 
             CurrentPage = pages[index];
@@ -123,12 +122,7 @@ namespace dotFlip
             if (index > 0)
             {
                 Page prevPage = pages[index - 1];
-                IList<Visual> content = prevPage.Visuals;
-                foreach (Visual v in content)
-                {
-                    CurrentPage.Visuals.Add(v);
-                }
-                CurrentPage.InvalidateVisual();
+                currentPage.CopyPage(prevPage);
             }
         }
 

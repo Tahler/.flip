@@ -95,22 +95,32 @@ namespace dotFlip
             pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
         }
 
-        private void pageNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            int pageNumber = 0;
-            if (int.TryParse(pageNumberTextBox.Text, out pageNumber) && flipbook != null)
-            {
-                flipbook.MoveToPage(pageNumber - 1);
-                pageNumberLabel.Content = "/" + flipbook.GetPageCount();
-                //pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
-            }
-        }
-
         private void btnCopyPrevPage_Click(object sender, RoutedEventArgs e)
         {
             flipbook.CopyPrevPage();
         }
-
+        private void Window_ctrl(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if(e.KeyboardDevice.Modifiers == System.Windows.Input.ModifierKeys.Control)
+            {
+                if(e.Key == System.Windows.Input.Key.Z)
+                {
+                    flipbook.CurrentPage.Undo();
+                }
+                else if(e.Key == System.Windows.Input.Key.Y)
+                {
+                    flipbook.CurrentPage.Redo();
+                }
+            }
+        }
+        private void Undo_Click(object sender, RoutedEventArgs e)
+        {
+            flipbook.CurrentPage.Undo();
+        }
+        private void Redo_Click(object sender, RoutedEventArgs e)
+        {
+            flipbook.CurrentPage.Redo();
+        }
         private void button_Click(object sender, RoutedEventArgs e)
         {
             //if (playing) {
@@ -124,7 +134,20 @@ namespace dotFlip
                 flipbook.PlayAnimation();
             //}
 
+        }
 
+        private void pageNumberTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                int pageNumber = 0;
+                if (int.TryParse(pageNumberTextBox.Text, out pageNumber) && flipbook != null)
+                {
+                    flipbook.MoveToPage(pageNumber - 1);
+                    pageNumberLabel.Content = "/" + flipbook.GetPageCount();
+                    //pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
+                }
+            }
         }
     }
 }

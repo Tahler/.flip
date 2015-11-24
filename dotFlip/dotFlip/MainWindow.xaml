@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title=".flip Demo"
         Width="719"
-        Height="600">
+        Height="600"
+        KeyDown="Window_ctrl">
     <Window.Resources>
         <local:SliderConverter x:Key="brushConverter" />
     </Window.Resources>
@@ -75,22 +76,16 @@
                 <Button x:Name="nextPageButton"
                         Height="40"
                         Content="Next Page" Click="nextPageButton_Click"/>
-                <TextBox x:Name="pageNumberTextBox" Text="1" Height="24" TextWrapping="Wrap" Margin="0,0,73,0" TextChanged="pageNumberTextBox_TextChanged" HorizontalAlignment="Right" Width="27" />
+                <TextBox x:Name="pageNumberTextBox" Text="1" Height="24" TextWrapping="Wrap" Margin="0,0,73,0" KeyUp="pageNumberTextBox_KeyUp" HorizontalAlignment="Right" Width="27" />
                 <Label x:Name="pageNumberLabel" Content="/1" Margin="-68,0,126,0" Height="28"/>
-
             </UniformGrid>
             <CheckBox x:Name="checkBox" Content="Ghost Strokes" Height="22"/>
             <Button x:Name="btnCopyPrevPage" Content="Copy Previous Page" Click="btnCopyPrevPage_Click"/>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <Button x:Name="playAnimationButton" Grid.Column="0"  Content="Play" Click="button_Click"/>
-
-            </Grid>
-            
-
+            <UniformGrid Columns="2">
+                <Button x:Name="undoButton" Content="Undo" Click="Undo_Click"/>
+                <Button x:Name="redoButton" Content="Redo" Click="Redo_Click"/>
+            </UniformGrid>
+            <Button x:Name="playAnimationButton" Content="Play" Click="button_Click"/>
         </StackPanel>
     </Grid>
     <!--<local:Page/>-->

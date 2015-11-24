@@ -10,7 +10,7 @@ namespace dotFlip
     public class Page : Panel
     {
         //private IList<Visual> visuals;
-
+        private int visibleIndex;
         private Point previousPoint;
         private bool mouseDown;
 
@@ -21,14 +21,16 @@ namespace dotFlip
         public Page(Flipbook parent)
         {
             this.parent = parent;
-
+            ClipToBounds = true;
             Visuals = new List<Visual>();
+            visibleIndex = Visuals.Count;
 
             Background = parent.Brush;
 
             MouseDown += Page_MouseDown;
             MouseMove += Page_MouseMove;
             MouseUp += Page_MouseUp;
+            
         }
 
         private void Page_MouseDown(object sender, MouseButtonEventArgs e)
@@ -41,6 +43,41 @@ namespace dotFlip
                 Draw(point);
 
                 previousPoint = point;
+            }
+        }
+        private void RefreshVisibility()
+        {
+            for(int index = 0; index < visibleIndex; index++)
+            {
+                DrawingVisual drawVis = Visuals[index] as DrawingVisual;
+                if(drawVis != null)
+                {
+                    drawVis.Opacity = 1;
+                }
+            }
+            for(int index = visibleIndex; index < Visuals.Count; index++)
+            {
+                DrawingVisual drawVis = Visuals[index] as DrawingVisual;
+                if (drawVis != null)
+                {
+                    drawVis.Opacity = 0;
+                }
+            }
+        }
+        public void Undo()
+        {
+            if (visibleIndex > 0)
+            {
+                visibleIndex--;
+                RefreshVisibility();
+            }
+        }
+        public void Redo()
+        {
+            if (visibleIndex < Visuals.Count)
+            {
+                visibleIndex++;
+                RefreshVisibility();
             }
         }
 
@@ -64,17 +101,15 @@ namespace dotFlip
 
         private void Draw(Point point)
         {
-            if (PointIsOnPage(point))
-            {                
-                DrawingVisual path = new DrawingVisual();
-                using (var context = path.RenderOpen())
-                {
-                    ITool currentTool = parent.CurrentTool;
-                    context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
-                }
-                Visuals.Add(path);
-                AddVisualChild(path);
+            DrawingVisual path = new DrawingVisual();
+            using (var context = path.RenderOpen())
+            {
+                ITool currentTool = parent.CurrentTool;
+                context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
             }
+            Visuals.Add(path);
+            AddVisualChild(path);
+            visibleIndex++;
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -90,12 +125,20 @@ namespace dotFlip
             return Visuals[index];
         }
 
-        private bool PointIsOnPage(Point point)
+        public void CopyPage(Page prevPage)
         {
-            double halfThickness = parent.CurrentTool.Thickness / 2;
-            bool xOnCanvas = point.X - halfThickness - 3 > 0 && point.X - halfThickness < ActualWidth - 30;
-            bool yOnCanvas = point.Y - halfThickness - 3 > 0 && point.Y - halfThickness < ActualHeight - 30;
-            return xOnCanvas && yOnCanvas;
+            foreach (Visual v in prevPage.Visuals)
+            {
+                DrawingVisual visual = new DrawingVisual();
+                DrawingGroup group = VisualTreeHelper.GetDrawing(v);
+                using (var context = visual.RenderOpen())
+                {
+                    context.DrawDrawing(group);
+                }
+                Visuals.Add(visual);
+                AddVisualChild(visual);
+            }
+            InvalidateVisual();
         }
 
     }
