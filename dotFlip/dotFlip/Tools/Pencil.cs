@@ -30,7 +30,7 @@ namespace dotFlip.Tools
             var transform = new TransformGroup();
             transform.Children.Add(new ScaleTransform(_thickness, _thickness, _center.X, _center.Y));
             transform.Children.Add(new RotateTransform(Random.NextDouble() * 359, _center.X, _center.Y));
-            transform.Children.Add(new TranslateTransform(p.X - (_thickness*50), p.Y - (_thickness*50)));
+            transform.Children.Add(new TranslateTransform(p.X - _center.X, p.Y - _center.Y));
             Geometry geometry = _geometry.Clone();
             geometry.Transform = transform;  
             return geometry;
