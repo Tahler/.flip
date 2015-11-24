@@ -122,12 +122,7 @@ namespace dotFlip
             if (index > 0)
             {
                 Page prevPage = pages[index - 1];
-                IList<Visual> content = prevPage.Visuals;
-                foreach (Visual v in content)
-                {
-                    CurrentPage.Visuals.Add(v);
-                }
-                CurrentPage.InvalidateVisual();
+                currentPage.CopyPage(prevPage);
             }
         }
     }

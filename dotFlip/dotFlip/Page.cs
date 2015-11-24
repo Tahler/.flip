@@ -98,5 +98,21 @@ namespace dotFlip
             return xOnCanvas && yOnCanvas;
         }
 
+        public void CopyPage(Page prevPage)
+        {
+            foreach (Visual v in prevPage.Visuals)
+            {
+                DrawingVisual visual = new DrawingVisual();
+                DrawingGroup group = VisualTreeHelper.GetDrawing(v);
+                using (var context = visual.RenderOpen())
+                {
+                    context.DrawDrawing(group);
+                }
+                Visuals.Add(visual);
+                AddVisualChild(visual);
+            }
+            InvalidateVisual();
+        }
+
     }
 }
