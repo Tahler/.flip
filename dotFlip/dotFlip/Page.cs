@@ -50,9 +50,9 @@ namespace dotFlip
         }
         private void RefreshVisibility()
         {
-            //visible
             if (visibleIndex != 0 && visibleIndex  <= strokeEnd.Count)
             {
+                //visible
                 for (int index = 0; index < strokeEnd[visibleIndex - 1]; index++)
                 {
                     DrawingVisual drawVis = Visuals[index] as DrawingVisual;
@@ -125,20 +125,15 @@ namespace dotFlip
 
         private void Draw(Point point)
         {
-            if (PointIsOnPage(point))
-            {                
-                DrawingVisual path = new DrawingVisual();
-                using (var context = path.RenderOpen())
-                {
-                    ITool currentTool = parent.CurrentTool;
-                    context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
-                }
-                Visuals.Add(path);
-                AddVisualChild(path);
+            DrawingVisual path = new DrawingVisual();
+            using (var context = path.RenderOpen())
+            {
+                ITool currentTool = parent.CurrentTool;
+                context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
             }
+            
             Visuals.Add(path);
             AddVisualChild(path);
-            visibleIndex++;
         }
 
         protected override void OnRender(DrawingContext drawingContext)
