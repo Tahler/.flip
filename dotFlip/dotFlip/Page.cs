@@ -16,28 +16,7 @@ namespace dotFlip
         private List<int> strokeEnd;
 
         private Flipbook parent;
-        private bool _showGhost;
-        public bool ShowGhost { get { return _showGhost; }
-            set
-            {
-                _showGhost = value;
-                if (_showGhost)
-                {
-                    foreach (Visual v in GhostVisuals)
-                    {
-                        AddVisualChild(v);
-                    }
-                }
-                else
-                {
-                    foreach (Visual v in GhostVisuals)
-                    {
-                        RemoveVisualChild(v);
-                    }
-                }
-                
-                InvalidateVisual();
-            } }
+        public bool ShowGhost { get; set; }
 
         public IList<Visual> Visuals { get; private set; }
         public IList<Visual> GhostVisuals { get; private set; } 
@@ -186,10 +165,9 @@ namespace dotFlip
                 {
                     context.DrawDrawing(group);
                 }
-                Visuals.Add(visual);
+                GhostVisuals.Add(visual);
                 AddVisualChild(visual);
             }
-            InvalidateVisual();
         }
 
         public void UpdateGhostStrokes(Page prevPage)
@@ -205,6 +183,7 @@ namespace dotFlip
                     context.DrawDrawing(group);
                 }
                 GhostVisuals.Add(visual);
+                AddVisualChild(visual);
             }
         }
 
