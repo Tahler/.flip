@@ -13,6 +13,7 @@ namespace dotFlip
         private int visibleIndex;
         private Point previousPoint;
         private bool mouseDown;
+        private List<int> strokeEnd;
 
         private Flipbook parent;
         private bool _showGhost;
@@ -47,7 +48,10 @@ namespace dotFlip
             ClipToBounds = true;
             Visuals = new List<Visual>();
             GhostVisuals = new List<Visual>();
-            visibleIndex = Visuals.Count;
+            strokeEnd = new List<int>();
+            strokeEnd.Add(0);
+            visibleIndex = strokeEnd.Count;
+
 
             Background = parent.Brush;
 
@@ -70,26 +74,44 @@ namespace dotFlip
         }
         private void RefreshVisibility()
         {
-            for(int index = 0; index < visibleIndex; index++)
+            if (visibleIndex != 0 && visibleIndex  <= strokeEnd.Count)
             {
-                DrawingVisual drawVis = Visuals[index] as DrawingVisual;
-                if(drawVis != null)
+                //visible
+                for (int index = 0; index < strokeEnd[visibleIndex - 1]; index++)
                 {
-                    drawVis.Opacity = 1;
+                    DrawingVisual drawVis = Visuals[index] as DrawingVisual;
+                    if (drawVis != null)
+                    {
+                        drawVis.Opacity = 1;
+                    }
+                }
+                //invisible
+                for (int index = strokeEnd[visibleIndex - 1]; index < Visuals.Count; index++)
+                {
+                    DrawingVisual drawVis = Visuals[index] as DrawingVisual;
+                    if (drawVis != null)
+                    {
+                        drawVis.Opacity = 0;
+                    }
                 }
             }
-            for(int index = visibleIndex; index < Visuals.Count; index++)
+            else
             {
-                DrawingVisual drawVis = Visuals[index] as DrawingVisual;
-                if (drawVis != null)
+                //invisible
+                for (int index = 0; index < Visuals.Count; index++)
                 {
-                    drawVis.Opacity = 0;
+                    DrawingVisual drawVis = Visuals[index] as DrawingVisual;
+                    if (drawVis != null)
+                    {
+                        drawVis.Opacity = 0;
+                    }
                 }
+
             }
         }
         public void Undo()
         {
-            if (visibleIndex > 0)
+            if (visibleIndex > 1)
             {
                 visibleIndex--;
                 RefreshVisibility();
@@ -97,7 +119,7 @@ namespace dotFlip
         }
         public void Redo()
         {
-            if (visibleIndex < Visuals.Count)
+            if (visibleIndex < strokeEnd.Count)
             {
                 visibleIndex++;
                 RefreshVisibility();
@@ -119,6 +141,9 @@ namespace dotFlip
         private void Page_MouseUp(object sender, MouseButtonEventArgs e)
         {
             mouseDown = false;
+            visibleIndex++;
+            strokeEnd.Add(Visuals.Count);
+            
         }
 
         private void Draw(Point point)
@@ -129,9 +154,9 @@ namespace dotFlip
                 ITool currentTool = parent.CurrentTool;
                 context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
             }
+            
             Visuals.Add(path);
             AddVisualChild(path);
-            visibleIndex++;
         }
 
         protected override void OnRender(DrawingContext drawingContext)
