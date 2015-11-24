@@ -81,8 +81,18 @@
             </UniformGrid>
             <CheckBox x:Name="checkBox" Content="Ghost Strokes" Height="22"/>
             <Button x:Name="btnCopyPrevPage" Content="Copy Previous Page" Click="btnCopyPrevPage_Click"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="playAnimationButton" Grid.Column="0"  Content="Play" Click="button_Click"/>
+
+            </Grid>
+            
 
         </StackPanel>
+        <Button x:Name="button1" Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="228,471,0,0" VerticalAlignment="Top" Width="75"/>
     </Grid>
     <!--<local:Page/>-->
 </Window>

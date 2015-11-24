@@ -9,6 +9,7 @@ namespace dotFlip
     public partial class MainWindow : Window
     {
         private Flipbook flipbook;
+        bool playing = true;
 
         public MainWindow()
         {
@@ -108,6 +109,21 @@ namespace dotFlip
         private void btnCopyPrevPage_Click(object sender, RoutedEventArgs e)
         {
             flipbook.CopyPrevPage();
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            if (playing) {
+                playing = false;
+                playAnimationButton.Content = "Stop";
+            }else
+            {
+                playing = true;
+                playAnimationButton.Content = "Play";
+
+            }
+
+
         }
     }
 }
