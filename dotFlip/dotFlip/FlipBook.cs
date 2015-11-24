@@ -5,6 +5,7 @@ using Pen = dotFlip.Tools.Pen;
 using System;
 using System.Collections;
 using System.Windows;
+using System.Threading;
 
 namespace dotFlip
 {
@@ -88,7 +89,6 @@ namespace dotFlip
                 {
                     pages.Add(new Page(this));
                 }
-                CurrentPage = pages[pages.Count - 1];
             }
 
             CurrentPage = pages[index];
@@ -124,6 +124,16 @@ namespace dotFlip
                 Page prevPage = pages[index - 1];
                 currentPage.CopyPage(prevPage);
             }
+        }
+
+        public void PlayAnimation()
+        {
+                
+            for (int i = 0; i < pages.Count; i++)
+            {
+                CurrentPage = pages[i];
+            }
+            
         }
     }
 }
