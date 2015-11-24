@@ -9,7 +9,7 @@ namespace dotFlip
     public partial class MainWindow : Window
     {
         private Flipbook flipbook;
-        bool playing = true;
+        bool playing = false;
 
         public MainWindow()
         {
@@ -113,15 +113,16 @@ namespace dotFlip
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            if (playing) {
-                playing = false;
-                playAnimationButton.Content = "Stop";
-            }else
-            {
-                playing = true;
-                playAnimationButton.Content = "Play";
-
-            }
+            //if (playing) {
+            //    playing = true;
+            //    playAnimationButton.Content = "Play";
+            //}
+            //else
+            //{
+            //    playing = true;
+            //    playAnimationButton.Content = "Stop";
+                flipbook.PlayAnimation();
+            //}
 
 
         }
