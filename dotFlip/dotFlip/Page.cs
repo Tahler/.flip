@@ -21,7 +21,7 @@ namespace dotFlip
         public Page(Flipbook parent)
         {
             this.parent = parent;
-
+            ClipToBounds = true;
             Visuals = new List<Visual>();
             visibleIndex = Visuals.Count;
 
@@ -101,18 +101,15 @@ namespace dotFlip
 
         private void Draw(Point point)
         {
-            if (PointIsOnPage(point))
-            {                
-                DrawingVisual path = new DrawingVisual();
-                using (var context = path.RenderOpen())
-                {
-                    ITool currentTool = parent.CurrentTool;
-                    context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
-                }
-                Visuals.Add(path);
-                AddVisualChild(path);
-                visibleIndex++;
+            DrawingVisual path = new DrawingVisual();
+            using (var context = path.RenderOpen())
+            {
+                ITool currentTool = parent.CurrentTool;
+                context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
             }
+            Visuals.Add(path);
+            AddVisualChild(path);
+            visibleIndex++;
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -126,14 +123,6 @@ namespace dotFlip
         protected override Visual GetVisualChild(int index)
         {
             return Visuals[index];
-        }
-
-        private bool PointIsOnPage(Point point)
-        {
-            double halfThickness = parent.CurrentTool.Thickness / 2;
-            bool xOnCanvas = point.X - halfThickness - 3 > 0 && point.X - halfThickness < ActualWidth - 30;
-            bool yOnCanvas = point.Y - halfThickness - 3 > 0 && point.Y - halfThickness < ActualHeight - 30;
-            return xOnCanvas && yOnCanvas;
         }
 
         public void CopyPage(Page prevPage)
