@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Windows;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace dotFlip
 {
@@ -152,11 +153,12 @@ namespace dotFlip
 
         }
 
-        public void PlayAnimation()
+        public async void PlayAnimation()
         {
-            for (int i = 0; i < pages.Count; i++)
+            foreach (Page page in pages)
             {
-                CurrentPage = pages[i];
+                await Task.Delay(1000);
+                CurrentPage = page;
             }
         }
     }
