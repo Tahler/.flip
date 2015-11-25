@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace dotFlip.Tools
 {
@@ -10,36 +9,20 @@ namespace dotFlip.Tools
         // Used to rotate the path
         private static readonly Random Random = new Random();
 
-        private readonly Geometry _geometry;
+        private Geometry _geometry;
         private Point _center;
         private double _thickness;
-
-        public Brush Brush { get; private set; }
 
         public double Thickness
         {
             get { return _center.Y * 2; }
             set
             {
-                _thickness = value / 100;
+                _thickness = value / 100; // magic number based on thickness slider
             }
         }
 
-        public Geometry GetGeometry(Point p)
-        {
-            var transform = new TransformGroup();
-            transform.Children.Add(new ScaleTransform(_thickness, _thickness, _center.X, _center.Y));
-            transform.Children.Add(new RotateTransform(Random.NextDouble() * 359, _center.X, _center.Y));
-            transform.Children.Add(new TranslateTransform(p.X - _center.X, p.Y - _center.Y));
-            Geometry geometry = _geometry.Clone();
-            geometry.Transform = transform;  
-            return geometry;
-        }
-
-        public void ChangeColor(Color c)
-        {
-            Brush = new SolidColorBrush(c);
-        }
+        public Brush Brush { get; private set; }
 
         public Pencil()
         {
@@ -51,6 +34,22 @@ namespace dotFlip.Tools
 
             Thickness = 20;
             Brush = new SolidColorBrush(Colors.Gray);
+        }
+
+        public Geometry GetGeometry(Point point)
+        {
+            var transform = new TransformGroup();
+            transform.Children.Add(new ScaleTransform(_thickness, _thickness, _center.X, _center.Y));
+            transform.Children.Add(new RotateTransform(Random.NextDouble() * 359, _center.X, _center.Y));
+            transform.Children.Add(new TranslateTransform(point.X - _center.X, point.Y - _center.Y));
+            Geometry geometry = _geometry.Clone();
+            geometry.Transform = transform;  
+            return geometry;
+        }
+
+        public void ChangeColor(Color color)
+        {
+            Brush = new SolidColorBrush(color);
         }
     }
 }

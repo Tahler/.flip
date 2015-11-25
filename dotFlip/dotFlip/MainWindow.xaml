@@ -89,8 +89,7 @@
                 <Button x:Name="playAnimationButton" Content="Play" Click="button_Click"/>
                 <Slider x:Name ="animationSpeedSlider" SmallChange="1" Maximum="1000" Minimum="100" Value="500"></Slider>
             </UniformGrid>
-            
         </StackPanel>
+        <!--<local:Page/> inserted by code behind-->
     </Grid>
-    <!--<local:Page/>-->
 </Window>

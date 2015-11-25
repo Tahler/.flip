@@ -13,22 +13,25 @@ namespace dotFlip
         private Point _previousPoint;
         private bool _mouseDown;
         private List<int> _strokeEnd;
-
         private Flipbook _parent;
+
         public bool ShowGhostStrokes { get; set; }
 
-        public IList<Visual> Visuals { get; private set; }
-        public IList<Visual> GhostVisuals { get; private set; } 
+        public IList<Visual> Visuals { get; }
+        public IList<Visual> GhostVisuals { get; } 
 
         public Page(Flipbook parent)
         {
-            this._parent = parent;
+            _parent = parent;
             ClipToBounds = true;
+
+            Background = parent.Brush;
             Visuals = new List<Visual>();
             GhostVisuals = new List<Visual>();
+
             _strokeEnd = new List<int> {0};
             _visibleIndex = _strokeEnd.Count;
-            Background = parent.Brush;
+
             MouseDown += Page_MouseDown;
             MouseMove += Page_MouseMove;
             MouseUp += Page_MouseUp;
@@ -81,6 +84,7 @@ namespace dotFlip
 
             }
         }
+
         public void Undo()
         {
             if (_visibleIndex > 1)
@@ -177,6 +181,5 @@ namespace dotFlip
                 AddVisualChild(visual);
             }
         }
-
     }
 }
