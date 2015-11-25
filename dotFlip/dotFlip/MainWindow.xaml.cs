@@ -125,16 +125,7 @@ namespace dotFlip
         }
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            //if (playing) {
-            //    playing = true;
-            //    playAnimationButton.Content = "Play";
-            //}
-            //else
-            //{
-            //    playing = true;
-            //    playAnimationButton.Content = "Stop";
-                flipbook.PlayAnimation();
-            //}
+                flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
 
         }
           

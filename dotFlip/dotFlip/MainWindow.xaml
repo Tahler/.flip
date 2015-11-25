@@ -85,7 +85,11 @@
                 <Button x:Name="undoButton" Content="Undo" Click="Undo_Click"/>
                 <Button x:Name="redoButton" Content="Redo" Click="Redo_Click"/>
             </UniformGrid>
-            <Button x:Name="playAnimationButton" Content="Play" Click="button_Click"/>
+            <UniformGrid Columns="2">
+                <Button x:Name="playAnimationButton" Content="Play" Click="button_Click"/>
+                <Slider x:Name ="animationSpeedSlider" SmallChange="1" Maximum="1000" Minimum="100" Value="500"></Slider>
+            </UniformGrid>
+            
         </StackPanel>
     </Grid>
     <!--<local:Page/>-->
