@@ -10,31 +10,26 @@ namespace dotFlip
 {
     public class Page : Panel
     {
-        //private IList<Visual> visuals;
-        private int visibleIndex;
-        private Point previousPoint;
-        private bool mouseDown;
-        private List<int> strokeEnd;
+        private int _visibleIndex;
+        private Point _previousPoint;
+        private bool _mouseDown;
+        private List<int> _strokeEnd;
 
-        private Flipbook parent;
-        public bool ShowGhost { get; set; }
+        private Flipbook _parent;
+        public bool ShowGhostStrokes { get; set; }
 
         public IList<Visual> Visuals { get; private set; }
         public IList<Visual> GhostVisuals { get; private set; } 
 
         public Page(Flipbook parent)
         {
-            this.parent = parent;
+            this._parent = parent;
             ClipToBounds = true;
             Visuals = new List<Visual>();
             GhostVisuals = new List<Visual>();
-            strokeEnd = new List<int>();
-            strokeEnd.Add(0);
-            visibleIndex = strokeEnd.Count;
-
-
+            _strokeEnd = new List<int> {0};
+            _visibleIndex = _strokeEnd.Count;
             Background = parent.Brush;
-
             MouseDown += Page_MouseDown;
             MouseMove += Page_MouseMove;
             MouseUp += Page_MouseUp;
@@ -42,22 +37,20 @@ namespace dotFlip
 
         private void Page_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (!mouseDown)
+            if (!_mouseDown)
             {
-                mouseDown = true;
-
+                _mouseDown = true;
                 Point point = e.GetPosition(this);
                 Draw(point);
-
-                previousPoint = point;
+                _previousPoint = point;
             }
         }
         private void RefreshVisibility()
         {
-            if (visibleIndex != 0 && visibleIndex  <= strokeEnd.Count)
+            if (_visibleIndex != 0 && _visibleIndex  <= _strokeEnd.Count)
             {
-                //visible
-                for (int index = 0; index < strokeEnd[visibleIndex - 1]; index++)
+                // Visible
+                for (int index = 0; index < _strokeEnd[_visibleIndex - 1]; index++)
                 {
                     DrawingVisual drawVis = Visuals[index] as DrawingVisual;
                     if (drawVis != null)
@@ -65,8 +58,8 @@ namespace dotFlip
                         drawVis.Opacity = 1;
                     }
                 }
-                //invisible
-                for (int index = strokeEnd[visibleIndex - 1]; index < Visuals.Count; index++)
+                // Invisible
+                for (int index = _strokeEnd[_visibleIndex - 1]; index < Visuals.Count; index++)
                 {
                     DrawingVisual drawVis = Visuals[index] as DrawingVisual;
                     if (drawVis != null)
@@ -77,10 +70,10 @@ namespace dotFlip
             }
             else
             {
-                //invisible
-                for (int index = 0; index < Visuals.Count; index++)
+                // Invisible
+                foreach (Visual t in Visuals)
                 {
-                    DrawingVisual drawVis = Visuals[index] as DrawingVisual;
+                    DrawingVisual drawVis = t as DrawingVisual;
                     if (drawVis != null)
                     {
                         drawVis.Opacity = 0;
@@ -91,40 +84,38 @@ namespace dotFlip
         }
         public void Undo()
         {
-            if (visibleIndex > 1)
+            if (_visibleIndex > 1)
             {
-                visibleIndex--;
+                _visibleIndex--;
                 RefreshVisibility();
             }
         }
 
         public void Redo()
         {
-            if (visibleIndex < strokeEnd.Count)
+            if (_visibleIndex < _strokeEnd.Count)
             {
-                visibleIndex++;
+                _visibleIndex++;
                 RefreshVisibility();
             }
         }
 
         private void Page_MouseMove(object sender, MouseEventArgs e)
         {
-            if (mouseDown)
+            if (_mouseDown)
             {
                 Point nextPoint = e.GetPosition(this);
-
-                IEnumerable<Point> line = Bresenham.GetPointsOnLine(previousPoint, nextPoint);
+                IEnumerable<Point> line = Bresenham.GetPointsOnLine(_previousPoint, nextPoint);
                 foreach (var point in line) Draw(point);
-                previousPoint = nextPoint;
+                _previousPoint = nextPoint;
             }
         }
 
         private void Page_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            mouseDown = false;
-            visibleIndex++;
-            strokeEnd.Add(Visuals.Count);
-            
+            _mouseDown = false;
+            _visibleIndex++;
+            _strokeEnd.Add(Visuals.Count);
         }
 
         private void Draw(Point point)
@@ -132,7 +123,7 @@ namespace dotFlip
             DrawingVisual path = new DrawingVisual();
             using (var context = path.RenderOpen())
             {
-                ITool currentTool = parent.CurrentTool;
+                ITool currentTool = _parent.CurrentTool;
                 context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
             }
             
@@ -146,7 +137,7 @@ namespace dotFlip
             drawingContext.DrawRectangle(background, null, new Rect(RenderSize));
         }
 
-        protected override int VisualChildrenCount => (ShowGhost) ? Visuals.Count + GhostVisuals.Count : Visuals.Count;
+        protected override int VisualChildrenCount => (ShowGhostStrokes) ? Visuals.Count + GhostVisuals.Count : Visuals.Count;
 
         protected override Visual GetVisualChild(int index)
         {

@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace dotFlip
 {
-    public class Bresenham
+    public static class Bresenham
     {
         /// <summary>
         /// Uses Bresenham's algorithm to create many points between two points.

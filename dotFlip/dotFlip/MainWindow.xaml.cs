@@ -40,7 +40,7 @@ namespace dotFlip
 
         private void ThicknessSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (flipbook != null) { flipbook.CurrentPage.ShowGhost = false; flipbook.CurrentPage.InvalidateVisual();}
+            if (flipbook != null) { flipbook.CurrentPage.ShowGhostStrokes = false; flipbook.CurrentPage.InvalidateVisual();}
             if (ThicknessSlider != null && flipbook != null) flipbook.CurrentTool.Thickness = ThicknessSlider.Value;
         }
 
@@ -75,10 +75,10 @@ namespace dotFlip
 
         private void Flipbook_PageChanged(Page currentPage)
         {
-            grid.Children.RemoveAt(1); // scary magic number :O
+            grid.Children.RemoveAt(1); // scary magic number 8====================D~~~~~~~ O: 
             Grid.SetColumn(currentPage, 1);
             grid.Children.Add(currentPage);
-            chkGhostStrokes.IsChecked = currentPage.ShowGhost;
+            chkGhostStrokes.IsChecked = currentPage.ShowGhostStrokes;
         }
 
         private void previousPageButton_Click(object sender, RoutedEventArgs e)
@@ -125,16 +125,7 @@ namespace dotFlip
         }
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            //if (playing) {
-            //    playing = true;
-            //    playAnimationButton.Content = "Play";
-            //}
-            //else
-            //{
-            //    playing = true;
-            //    playAnimationButton.Content = "Stop";
-                flipbook.PlayAnimation();
-            //}
+                flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
 
         }
           
