@@ -12,15 +12,14 @@ namespace dotFlip
     {
         private Point _previousPoint;
         private bool _mouseDown;
-
         private Flipbook _parent;
+
         public bool ShowGhostStrokes { get; set; }
         private Stack<IList<Visual>> _undoStack;
         private Stack<IList<Visual>> _redoStack;
 
-
-        public IList<Visual> Visuals { get; private set; }
-        public IList<Visual> GhostVisuals { get; private set; } 
+        public IList<Visual> Visuals { get; }
+        public IList<Visual> GhostVisuals { get; } 
 
         public Page(Flipbook parent)
         {
@@ -30,10 +29,12 @@ namespace dotFlip
 
             this._parent = parent;
 
+
+            Background = parent.Brush;
             Visuals = new List<Visual>();
             GhostVisuals = new List<Visual>();
 
-            Background = parent.Brush;
+
 
             ClipToBounds = true;
 
@@ -173,6 +174,5 @@ namespace dotFlip
         {
             Visuals.Clear();
         }
-
     }
 }

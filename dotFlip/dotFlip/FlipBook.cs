@@ -10,9 +10,11 @@ namespace dotFlip
 
     public class Flipbook
     {
-        private readonly IList<Page> _pages;
+        private IList<Page> _pages;
 
         private Page _currentPage;
+        private SolidColorBrush _background;
+        private Dictionary<string, ITool> _tools;
 
         public Page CurrentPage
         {
@@ -24,9 +26,7 @@ namespace dotFlip
             }
         }
 
-        public event PageChangedHandler PageChanged = delegate { };
-
-        private SolidColorBrush _background;
+        public int PageCount => _pages.Count;
 
         public Brush Brush => _background;
 
@@ -36,9 +36,9 @@ namespace dotFlip
             set { _background.Color = value; }
         }
 
-        private Dictionary<string, ITool> _tools;
-
         public ITool CurrentTool { get; set; }
+
+        public event PageChangedHandler PageChanged = delegate { };
 
         public Flipbook(Color backgroundColor)
         {
@@ -54,7 +54,6 @@ namespace dotFlip
             CurrentTool = _tools["Pen"];
             CurrentPage = new Page(this);
             _pages = new List<Page> {CurrentPage};
-
         }
 
         public void UseTool(string toolToUse)
@@ -67,8 +66,28 @@ namespace dotFlip
 
         public void DeletePage(Page page)
         {
+            int pageIndex = _pages.IndexOf(page);
+            if (page == CurrentPage)
+            {
+                if (PageCount == 1)
+                {
+                    CurrentPage = new Page(this);
+                    _pages = new List<Page> { CurrentPage };
+                }
+                else
+                {
+                    MoveToPage(pageIndex - 1);
+                }
+            }
             _pages.Remove(page);
         }
+
+        public void DeleteAllPages()
+        {
+            CurrentPage = new Page(this);
+            _pages = new List<Page> { CurrentPage };
+        }
+
         public void RefreshPage()
         {
             Page page = new Page(this);
@@ -109,11 +128,6 @@ namespace dotFlip
             MoveToPage(currentIndex - 1);
         }
 
-        public int GetPageCount()
-        {
-            return _pages.Count;
-        }
-
         public int GetPageNumber(Page page)
         {
             return _pages.IndexOf(page) + 1;
@@ -139,7 +153,7 @@ namespace dotFlip
             }
             else
             {
-                //Psuedo refresh the page
+                // Pseudo refresh the page
                 MoveToPage(index - 1);
                 MoveToPage(index);
             }
@@ -158,7 +172,6 @@ namespace dotFlip
 
         public async void PlayAnimation(int value)
         {
-
             foreach (Page page in _pages)
             {
                 await Task.Delay(value);

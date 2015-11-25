@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:dotFlip"
         mc:Ignorable="d"
         Title=".flip Demo"
-        Width="719"
-        Height="600"
+        Width="1000"
+        Height="800"
         KeyDown="Window_ctrl">
     <Window.Resources>
         <local:SliderConverter x:Key="brushConverter" />
@@ -89,9 +89,10 @@
                 <Button x:Name="playAnimationButton" Content="Play" Click="button_Click"/>
                 <Slider x:Name ="animationSpeedSlider" SmallChange="1" Maximum="1000" Minimum="100" Value="500" IsDirectionReversed="True"></Slider>
             </UniformGrid>
-            
             <Button x:Name="clearButton" Content="Clear Page" Click="ClearButton_Click"/>
+            <Button x:Name="deletePageButton" Content="Delete Page" Click="deletePageButton_Click"/>
+            <Button x:Name="deleteAllButton" Content="Start Over" Click="deleteAllButton_Click"/>
         </StackPanel>
+        <!--<local:Page/> inserted by code behind-->
     </Grid>
-    <!--<local:Page/>-->
 </Window>

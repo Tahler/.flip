@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -9,7 +8,6 @@ namespace dotFlip
     public partial class MainWindow : Window
     {
         private Flipbook flipbook;
-        bool playing = false;
 
         public MainWindow()
         {
@@ -84,7 +82,7 @@ namespace dotFlip
         private void previousPageButton_Click(object sender, RoutedEventArgs e)
         {
             flipbook.PreviousPage();
-            pageNumberLabel.Content = "/" + flipbook.GetPageCount();
+            pageNumberLabel.Content = "/" + flipbook.PageCount;
             pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
 
         }
@@ -93,7 +91,7 @@ namespace dotFlip
         {
             
             flipbook.NextPage();
-            pageNumberLabel.Content = "/" + flipbook.GetPageCount();
+            pageNumberLabel.Content = "/" + flipbook.PageCount;
             pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
         }
 
@@ -101,6 +99,7 @@ namespace dotFlip
         {
             flipbook.CopyPrevPage();
         }
+
         private void Window_ctrl(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if(e.KeyboardDevice.Modifiers == System.Windows.Input.ModifierKeys.Control)
@@ -115,14 +114,17 @@ namespace dotFlip
                 }
             }
         }
+
         private void Undo_Click(object sender, RoutedEventArgs e)
         {
             flipbook.CurrentPage.Undo();
         }
+
         private void Redo_Click(object sender, RoutedEventArgs e)
         {
             flipbook.CurrentPage.Redo();
         }
+
         private void button_Click(object sender, RoutedEventArgs e)
         {
                 flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
@@ -137,7 +139,7 @@ namespace dotFlip
                 if (int.TryParse(pageNumberTextBox.Text, out pageNumber) && flipbook != null)
                 {
                     flipbook.MoveToPage(pageNumber - 1);
-                    pageNumberLabel.Content = "/" + flipbook.GetPageCount();
+                    pageNumberLabel.Content = "/" + flipbook.PageCount;
                     //pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
                 }
             }
@@ -153,6 +155,16 @@ namespace dotFlip
         {
             flipbook.CurrentPage.ClearPage();
             flipbook.RefreshPage();
+        }
+
+        private void deletePageButton_Click(object sender, RoutedEventArgs e)
+        {
+            flipbook.DeletePage(flipbook.CurrentPage);
+        }
+
+        private void deleteAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            flipbook.DeleteAllPages();
         }
     }
 }
