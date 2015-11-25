@@ -2,10 +2,6 @@
 using System.Windows.Media;
 using dotFlip.Tools;
 using Pen = dotFlip.Tools.Pen;
-using System;
-using System.Collections;
-using System.Windows;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace dotFlip
@@ -14,123 +10,116 @@ namespace dotFlip
 
     public class Flipbook
     {
-        private IList<Page> pages;
+        private readonly IList<Page> _pages;
 
-        private Page currentPage;
+        private Page _currentPage;
 
         public Page CurrentPage
         {
-            get { return currentPage; }
+            get { return _currentPage; }
             set
             {
-                currentPage = value;
-                PageChanged(currentPage); // Invoke event
+                _currentPage = value;
+                PageChanged(_currentPage); // Invoke event
             }
         }
 
         public event PageChangedHandler PageChanged = delegate { };
 
-        private SolidColorBrush background;
+        private SolidColorBrush _background;
 
-        public Brush Brush => background;
+        public Brush Brush => _background;
 
         public Color BackgroundColor
         {
-            get { return background.Color; }
-            set { background.Color = value; }
+            get { return _background.Color; }
+            set { _background.Color = value; }
         }
 
-        private Dictionary<string, ITool> tools;
-        private ITool currentTool;
+        private Dictionary<string, ITool> _tools;
 
-        public ITool CurrentTool
-        {
-            get { return currentTool; }
-            set { currentTool = value; }
-        }
+        public ITool CurrentTool { get; set; }
 
         public Flipbook(Color backgroundColor)
         {
-            background = new SolidColorBrush();
+            _background = new SolidColorBrush();
             BackgroundColor = backgroundColor;
-
-            tools = new Dictionary<string, ITool>
+            _tools = new Dictionary<string, ITool>
             {
                 {"Pencil", new Pencil()},
                 {"Pen", new Pen()},
                 {"Highlighter", new Highlighter()},
-                {"Eraser", new Eraser(ref background)},
+                {"Eraser", new Eraser(ref _background)},
             };
-            CurrentTool = tools["Pen"];
-
+            CurrentTool = _tools["Pen"];
             CurrentPage = new Page(this);
-            pages = new List<Page> {CurrentPage};
+            _pages = new List<Page> {CurrentPage};
 
         }
 
         public void UseTool(string toolToUse)
         {
-            if (tools.ContainsKey(toolToUse))
+            if (_tools.ContainsKey(toolToUse))
             {
-                CurrentTool = tools[toolToUse];
+                CurrentTool = _tools[toolToUse];
             }
         }
 
         public void MoveToPage(int index)
         {
             if (index < 0)
-                index = pages.Count - 1;
+                index = _pages.Count - 1;
 
-            if (pages.Count - 1 <= index)
+            if (_pages.Count - 1 <= index)
             {
-                int pagesToAdd = index - (pages.Count - 1);
+                int pagesToAdd = index - (_pages.Count - 1);
                 for (int ii = 0; ii < pagesToAdd; ii++)
                 {
-                    pages.Add(new Page(this));
+                    _pages.Add(new Page(this));
                 }
             }
 
-            CurrentPage = pages[index];
-            if (CurrentPage.ShowGhost) UpdateGhostStrokes();
+            CurrentPage = _pages[index];
+            if (CurrentPage.ShowGhostStrokes) UpdateGhostStrokes();
         }
 
         public void NextPage()
         {
-            int currentIndex = pages.IndexOf(CurrentPage);
+            int currentIndex = _pages.IndexOf(CurrentPage);
             MoveToPage(currentIndex + 1);
         }
 
         public void PreviousPage()
         {
-            int currentIndex = pages.IndexOf(CurrentPage);
+            int currentIndex = _pages.IndexOf(CurrentPage);
             MoveToPage(currentIndex - 1);
         }
 
         public int GetPageCount()
         {
-            return pages.Count;
+            return _pages.Count;
         }
 
         public int GetPageNumber(Page page)
         {
-            return pages.IndexOf(page) + 1;
+            return _pages.IndexOf(page) + 1;
         }
 
         public void CopyPrevPage()
         {
-            int index = pages.IndexOf(currentPage);
+            int index = _pages.IndexOf(_currentPage);
             if (index > 0)
             {
-                Page prevPage = pages[index - 1];
-                currentPage.CopyPage(prevPage);
+                Page prevPage = _pages[index - 1];
+                _currentPage.CopyPage(prevPage);
             }
         }
 
         public void ToggleGhostStrokes()
         {
-            currentPage.ShowGhost = !currentPage.ShowGhost;
-            int index = pages.IndexOf(currentPage);
-            if (currentPage.ShowGhost && index != 0)
+            _currentPage.ShowGhostStrokes = !_currentPage.ShowGhostStrokes;
+            int index = _pages.IndexOf(_currentPage);
+            if (_currentPage.ShowGhostStrokes && index != 0)
             {
                 UpdateGhostStrokes();
             }
@@ -144,10 +133,10 @@ namespace dotFlip
 
         private void UpdateGhostStrokes()
         {
-            int index = pages.IndexOf(CurrentPage);
+            int index = _pages.IndexOf(CurrentPage);
             if (index > 0)
             {
-                Page prevPage = pages[index - 1];
+                Page prevPage = _pages[index - 1];
                 CurrentPage.UpdateGhostStrokes(prevPage);
             }
 
@@ -155,7 +144,7 @@ namespace dotFlip
 
         public async void PlayAnimation()
         {
-            foreach (Page page in pages)
+            foreach (Page page in _pages)
             {
                 await Task.Delay(1000);
                 CurrentPage = page;

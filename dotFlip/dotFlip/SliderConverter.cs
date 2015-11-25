@@ -34,11 +34,13 @@ namespace dotFlip
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            Color c;
+            Color c = new Color();
             object[] val = null;
             try
             {
-                c = (Color) ColorConverter.ConvertFromString((string) value);
+                var convertFromString = ColorConverter.ConvertFromString((string) value);
+                if (convertFromString != null)
+                    c = (Color) convertFromString;
                 val = new object[] { System.Convert.ToDouble(c.R), System.Convert.ToDouble(c.G), System.Convert.ToDouble(c.B) };
             }
             catch (FormatException)

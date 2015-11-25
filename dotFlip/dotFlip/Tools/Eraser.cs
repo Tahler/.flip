@@ -18,7 +18,7 @@ namespace dotFlip.Tools
 
         public void ChangeColor(Color c)
         {
-            //Eraser should not change in color - brush will change with background
+            // Eraser should not change in color - brush will change with background
         }
 
         public Eraser(ref SolidColorBrush brush)
