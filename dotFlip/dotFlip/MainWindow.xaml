@@ -87,8 +87,9 @@
             </UniformGrid>
             <UniformGrid Columns="2">
                 <Button x:Name="playAnimationButton" Content="Play" Click="button_Click"/>
-                <Slider x:Name ="animationSpeedSlider" SmallChange="1" Maximum="1000" Minimum="100" Value="500"></Slider>
+                <Slider x:Name ="animationSpeedSlider" SmallChange="1" Maximum="1000" Minimum="100" Value="500" IsDirectionReversed="True"></Slider>
             </UniformGrid>
+            <Button x:Name="clearButton" Content="Clear Page" Click="ClearButton_Click"/>
         </StackPanel>
         <!--<local:Page/> inserted by code behind-->
     </Grid>

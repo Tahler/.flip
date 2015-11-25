@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using dotFlip.Tools;
+using System.Threading.Tasks;
 
 namespace dotFlip
 {
@@ -93,6 +94,7 @@ namespace dotFlip
                 RefreshVisibility();
             }
         }
+
         public void Redo()
         {
             if (_visibleIndex < _strokeEnd.Count)
@@ -180,6 +182,11 @@ namespace dotFlip
                 GhostVisuals.Add(visual);
                 AddVisualChild(visual);
             }
+        }
+
+        public void ClearPage()
+        {
+            Visuals.Clear();
         }
     }
 }
