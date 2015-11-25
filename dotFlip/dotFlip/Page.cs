@@ -10,26 +10,33 @@ namespace dotFlip
 {
     public class Page : Panel
     {
-        private int _visibleIndex;
         private Point _previousPoint;
         private bool _mouseDown;
-        private List<int> _strokeEnd;
 
         private Flipbook _parent;
         public bool ShowGhostStrokes { get; set; }
+        private Stack<IList<Visual>> _undoStack;
+        private Stack<IList<Visual>> _redoStack;
+
 
         public IList<Visual> Visuals { get; private set; }
         public IList<Visual> GhostVisuals { get; private set; } 
 
         public Page(Flipbook parent)
         {
+            _undoStack = new Stack<IList<Visual>>();
+            _redoStack = new Stack<IList<Visual>>();
+            _undoStack.Push(new List<Visual>(){});
+
             this._parent = parent;
-            ClipToBounds = true;
+
             Visuals = new List<Visual>();
             GhostVisuals = new List<Visual>();
-            _strokeEnd = new List<int> {0};
-            _visibleIndex = _strokeEnd.Count;
+
             Background = parent.Brush;
+
+            ClipToBounds = true;
+
             MouseDown += Page_MouseDown;
             MouseMove += Page_MouseMove;
             MouseUp += Page_MouseUp;
@@ -45,58 +52,32 @@ namespace dotFlip
                 _previousPoint = point;
             }
         }
-        private void RefreshVisibility()
-        {
-            if (_visibleIndex != 0 && _visibleIndex  <= _strokeEnd.Count)
-            {
-                // Visible
-                for (int index = 0; index < _strokeEnd[_visibleIndex - 1]; index++)
-                {
-                    DrawingVisual drawVis = Visuals[index] as DrawingVisual;
-                    if (drawVis != null)
-                    {
-                        drawVis.Opacity = 1;
-                    }
-                }
-                // Invisible
-                for (int index = _strokeEnd[_visibleIndex - 1]; index < Visuals.Count; index++)
-                {
-                    DrawingVisual drawVis = Visuals[index] as DrawingVisual;
-                    if (drawVis != null)
-                    {
-                        drawVis.Opacity = 0;
-                    }
-                }
-            }
-            else
-            {
-                // Invisible
-                foreach (Visual t in Visuals)
-                {
-                    DrawingVisual drawVis = t as DrawingVisual;
-                    if (drawVis != null)
-                    {
-                        drawVis.Opacity = 0;
-                    }
-                }
 
-            }
-        }
         public void Undo()
         {
-            if (_visibleIndex > 1)
+            if (_undoStack.Count != 0)
             {
-                _visibleIndex--;
-                RefreshVisibility();
+                List<Visual> tempVis = _undoStack.Pop() as List<Visual>;
+                if (tempVis != null)
+                {
+                    Visuals = tempVis;
+                    _redoStack.Push(tempVis);
+                    _parent.RefreshPage();
+                }
             }
         }
 
         public void Redo()
         {
-            if (_visibleIndex < _strokeEnd.Count)
+            if (_redoStack.Count != 0)
             {
-                _visibleIndex++;
-                RefreshVisibility();
+                List<Visual> tempVis = _redoStack.Pop() as List<Visual>;
+                if (tempVis != null)
+                {
+                    Visuals = tempVis;
+                    _undoStack.Push(tempVis);
+                    _parent.RefreshPage();
+                }
             }
         }
 
@@ -114,8 +95,16 @@ namespace dotFlip
         private void Page_MouseUp(object sender, MouseButtonEventArgs e)
         {
             _mouseDown = false;
-            _visibleIndex++;
-            _strokeEnd.Add(Visuals.Count);
+            List<Visual> copy = new List<Visual>();
+            foreach(Visual vis in Visuals)
+            {
+                copy.Add(vis);
+            }
+            _undoStack.Push(copy);
+            if(_redoStack.Count != 0)
+            {
+                _redoStack.Clear();
+            }
         }
 
         private void Draw(Point point)
