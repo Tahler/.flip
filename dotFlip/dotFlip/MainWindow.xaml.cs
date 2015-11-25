@@ -156,10 +156,15 @@ namespace dotFlip
             flipbook.CurrentPage.ClearPage();
             flipbook.RefreshPage();
         }
-        
+
         private void deletePageButton_Click(object sender, RoutedEventArgs e)
         {
             flipbook.DeletePage(flipbook.CurrentPage);
+        }
+
+        private void deleteAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            flipbook.DeleteAllPages();
         }
     }
 }

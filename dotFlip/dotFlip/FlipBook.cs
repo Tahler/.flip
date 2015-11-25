@@ -81,6 +81,13 @@ namespace dotFlip
             }
             _pages.Remove(page);
         }
+
+        public void DeleteAllPages()
+        {
+            CurrentPage = new Page(this);
+            _pages = new List<Page> { CurrentPage };
+        }
+
         public void RefreshPage()
         {
             Page page = new Page(this);
