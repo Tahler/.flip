@@ -18,7 +18,7 @@ namespace dotFlip
         private Stack<IList<Visual>> _undoStack;
         private Stack<IList<Visual>> _redoStack;
 
-        public IList<Visual> Visuals { get; }
+        public IList<Visual> Visuals { get; private set; }
         public IList<Visual> GhostVisuals { get; } 
 
         public Page(Flipbook parent)
