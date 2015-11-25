@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,8 +16,8 @@ namespace dotFlip
         private Flipbook _parent;
 
         public bool ShowGhostStrokes { get; set; }
-        private Stack<IList<Visual>> _undoStack;
-        private Stack<IList<Visual>> _redoStack;
+        private Stack<int> _undoStack;
+        private Stack<List<Visual>> _redoStack;
 
         public IList<Visual> Visuals { get; private set; }
         public IList<Visual> GhostVisuals { get; } 
@@ -30,9 +31,8 @@ namespace dotFlip
             Visuals = new List<Visual>();
             GhostVisuals = new List<Visual>();
 
-            _undoStack = new Stack<IList<Visual>>();
-            _redoStack = new Stack<IList<Visual>>();
-            _undoStack.Push(new List<Visual>() { });
+            _undoStack = new Stack<int>();
+            _redoStack = new Stack<List<Visual>>();
 
             MouseDown += Page_MouseDown;
             MouseMove += Page_MouseMove;
@@ -43,13 +43,18 @@ namespace dotFlip
         {
             if (_undoStack.Count != 0)
             {
-                List<Visual> tempVis = _undoStack.Pop() as List<Visual>;
-                if (tempVis != null)
+                int startIndex = Visuals.Count - 1;
+                int indexToArriveAt = _undoStack.Pop();
+
+                List<Visual> redoList = new List<Visual>();
+                for (int i = startIndex; i >= indexToArriveAt; i--)
                 {
-                    Visuals = tempVis;
-                    _redoStack.Push(tempVis);
-                    _parent.RefreshPage();
+                    redoList.Add(Visuals[i]);
+                    Visuals.RemoveAt(i);
                 }
+                _redoStack.Push(redoList);
+
+                _parent.RefreshPage();
             }
         }
 
@@ -57,13 +62,15 @@ namespace dotFlip
         {
             if (_redoStack.Count != 0)
             {
-                List<Visual> tempVis = _redoStack.Pop() as List<Visual>;
-                if (tempVis != null)
+                _undoStack.Push(Visuals.Count);
+
+                List<Visual> redoVisuals = _redoStack.Pop();
+                foreach (var visual in redoVisuals)
                 {
-                    Visuals = tempVis;
-                    _undoStack.Push(tempVis);
-                    _parent.RefreshPage();
+                    Visuals.Add(visual);
                 }
+                
+                _parent.RefreshPage();
             }
         }
 
@@ -72,6 +79,10 @@ namespace dotFlip
             if (!_mouseDown)
             {
                 _mouseDown = true;
+
+                _undoStack.Push(Visuals.Count);
+                _redoStack.Clear();
+
                 Point point = e.GetPosition(this);
                 Draw(point);
                 _previousPoint = point;
@@ -92,16 +103,6 @@ namespace dotFlip
         private void Page_MouseUp(object sender, MouseButtonEventArgs e)
         {
             _mouseDown = false;
-            List<Visual> copy = new List<Visual>();
-            foreach(Visual vis in Visuals)
-            {
-                copy.Add(vis);
-            }
-            _undoStack.Push(copy);
-            if(_redoStack.Count != 0)
-            {
-                _redoStack.Clear();
-            }
         }
 
         private void Draw(Point point)

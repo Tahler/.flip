@@ -102,13 +102,13 @@ namespace dotFlip
 
         private void Window_ctrl(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if(e.KeyboardDevice.Modifiers == System.Windows.Input.ModifierKeys.Control)
+            if (e.KeyboardDevice.Modifiers == System.Windows.Input.ModifierKeys.Control)
             {
-                if(e.Key == System.Windows.Input.Key.Z)
+                if (e.Key == System.Windows.Input.Key.Z)
                 {
                     flipbook.CurrentPage.Undo();
                 }
-                else if(e.Key == System.Windows.Input.Key.Y)
+                else if (e.Key == System.Windows.Input.Key.Y)
                 {
                     flipbook.CurrentPage.Redo();
                 }
