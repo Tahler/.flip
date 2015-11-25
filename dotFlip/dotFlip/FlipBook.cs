@@ -67,14 +67,14 @@ namespace dotFlip
 
         public void DeletePage(Page page)
         {
-            pages.Remove(page);
+            _pages.Remove(page);
         }
         public void RefreshPage()
         {
             Page page = new Page(this);
-            pages.Add(page);
-            int currentIndex = pages.IndexOf(CurrentPage);
-            MoveToPage(pages.IndexOf(page));
+            _pages.Add(page);
+            int currentIndex = _pages.IndexOf(CurrentPage);
+            MoveToPage(_pages.IndexOf(page));
             MoveToPage(currentIndex);
             DeletePage(page);
         }
