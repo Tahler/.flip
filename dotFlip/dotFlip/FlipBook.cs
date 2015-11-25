@@ -90,12 +90,7 @@ namespace dotFlip
 
         public void RefreshPage()
         {
-            Page page = new Page(this);
-            _pages.Add(page);
-            int currentIndex = _pages.IndexOf(CurrentPage);
-            MoveToPage(_pages.IndexOf(page));
-            MoveToPage(currentIndex);
-            DeletePage(page);
+            PageChanged(_currentPage);
         }
 
         public void MoveToPage(int index)
@@ -133,7 +128,7 @@ namespace dotFlip
             return _pages.IndexOf(page) + 1;
         }
 
-        public void CopyPrevPage()
+        public void CopyPreviousPage()
         {
             int index = _pages.IndexOf(_currentPage);
             if (index > 0)
@@ -153,9 +148,7 @@ namespace dotFlip
             }
             else
             {
-                // Pseudo refresh the page
-                MoveToPage(index - 1);
-                MoveToPage(index);
+                RefreshPage();
             }
         }
 
@@ -167,14 +160,13 @@ namespace dotFlip
                 Page prevPage = _pages[index - 1];
                 CurrentPage.UpdateGhostStrokes(prevPage);
             }
-
         }
 
-        public async void PlayAnimation(int value)
+        public async void PlayAnimation(int delay)
         {
             foreach (Page page in _pages)
             {
-                await Task.Delay(value);
+                await Task.Delay(delay);
                 CurrentPage = page;
             }
         }

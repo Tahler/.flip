@@ -97,7 +97,7 @@ namespace dotFlip
 
         private void btnCopyPrevPage_Click(object sender, RoutedEventArgs e)
         {
-            flipbook.CopyPrevPage();
+            flipbook.CopyPreviousPage();
         }
 
         private void Window_ctrl(object sender, System.Windows.Input.KeyEventArgs e)

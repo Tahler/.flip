@@ -23,35 +23,20 @@ namespace dotFlip
 
         public Page(Flipbook parent)
         {
-            _undoStack = new Stack<IList<Visual>>();
-            _redoStack = new Stack<IList<Visual>>();
-            _undoStack.Push(new List<Visual>(){});
-
             this._parent = parent;
-
+            ClipToBounds = true;
 
             Background = parent.Brush;
             Visuals = new List<Visual>();
             GhostVisuals = new List<Visual>();
 
-
-
-            ClipToBounds = true;
+            _undoStack = new Stack<IList<Visual>>();
+            _redoStack = new Stack<IList<Visual>>();
+            _undoStack.Push(new List<Visual>() { });
 
             MouseDown += Page_MouseDown;
             MouseMove += Page_MouseMove;
             MouseUp += Page_MouseUp;
-        }
-
-        private void Page_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (!_mouseDown)
-            {
-                _mouseDown = true;
-                Point point = e.GetPosition(this);
-                Draw(point);
-                _previousPoint = point;
-            }
         }
 
         public void Undo()
@@ -79,6 +64,17 @@ namespace dotFlip
                     _undoStack.Push(tempVis);
                     _parent.RefreshPage();
                 }
+            }
+        }
+
+        private void Page_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!_mouseDown)
+            {
+                _mouseDown = true;
+                Point point = e.GetPosition(this);
+                Draw(point);
+                _previousPoint = point;
             }
         }
 
