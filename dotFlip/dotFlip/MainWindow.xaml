@@ -91,6 +91,7 @@
             </UniformGrid>
             
             <Button x:Name="clearButton" Content="Clear Page" Click="ClearButton_Click"/>
+            <Button x:Name="deletePageButton" Content="Delete Page" Click="deletePageButton_Click"/>
         </StackPanel>
     </Grid>
     <!--<local:Page/>-->

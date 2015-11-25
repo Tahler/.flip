@@ -84,7 +84,7 @@ namespace dotFlip
         private void previousPageButton_Click(object sender, RoutedEventArgs e)
         {
             flipbook.PreviousPage();
-            pageNumberLabel.Content = "/" + flipbook.GetPageCount();
+            pageNumberLabel.Content = "/" + flipbook.PageCount;
             pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
 
         }
@@ -93,7 +93,7 @@ namespace dotFlip
         {
             
             flipbook.NextPage();
-            pageNumberLabel.Content = "/" + flipbook.GetPageCount();
+            pageNumberLabel.Content = "/" + flipbook.PageCount;
             pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
         }
 
@@ -137,7 +137,7 @@ namespace dotFlip
                 if (int.TryParse(pageNumberTextBox.Text, out pageNumber) && flipbook != null)
                 {
                     flipbook.MoveToPage(pageNumber - 1);
-                    pageNumberLabel.Content = "/" + flipbook.GetPageCount();
+                    pageNumberLabel.Content = "/" + flipbook.PageCount;
                     //pageNumberTextBox.Text = "" + flipbook.GetPageNumber(flipbook.CurrentPage);
                 }
             }
@@ -153,6 +153,11 @@ namespace dotFlip
         {
             flipbook.CurrentPage.ClearPage();
             flipbook.RefreshPage();
+        }
+        
+        private void deletePageButton_Click(object sender, RoutedEventArgs e)
+        {
+            flipbook.DeletePage(flipbook.CurrentPage);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace dotFlip
 
     public class Flipbook
     {
-        private readonly IList<Page> _pages;
+        private IList<Page> _pages;
 
         private Page _currentPage;
 
@@ -22,6 +22,10 @@ namespace dotFlip
                 _currentPage = value;
                 PageChanged(_currentPage); // Invoke event
             }
+        }
+        public int PageCount
+        {
+            get { return _pages.Count; }
         }
 
         public event PageChangedHandler PageChanged = delegate { };
@@ -67,6 +71,19 @@ namespace dotFlip
 
         public void DeletePage(Page page)
         {
+            int pageIndex = _pages.IndexOf(page);
+            if (page == CurrentPage)
+            {
+                if (PageCount == 1)
+                {
+                    CurrentPage = new Page(this);
+                    _pages = new List<Page> { CurrentPage };
+                }
+                else
+                {
+                    MoveToPage(pageIndex - 1);
+                }
+            }
             _pages.Remove(page);
         }
         public void RefreshPage()
@@ -107,11 +124,6 @@ namespace dotFlip
         {
             int currentIndex = _pages.IndexOf(CurrentPage);
             MoveToPage(currentIndex - 1);
-        }
-
-        public int GetPageCount()
-        {
-            return _pages.Count;
         }
 
         public int GetPageNumber(Page page)
