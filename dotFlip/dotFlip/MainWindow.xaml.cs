@@ -74,7 +74,7 @@ namespace dotFlip
 
         private void Flipbook_PageChanged(Page currentPage)
         {
-            grid.Children.RemoveAt(1); // scary magic number :O
+            grid.Children.RemoveAt(1); // scary magic number 8====================D~~~~~~~ O: 
             Grid.SetColumn(currentPage, 1);
             grid.Children.Add(currentPage);
         }
