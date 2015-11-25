@@ -16,6 +16,7 @@ namespace dotFlip
         private IList<Page> pages;
 
         private Page currentPage;
+
         public Page CurrentPage
         {
             get { return currentPage; }
@@ -35,10 +36,7 @@ namespace dotFlip
         public Color BackgroundColor
         {
             get { return background.Color; }
-            set
-            {
-                background.Color = value;
-            }
+            set { background.Color = value; }
         }
 
         private Dictionary<string, ITool> tools;
@@ -54,7 +52,7 @@ namespace dotFlip
         {
             background = new SolidColorBrush();
             BackgroundColor = backgroundColor;
-            
+
             tools = new Dictionary<string, ITool>
             {
                 {"Pencil", new Pencil()},
@@ -65,7 +63,7 @@ namespace dotFlip
             CurrentTool = tools["Pen"];
 
             CurrentPage = new Page(this);
-            pages = new List<Page> { CurrentPage };
+            pages = new List<Page> {CurrentPage};
 
         }
 
@@ -83,7 +81,7 @@ namespace dotFlip
                 index = pages.Count - 1;
 
             if (pages.Count - 1 <= index)
-            { 
+            {
                 int pagesToAdd = index - (pages.Count - 1);
                 for (int ii = 0; ii < pagesToAdd; ii++)
                 {
@@ -92,6 +90,7 @@ namespace dotFlip
             }
 
             CurrentPage = pages[index];
+            if (CurrentPage.ShowGhost) UpdateGhostStrokes();
         }
 
         public void NextPage()
@@ -126,14 +125,39 @@ namespace dotFlip
             }
         }
 
+        public void ToggleGhostStrokes()
+        {
+            currentPage.ShowGhost = !currentPage.ShowGhost;
+            int index = pages.IndexOf(currentPage);
+            if (currentPage.ShowGhost && index != 0)
+            {
+                UpdateGhostStrokes();
+            }
+            else
+            {
+                //Psuedo refresh the page
+                MoveToPage(index - 1);
+                MoveToPage(index);
+            }
+        }
+
+        private void UpdateGhostStrokes()
+        {
+            int index = pages.IndexOf(CurrentPage);
+            if (index > 0)
+            {
+                Page prevPage = pages[index - 1];
+                CurrentPage.UpdateGhostStrokes(prevPage);
+            }
+
+        }
+
         public void PlayAnimation()
         {
-                
             for (int i = 0; i < pages.Count; i++)
             {
                 CurrentPage = pages[i];
             }
-            
         }
     }
 }

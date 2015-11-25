@@ -13,24 +13,30 @@ namespace dotFlip
         private int visibleIndex;
         private Point previousPoint;
         private bool mouseDown;
+        private List<int> strokeEnd;
 
         private Flipbook parent;
+        public bool ShowGhost { get; set; }
 
         public IList<Visual> Visuals { get; private set; }
+        public IList<Visual> GhostVisuals { get; private set; } 
 
         public Page(Flipbook parent)
         {
             this.parent = parent;
             ClipToBounds = true;
             Visuals = new List<Visual>();
-            visibleIndex = Visuals.Count;
+            GhostVisuals = new List<Visual>();
+            strokeEnd = new List<int>();
+            strokeEnd.Add(0);
+            visibleIndex = strokeEnd.Count;
+
 
             Background = parent.Brush;
 
             MouseDown += Page_MouseDown;
             MouseMove += Page_MouseMove;
             MouseUp += Page_MouseUp;
-            
         }
 
         private void Page_MouseDown(object sender, MouseButtonEventArgs e)
@@ -47,26 +53,44 @@ namespace dotFlip
         }
         private void RefreshVisibility()
         {
-            for(int index = 0; index < visibleIndex; index++)
+            if (visibleIndex != 0 && visibleIndex  <= strokeEnd.Count)
             {
-                DrawingVisual drawVis = Visuals[index] as DrawingVisual;
-                if(drawVis != null)
+                //visible
+                for (int index = 0; index < strokeEnd[visibleIndex - 1]; index++)
                 {
-                    drawVis.Opacity = 1;
+                    DrawingVisual drawVis = Visuals[index] as DrawingVisual;
+                    if (drawVis != null)
+                    {
+                        drawVis.Opacity = 1;
+                    }
+                }
+                //invisible
+                for (int index = strokeEnd[visibleIndex - 1]; index < Visuals.Count; index++)
+                {
+                    DrawingVisual drawVis = Visuals[index] as DrawingVisual;
+                    if (drawVis != null)
+                    {
+                        drawVis.Opacity = 0;
+                    }
                 }
             }
-            for(int index = visibleIndex; index < Visuals.Count; index++)
+            else
             {
-                DrawingVisual drawVis = Visuals[index] as DrawingVisual;
-                if (drawVis != null)
+                //invisible
+                for (int index = 0; index < Visuals.Count; index++)
                 {
-                    drawVis.Opacity = 0;
+                    DrawingVisual drawVis = Visuals[index] as DrawingVisual;
+                    if (drawVis != null)
+                    {
+                        drawVis.Opacity = 0;
+                    }
                 }
+
             }
         }
         public void Undo()
         {
-            if (visibleIndex > 0)
+            if (visibleIndex > 1)
             {
                 visibleIndex--;
                 RefreshVisibility();
@@ -74,7 +98,7 @@ namespace dotFlip
         }
         public void Redo()
         {
-            if (visibleIndex < Visuals.Count)
+            if (visibleIndex < strokeEnd.Count)
             {
                 visibleIndex++;
                 RefreshVisibility();
@@ -89,7 +113,6 @@ namespace dotFlip
 
                 IEnumerable<Point> line = Bresenham.GetPointsOnLine(previousPoint, nextPoint);
                 foreach (var point in line) Draw(point);
-
                 previousPoint = nextPoint;
             }
         }
@@ -97,6 +120,9 @@ namespace dotFlip
         private void Page_MouseUp(object sender, MouseButtonEventArgs e)
         {
             mouseDown = false;
+            visibleIndex++;
+            strokeEnd.Add(Visuals.Count);
+            
         }
 
         private void Draw(Point point)
@@ -107,9 +133,9 @@ namespace dotFlip
                 ITool currentTool = parent.CurrentTool;
                 context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
             }
+            
             Visuals.Add(path);
             AddVisualChild(path);
-            visibleIndex++;
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -118,10 +144,14 @@ namespace dotFlip
             drawingContext.DrawRectangle(background, null, new Rect(RenderSize));
         }
 
-        protected override int VisualChildrenCount => Visuals.Count;
+        protected override int VisualChildrenCount => (ShowGhost) ? Visuals.Count + GhostVisuals.Count : Visuals.Count;
 
         protected override Visual GetVisualChild(int index)
         {
+            if (index > Visuals.Count - 1)
+            {
+                return GhostVisuals[index - Visuals.Count];
+            }
             return Visuals[index];
         }
 
@@ -135,10 +165,26 @@ namespace dotFlip
                 {
                     context.DrawDrawing(group);
                 }
-                Visuals.Add(visual);
+                GhostVisuals.Add(visual);
                 AddVisualChild(visual);
             }
-            InvalidateVisual();
+        }
+
+        public void UpdateGhostStrokes(Page prevPage)
+        {
+            GhostVisuals.Clear();
+            foreach (Visual v in prevPage.Visuals)
+            {
+                DrawingVisual visual = new DrawingVisual();
+                visual.Opacity = 0.01;
+                DrawingGroup group = VisualTreeHelper.GetDrawing(v);
+                using (var context = visual.RenderOpen())
+                {
+                    context.DrawDrawing(group);
+                }
+                GhostVisuals.Add(visual);
+                AddVisualChild(visual);
+            }
         }
 
     }
