@@ -25,10 +25,8 @@ namespace dotFlip
                 PageChanged(_currentPage); // Invoke event
             }
         }
-        public int PageCount
-        {
-            get { return _pages.Count; }
-        }
+
+        public int PageCount => _pages.Count;
 
         public Brush Brush => _background;
 
