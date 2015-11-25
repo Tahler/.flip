@@ -75,6 +75,20 @@ namespace dotFlip
             }
         }
 
+        public void DeletePage(Page page)
+        {
+            pages.Remove(page);
+        }
+        public void RefreshPage()
+        {
+            Page page = new Page(this);
+            pages.Add(page);
+            int currentIndex = pages.IndexOf(CurrentPage);
+            MoveToPage(pages.IndexOf(page));
+            MoveToPage(currentIndex);
+            DeletePage(page);
+        }
+
         public void MoveToPage(int index)
         {
             if (index < 0)

@@ -86,6 +86,7 @@
                 <Button x:Name="redoButton" Content="Redo" Click="Redo_Click"/>
             </UniformGrid>
             <Button x:Name="playAnimationButton" Content="Play" Click="button_Click"/>
+            <Button x:Name="clearButton" Content="Clear Page" Click="ClearButton_Click"/>
         </StackPanel>
     </Grid>
     <!--<local:Page/>-->

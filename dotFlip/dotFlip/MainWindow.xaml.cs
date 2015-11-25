@@ -157,5 +157,11 @@ namespace dotFlip
             flipbook.ToggleGhostStrokes();
             flipbook.CurrentPage.InvalidateVisual();
         }
+
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            flipbook.CurrentPage.ClearPage();
+            flipbook.RefreshPage();
+        }
     }
 }
