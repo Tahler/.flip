@@ -153,11 +153,12 @@ namespace dotFlip
 
         }
 
-        public async void PlayAnimation()
+        public async void PlayAnimation(int value)
         {
+            
             foreach (Page page in pages)
             {
-                await Task.Delay(1000);
+                await Task.Delay(value);
                 CurrentPage = page;
             }
         }
