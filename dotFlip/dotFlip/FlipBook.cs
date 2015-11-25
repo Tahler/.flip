@@ -13,6 +13,8 @@ namespace dotFlip
         private IList<Page> _pages;
 
         private Page _currentPage;
+        private SolidColorBrush _background;
+        private Dictionary<string, ITool> _tools;
 
         public Page CurrentPage
         {
@@ -28,10 +30,6 @@ namespace dotFlip
             get { return _pages.Count; }
         }
 
-        public event PageChangedHandler PageChanged = delegate { };
-
-        private SolidColorBrush _background;
-
         public Brush Brush => _background;
 
         public Color BackgroundColor
@@ -40,9 +38,9 @@ namespace dotFlip
             set { _background.Color = value; }
         }
 
-        private Dictionary<string, ITool> _tools;
-
         public ITool CurrentTool { get; set; }
+
+        public event PageChangedHandler PageChanged = delegate { };
 
         public Flipbook(Color backgroundColor)
         {
@@ -58,7 +56,6 @@ namespace dotFlip
             CurrentTool = _tools["Pen"];
             CurrentPage = new Page(this);
             _pages = new List<Page> {CurrentPage};
-
         }
 
         public void UseTool(string toolToUse)
@@ -151,7 +148,7 @@ namespace dotFlip
             }
             else
             {
-                //Psuedo refresh the page
+                // Pseudo refresh the page
                 MoveToPage(index - 1);
                 MoveToPage(index);
             }
@@ -170,7 +167,6 @@ namespace dotFlip
 
         public async void PlayAnimation(int value)
         {
-
             foreach (Page page in _pages)
             {
                 await Task.Delay(value);

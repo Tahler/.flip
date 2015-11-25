@@ -1,11 +1,12 @@
 ﻿using System.Windows;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace dotFlip.Tools
 {
     public class Highlighter : ITool
     {
+        public double Thickness { get; set; }
+        public Brush Brush { get; private set; }
 
         public Highlighter()
         {
@@ -15,18 +16,16 @@ namespace dotFlip.Tools
             Thickness = 5;
         }
 
-        public Brush Brush { get; private set; }
-        public double Thickness { get; set; }
-        public Geometry GetGeometry(Point p)
+        public Geometry GetGeometry(Point point)
         {
-            EllipseGeometry geometry = new EllipseGeometry(p, Thickness, Thickness);
+            EllipseGeometry geometry = new EllipseGeometry(point, Thickness, Thickness);
             return geometry;
         }
 
-        public void ChangeColor(Color c)
+        public void ChangeColor(Color color)
         {
-            c.A = 12;
-            Brush = new SolidColorBrush(c);
+            color.A = 12;
+            Brush = new SolidColorBrush(color);
         }
     }
 }

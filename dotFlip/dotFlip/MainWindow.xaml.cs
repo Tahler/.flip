@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -9,7 +8,6 @@ namespace dotFlip
     public partial class MainWindow : Window
     {
         private Flipbook flipbook;
-        bool playing = false;
 
         public MainWindow()
         {
@@ -101,6 +99,7 @@ namespace dotFlip
         {
             flipbook.CopyPrevPage();
         }
+
         private void Window_ctrl(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if(e.KeyboardDevice.Modifiers == System.Windows.Input.ModifierKeys.Control)
@@ -115,14 +114,17 @@ namespace dotFlip
                 }
             }
         }
+
         private void Undo_Click(object sender, RoutedEventArgs e)
         {
             flipbook.CurrentPage.Undo();
         }
+
         private void Redo_Click(object sender, RoutedEventArgs e)
         {
             flipbook.CurrentPage.Redo();
         }
+
         private void button_Click(object sender, RoutedEventArgs e)
         {
                 flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
