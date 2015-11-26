@@ -8,20 +8,33 @@
         Title=".Flip" 
         Width="1200"
         Height="800">
-<!--dockpanel for dropdowns at top-->
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0" Content="current tool / color here"/>
-            <Label Grid.Row="1" Content="toolbox here"/>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Save"/>
+            </MenuItem>
+            <MenuItem Header="Edit"/>
+            <MenuItem Header="View"/>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <Button Content="Previous page"/>
+            </StatusBarItem>
+        </StatusBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Background="Red" Content="current tool / color here"/>
+                <Label Grid.Row="1" Background="Blue" Content="toolbox here"/>
+            </Grid>
+            <Label Grid.Column="1" Background="Green" Content="sticky note here"/>
         </Grid>
-        <Label Grid.Column="1" Content="sticky note here"/>
-    </Grid>
+    </DockPanel>
 </Window>
