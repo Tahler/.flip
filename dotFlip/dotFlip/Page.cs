@@ -16,7 +16,7 @@ namespace dotFlip
         private Flipbook _parent;
 
         public bool ShowGhostStrokes { get; set; }
-        private Stack<int> _undoStack;
+        private Stack<int> _undoStack; // Holds the list of indices to "rollback" to in case of an undo call
         private Stack<List<Visual>> _redoStack;
 
         public IList<Visual> Visuals { get; private set; }
@@ -145,7 +145,7 @@ namespace dotFlip
                 {
                     context.DrawDrawing(group);
                 }
-                GhostVisuals.Add(visual);
+                Visuals.Add(visual);
                 AddVisualChild(visual);
             }
         }
