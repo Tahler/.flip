@@ -5,94 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dotFlip"
         mc:Ignorable="d"
-        Title=".flip Demo"
-        Width="1000"
-        Height="800"
-        KeyDown="Window_ctrl">
-    <Window.Resources>
-        <local:SliderConverter x:Key="brushConverter" />
-    </Window.Resources>
-    <Grid x:Name="grid">
+        Title=".Flip" 
+        Width="1200"
+        Height="800">
+<!--dockpanel for dropdowns at top-->
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"
-                              MinWidth="200"
-                              MaxWidth="400"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel x:Name="controlPanel" 
-                    Grid.Column="0"
-                    Background="WhiteSmoke">
-            <RadioButton GroupName="Tools" x:Name="RadioPen" Content="Pen" IsChecked="True" Checked="Radio_Checked"/>
-            <RadioButton GroupName="Tools" x:Name="RadioPencil" Content="Pencil"  Checked="Radio_Checked"/>
-            <RadioButton GroupName="Tools" x:Name="RadioMarker" Content="Highlighter" Checked="Radio_Checked"/>
-            <RadioButton GroupName="Tools" x:Name="Eraser" Content="Eraser" Checked="Radio_Checked"/>
-            <StackPanel x:Name="ThicknessPanel" 
-                    Width="150" 
-                    Background="WhiteSmoke">
-                <Label x:Name="ThicknessLabel" Content="Thickness"/>
-                <Slider x:Name="ThicknessSlider" Minimum="2" Maximum="100" ValueChanged="ThicknessSlider_ValueChanged" Value="5"/>
-            </StackPanel>
-            <Label x:Name="ColorLabel" Content="Color:"/>
-            <TextBox x:Name="ColorSelector" Height="23" TextWrapping="Wrap" TextChanged="ColorSelector_TextChanged">
-                <TextBox.Text>
-                    <MultiBinding Converter="{StaticResource brushConverter}" Mode="TwoWay"  UpdateSourceTrigger="PropertyChanged">
-                        <Binding Path="Value" ElementName="ToolRedSlider"/>
-                        <Binding Path="Value" ElementName="ToolGreenSlider"/>
-                        <Binding Path="Value" ElementName="ToolBlueSlider"/>
-                    </MultiBinding>
-                </TextBox.Text>
-            </TextBox>
-            <UniformGrid Columns="3"
-                         Rows="2">
-                <Label Content="Red"/>
-                <Label Content="Green"/>
-                <Label Content="Blue"/>
-                <Slider x:Name="ToolRedSlider" Minimum="0" Maximum="255"/>
-                <Slider x:Name="ToolGreenSlider" Minimum="0" Maximum="255"/>
-                <Slider x:Name="ToolBlueSlider" Minimum="0" Maximum="255"/>
-            </UniformGrid>
-            <Label x:Name="CanvasColorLabel" Content="Canvas Color:"/>
-            <TextBox x:Name="CanvasColorSelector" Height="23" TextWrapping="Wrap" TextChanged="CanvasColorSelector_TextChanged">
-                <TextBox.Text>
-                    <MultiBinding Converter="{StaticResource brushConverter}" Mode="TwoWay"  UpdateSourceTrigger="PropertyChanged">
-                        <Binding Path="Value" ElementName="CanvasRedSlider" />
-                        <Binding Path="Value" ElementName="CanvasGreenSlider" />
-                        <Binding Path="Value" ElementName="CanvasBlueSlider" />
-                    </MultiBinding>
-                </TextBox.Text>
-            </TextBox>
-            <UniformGrid>
-                <Label Content="Red"/>
-                <Label Content="Green"/>
-                <Label Content="Blue"/>
-                <Slider x:Name="CanvasRedSlider" Minimum="0" Maximum="255" Value="255"/>
-                <Slider x:Name="CanvasGreenSlider" Minimum="0" Maximum="255" Value="254"/>
-                <Slider x:Name="CanvasBlueSlider" Minimum="0" Maximum="255" Value="120"/>
-            </UniformGrid>
-            <UniformGrid>
-                <Button x:Name="previousPageButton"
-                        Height="40"
-                        Content="Previous Page" Click="previousPageButton_Click"/>
-                <Button x:Name="nextPageButton"
-                        Height="40"
-                        Content="Next Page" Click="nextPageButton_Click"/>
-                <TextBox x:Name="pageNumberTextBox" Text="1" Height="24" TextWrapping="Wrap" Margin="0,0,73,0" KeyUp="pageNumberTextBox_KeyUp" HorizontalAlignment="Right" Width="27" />
-                <Label x:Name="pageNumberLabel" Content="/1" Margin="-68,0,126,0" Height="28"/>
-            </UniformGrid>
-            <CheckBox x:Name="chkGhostStrokes" Content="Ghost Strokes" Height="22" Click="chkGhostStrokes_Click"/>
-            <Button x:Name="btnCopyPrevPage" Content="Copy Previous Page" Click="btnCopyPrevPage_Click"/>
-            <UniformGrid Columns="2">
-                <Button x:Name="undoButton" Content="Undo" Click="Undo_Click"/>
-                <Button x:Name="redoButton" Content="Redo" Click="Redo_Click"/>
-            </UniformGrid>
-            <UniformGrid Columns="2">
-                <Button x:Name="playAnimationButton" Content="Play" Click="button_Click"/>
-                <Slider x:Name ="animationSpeedSlider" SmallChange="1" Maximum="1000" Minimum="100" Value="500" IsDirectionReversed="True"></Slider>
-            </UniformGrid>
-            <Button x:Name="clearButton" Content="Clear Page" Click="ClearButton_Click"/>
-            <Button x:Name="deletePageButton" Content="Delete Page" Click="deletePageButton_Click"/>
-            <Button x:Name="deleteAllButton" Content="Start Over" Click="deleteAllButton_Click"/>
-        </StackPanel>
-        <!--<local:Page/> inserted by code behind-->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="current tool / color here"/>
+            <Label Grid.Row="1" Content="toolbox here"/>
+        </Grid>
+        <Label Grid.Column="1" Content="sticky note here"/>
     </Grid>
 </Window>
