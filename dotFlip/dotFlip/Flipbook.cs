@@ -83,6 +83,7 @@ namespace dotFlip
                 }
             }
             _pages.Remove(page);
+            RefreshPage();
         }
 
         public void DeleteAllPages()
