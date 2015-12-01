@@ -10,7 +10,7 @@ namespace dotFlip
     public class Page : Panel
     {
         private Point _previousPoint;
-        private bool _mouseDown;
+        public bool _mouseDown;
         private Flipbook _parent;
 
         private Stack<int> _undoStack; // Holds the list of indices to "rollback" to in case of an undo call
@@ -29,9 +29,11 @@ namespace dotFlip
             _undoStack = new Stack<int>();
             _redoStack = new Stack<List<Visual>>();
 
-            MouseDown += Page_MouseDown;
-            MouseMove += Page_MouseMove;
-            MouseUp += Page_MouseUp;
+            //MouseEnter += (sender, e) => Page_MouseDown(e.GetPosition(this));
+            MouseDown += (sender, e) => Page_MouseDown(e.GetPosition(this));
+            MouseMove += (sender, e) => Page_MouseMove(e.GetPosition(this));
+            MouseUp += (sender, e) => Page_MouseUp(e.GetPosition(this));
+            MouseLeave += (sender, e) => Page_MouseLeave(e.GetPosition(this));
         }
 
         public void Undo()
@@ -74,7 +76,7 @@ namespace dotFlip
             _undoStack.Push(Visuals.Count);
         }
 
-        private void Page_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Page_MouseDown(Point mousePoint)
         {
             if (!_mouseDown)
             {
@@ -83,24 +85,28 @@ namespace dotFlip
                 SaveCurrentState();
                 _redoStack.Clear();
 
-                Point point = e.GetPosition(this);
-                Draw(point);
-                _previousPoint = point;
+                Draw(mousePoint);
+                _previousPoint = mousePoint;
             }
         }
 
-        private void Page_MouseMove(object sender, MouseEventArgs e)
+        private void Page_MouseMove(Point mousePoint)
         {
             if (_mouseDown)
             {
-                Point nextPoint = e.GetPosition(this);
-                IEnumerable<Point> line = Bresenham.GetPointsOnLine(_previousPoint, nextPoint);
+                IEnumerable<Point> line = Bresenham.GetPointsOnLine(_previousPoint, mousePoint);
                 foreach (var point in line) Draw(point);
-                _previousPoint = nextPoint;
+                _previousPoint = mousePoint;
             }
         }
 
-        private void Page_MouseUp(object sender, MouseButtonEventArgs e)
+        private void Page_MouseLeave(Point mousePoint)
+        {
+            Page_MouseMove(mousePoint);
+            Page_MouseUp(mousePoint);
+        }
+
+        private void Page_MouseUp(Point mousePoint)
         {
             _mouseDown = false;
         }
