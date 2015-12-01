@@ -21,17 +21,32 @@ namespace dotFlip
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Flipbook flipbook;
         private Color[] _colorHistory;
         private List<Button> _buttonsForColor;
+
         public MainWindow()
         {
             InitializeComponent();
-            _colorHistory = new Color[]{ Colors.White, Colors.White, Colors.White, Colors.White, Colors.White, Colors.White, Colors.White, Colors.White};
+
+            flipbook = new Flipbook(Colors.LightYellow);
+            flipbook.PageChanged += Flipbook_PageChanged;
+
+            Page currentPage = flipbook.CurrentPage;
+            flipbookHolder.Children.Add(currentPage);
+
+            _colorHistory = new Color[] { Colors.White, Colors.White, Colors.White, Colors.White, Colors.White, Colors.White, Colors.White, Colors.White };
             _buttonsForColor = new List<Button>();
-            foreach(Button b in ColorHistory.Children)
+            foreach (Button b in ColorHistory.Children)
             {
                 _buttonsForColor.Add(b);
             }
+        }
+
+        private void Flipbook_PageChanged(Page currentPage)
+        {
+            flipbookHolder.Children.RemoveAt(0);
+            flipbookHolder.Children.Add(currentPage);
         }
 
         private void UpdateColorHistory(Color c)
@@ -69,8 +84,6 @@ namespace dotFlip
             Color color = (Color)e.NewValue;
             Brush backgroundColor = new SolidColorBrush(color);
 
-            ToolColorTester.Background = backgroundColor;
-
             UpdateColorHistory(color);
 
         }
@@ -79,9 +92,6 @@ namespace dotFlip
         {
             Color color = (Color)e.NewValue;
             Brush backgroundColor = new SolidColorBrush(color);
-
-            StickyNoteColorTester.Background = backgroundColor;
-
         }
 
         private void ColorButton_Click(object sender, RoutedEventArgs e)
