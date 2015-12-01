@@ -11,7 +11,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Path StrokeThickness="1" Stroke="#FF000000" StrokeLineJoin="Miter"  Fill="{TemplateBinding Background}" Data="m 15 0 0 4.23001 -10.33547 0.0446 0.0408 8.40907 10.29093 0 0 4.23001 8.77757 -8.45684 z"></Path>
+                    <Border Background="Transparent">
+                        <Path StrokeThickness="1" Stroke="#FF000000" StrokeLineJoin="Miter"  Fill="{TemplateBinding Background}" Data="m 15 0 0 4.23001 -10.33547 0.0446 0.0408 8.40907 10.29093 0 0 4.23001 8.77757 -8.45684 z"></Path>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -27,7 +29,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Path StrokeThickness="1" Stroke="#FF000000" StrokeLineJoin="Miter"  Fill="{TemplateBinding Background}" Data="m 15 0 0 4.23001 10.33547 0.0446 -0.0408 8.40906 -10.29093 0 0 4.23001 -8.77757 -8.45683 z"></Path>
+                    <Border Background="Transparent">
+                        <Path StrokeThickness="1" Stroke="#FF000000" StrokeLineJoin="Miter"  Fill="{TemplateBinding Background}" Data="m 15 0 0 4.23001 10.33547 0.0446 -0.0408 8.40906 -10.29093 0 0 4.23001 -8.77757 -8.45683 z"></Path>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace dotFlip
 {
-    public delegate void PageChangedHandler(Page oldPage, Page currentPage);
+    public delegate void PageChangedHandler(Page oldPage, Page currentPage, Page ghostPage);
 
     public class Flipbook
     {
@@ -26,7 +26,7 @@ namespace dotFlip
             {
                 Page oldPage = _currentPage;
                 _currentPage = value;
-                PageChanged(oldPage, _currentPage); // Invoke event
+                PageChanged(oldPage, _currentPage, GetPreviousPage(_currentPage)); // Invoke event
             }
         }
 
@@ -94,7 +94,7 @@ namespace dotFlip
 
         public void RefreshPage()
         {
-            PageChanged(_currentPage, _currentPage);
+            PageChanged(_currentPage, _currentPage, GetPreviousPage(_currentPage));
         }
 
         public void MoveToPage(int index)
@@ -112,7 +112,6 @@ namespace dotFlip
             }
 
             CurrentPage = _pages[index];
-            if (ShowGhostStrokes) UpdateGhostStrokes();
         }
 
         public void NextPage()
@@ -142,16 +141,6 @@ namespace dotFlip
             }
         }
 
-        private void UpdateGhostStrokes()
-        {
-            int index = _pages.IndexOf(CurrentPage);
-            if (index > 0)
-            {
-                Page prevPage = _pages[index - 1];
-                CurrentPage.UpdateGhostStrokes(prevPage);
-            }
-        }
-
         public async void PlayAnimation(int delay)
         {
             foreach (Page page in _pages)
@@ -159,6 +148,20 @@ namespace dotFlip
                 await Task.Delay(delay);
                 CurrentPage = page;
             }
+        }
+
+        private Page GetPreviousPage(Page p)
+        {
+            Page prev = null;
+            if (_pages != null)
+            {
+                int index = _pages.IndexOf(p);
+                if (index > 0)
+                {
+                    prev = _pages[index - 1];
+                }
+            }
+            return prev;
         }
     }
 }

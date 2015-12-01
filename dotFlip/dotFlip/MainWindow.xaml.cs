@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -42,10 +43,20 @@ namespace dotFlip
             }
         }
 
-        private void Flipbook_PageChanged(Page oldPage, Page currentPage)
+        private void Flipbook_PageChanged(Page oldPage, Page currentPage, Page ghostPage)
         {
             flipbookHolder.Children.Remove(oldPage);
+
+            currentPage.Opacity = 1;
+            currentPage.IsHitTestVisible = true;
             flipbookHolder.Children.Add(currentPage);
+
+            if (ghostPage != null && _flipbook.ShowGhostStrokes)
+            {
+                ghostPage.Opacity = 0.05;
+                ghostPage.IsHitTestVisible = false;
+                flipbookHolder.Children.Add(ghostPage);
+            }
         }
 
         private void UpdateColorHistory(Color c)

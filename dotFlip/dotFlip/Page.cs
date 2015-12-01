@@ -19,7 +19,6 @@ namespace dotFlip
         private Stack<List<Visual>> _redoStack;
 
         public IList<Visual> Visuals { get; private set; }
-        public IList<Visual> GhostVisuals { get; }
 
         public Page(Flipbook parent)
         {
@@ -28,7 +27,6 @@ namespace dotFlip
 
             Background = parent.Brush;
             Visuals = new List<Visual>();
-            GhostVisuals = new List<Visual>();
 
             _undoStack = new Stack<int>();
             _redoStack = new Stack<List<Visual>>();
@@ -123,14 +121,10 @@ namespace dotFlip
             drawingContext.DrawRectangle(background, null, new Rect(RenderSize));
         }
 
-        protected override int VisualChildrenCount => (_parent.ShowGhostStrokes) ? Visuals.Count + GhostVisuals.Count : Visuals.Count;
+        protected override int VisualChildrenCount => Visuals.Count;
 
         protected override Visual GetVisualChild(int index)
         {
-            if (index > Visuals.Count - 1)
-            {
-                return GhostVisuals[index - Visuals.Count];
-            }
             return Visuals[index];
         }
 
@@ -145,23 +139,6 @@ namespace dotFlip
                     context.DrawDrawing(group);
                 }
                 Visuals.Add(visual);
-                AddVisualChild(visual);
-            }
-        }
-
-        public void UpdateGhostStrokes(Page prevPage)
-        {
-            GhostVisuals.Clear();
-            foreach (Visual v in prevPage.Visuals)
-            {
-                DrawingVisual visual = new DrawingVisual();
-                visual.Opacity = 0.01;
-                DrawingGroup group = VisualTreeHelper.GetDrawing(v);
-                using (var context = visual.RenderOpen())
-                {
-                    context.DrawDrawing(group);
-                }
-                GhostVisuals.Add(visual);
                 AddVisualChild(visual);
             }
         }
