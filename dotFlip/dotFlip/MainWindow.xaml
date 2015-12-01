@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:dotFlip"
         mc:Ignorable="d"
         Title=".Flip" 
@@ -13,7 +14,11 @@
             <MenuItem Header="File">
                 <MenuItem Header="Save"/>
             </MenuItem>
-            <MenuItem Header="Edit"/>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Sticky Note Background">
+                    <xctk:ColorPicker Grid.Row="0" Name="StickyNote_ClrPicker" SelectedColorChanged="StickyNoteClrPcker_Background_SelectedColorChanged" Margin="0,41,10,299" HorizontalAlignment="Right" Width="161" />
+                </MenuItem>
+            </MenuItem>
             <MenuItem Header="View"/>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
@@ -31,7 +36,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Background="Red" Content="current tool / color here"/>
+                <xctk:ColorPicker Grid.Row="0" Name="Tool_ClrPicker" SelectedColorChanged="ToolClrPcker_Background_SelectedColorChanged" Margin="0,41,10,299" HorizontalAlignment="Right" Width="161" />
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -70,8 +75,86 @@
                     </Button>
                     <Image Grid.ColumnSpan="5" Source="Image/pouch.png" Margin="-14,-40,-25.6,-155" RenderTransformOrigin="0.463,0.509"/>
                 </Grid>
+                <Label x:Name="Tool_Color_Label" Content="Tool Color:" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="26" Width="161"/>
+                <UniformGrid x:Name="ColorHistory" Columns="8" Margin="127,70,10,269">
+                    <Button x:Name="ColorButton1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="15" Height="15" Click="ColorButton_Click">
+                        <Button.Content>
+                            <Rectangle Width="14" Height="14">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="White"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="ColorButton2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="15" Height="15" Click="ColorButton_Click">
+                        <Button.Content>
+                            <Rectangle Width="14" Height="14">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="White"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="ColorButton3" HorizontalAlignment="Left" VerticalAlignment="Top" Width="15" Height="15" Click="ColorButton_Click">
+                        <Button.Content>
+                            <Rectangle Width="14" Height="14">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="White"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="ColorButton4" HorizontalAlignment="Left" VerticalAlignment="Top" Width="15" Height="15" Click="ColorButton_Click">
+                        <Button.Content>
+                            <Rectangle Width="14" Height="14">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="White"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="ColorButton5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="15" Height="15" Click="ColorButton_Click">
+                        <Button.Content>
+                            <Rectangle Width="14" Height="14">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="White"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="ColorButton6" HorizontalAlignment="Left" VerticalAlignment="Top" Width="15" Height="15" Click="ColorButton_Click">
+                        <Button.Content>
+                            <Rectangle Width="14" Height="14">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="White"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="ColorButton7" HorizontalAlignment="Left" VerticalAlignment="Top" Width="15" Height="15" Click="ColorButton_Click">
+                        <Button.Content>
+                            <Rectangle Width="14" Height="14">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="White"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="ColorButton8" HorizontalAlignment="Left" VerticalAlignment="Top" Width="15" Height="15" Click="ColorButton_Click">
+                        <Button.Content>
+                            <Rectangle Width="14" Height="14">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="White"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Button.Content>
+                    </Button>
+                </UniformGrid>
+                
             </Grid>
             <Label Grid.Column="1" Background="Green" Content="sticky note here"/>
+            <Label x:Name="StickyNoteColorTester" Content="StickyNote" Grid.Column="1" HorizontalAlignment="Left" Margin="150,122,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="ToolColorTester" Content="Tool" Grid.Column="1" HorizontalAlignment="Left" Margin="192,99,0,0" VerticalAlignment="Top"/>
         </Grid>
     </DockPanel>
 </Window>
