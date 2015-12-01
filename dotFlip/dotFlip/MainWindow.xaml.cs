@@ -30,8 +30,6 @@ namespace dotFlip
             flipbook.PageChanged += Flipbook_PageChanged;
 
             Page currentPage = flipbook.CurrentPage;
-            currentPage.Width = 600;
-            currentPage.Height = 600;
             flipbookHolder.Children.Add(currentPage);
         }
 

@@ -47,14 +47,25 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Background="Red" Content="current tool / color here"/>
-                <Label Grid.Row="1" Background="Blue" Content="toolbox here"/>
+                <Label Grid.Row="0" Content="current tool / color here"/>
+                <Label Grid.Row="1" Content="toolbox here"/>
             </Grid>
-            <StackPanel x:Name="flipbookHolder" 
-                        Grid.Column="1" 
+            <StackPanel Grid.Column="1" 
                         Background="#EEE" 
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center"/>
+                        VerticalAlignment="Center">
+                <Grid x:Name="flipbookHolder"
+                      Width="{StaticResource FlipbookWidth}"
+                      Height="{StaticResource FlipbookWidth}">
+                    <Border BorderBrush="Black"
+                            Margin="-1"
+                            BorderThickness="10">
+                        <Border.Effect>
+                            <DropShadowEffect Color="Black"/>
+                        </Border.Effect>
+                    </Border>
+                </Grid>
+            </StackPanel>
         </Grid>
     </DockPanel>
 </Window>
