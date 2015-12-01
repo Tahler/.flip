@@ -151,7 +151,7 @@ namespace dotFlip
         {
             //Replace with dependancy property
             flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value;
-            //flipbook.RefreshPage();
+            flipbook.RefreshPage();
         }
 
         private void BtnDelete_OnClick(object sender, RoutedEventArgs e)
