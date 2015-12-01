@@ -8,6 +8,14 @@
         Title=".Flip" 
         Width="1200"
         Height="800">
+    <Window.Resources>
+        
+        
+        
+        
+        
+        
+    </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
@@ -18,7 +26,29 @@
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
-                <Button Content="Previous page"/>
+                <Slider></Slider>
+            </StatusBarItem>
+            <Button Style="{StaticResource PrevButton}"  Content="Previous page"/>
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox x:Name="txtPageNum" Text="1"/>
+                    <Label Content="of x"/>
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Button Style="{StaticResource NextButton}" Content="Next Page" Click="Button_Click"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Button Style="{StaticResource UndoButton}">Undo</Button>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Button Style="{StaticResource RedoButton}">Redo</Button>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Button Style="{StaticResource CopyButton}">Copy Prev Page</Button>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Button Style="{StaticResource GhostButton}">Ghost Strokes</Button>
             </StatusBarItem>
         </StatusBar>
         <Grid>
@@ -32,7 +62,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Background="Red" Content="current tool / color here"/>
-                <Label Grid.Row="1" Background="Blue" Content="toolbox here"/>
+                <Label Grid.Row="1" Background="Blue" Content="toolbox here" Height="359" VerticalAlignment="Top"/>
             </Grid>
             <Label Grid.Column="1" Background="Green" Content="sticky note here"/>
         </Grid>
