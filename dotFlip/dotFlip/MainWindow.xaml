@@ -34,7 +34,11 @@
                 <Label Grid.Row="0" Background="Red" Content="current tool / color here"/>
                 <Label Grid.Row="1" Background="Blue" Content="toolbox here"/>
             </Grid>
-            <Label Grid.Column="1" Background="Green" Content="sticky note here"/>
+            <StackPanel x:Name="flipbookHolder" 
+                        Grid.Column="1" 
+                        Background="#EEE" 
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
         </Grid>
     </DockPanel>
 </Window>

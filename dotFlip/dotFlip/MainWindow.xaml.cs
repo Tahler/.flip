@@ -20,9 +20,25 @@ namespace dotFlip
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Flipbook flipbook;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            flipbook = new Flipbook(Colors.LightYellow);
+            flipbook.PageChanged += Flipbook_PageChanged;
+
+            Page currentPage = flipbook.CurrentPage;
+            currentPage.Width = 600;
+            currentPage.Height = 600;
+            flipbookHolder.Children.Add(currentPage);
+        }
+
+        private void Flipbook_PageChanged(Page currentPage)
+        {
+            flipbookHolder.Children.RemoveAt(0);
+            flipbookHolder.Children.Add(currentPage);
         }
     }
 }
