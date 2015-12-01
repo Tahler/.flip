@@ -10,7 +10,7 @@ namespace dotFlip
     public class Page : Panel
     {
         private Point _previousPoint;
-        public bool _mouseDown;
+        private bool _mouseDown;
         private Flipbook _parent;
 
         private Stack<int> _undoStack; // Holds the list of indices to "rollback" to in case of an undo call
