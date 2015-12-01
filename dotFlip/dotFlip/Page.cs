@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using dotFlip.Tools;
 using System.Threading.Tasks;
+using System.Windows.Shapes;
 
 namespace dotFlip
 {
@@ -59,7 +60,7 @@ namespace dotFlip
         {
             if (_redoStack.Count != 0)
             {
-                _undoStack.Push(Visuals.Count);
+                SaveCurrentState();
 
                 List<Visual> redoVisuals = _redoStack.Pop();
                 foreach (var visual in redoVisuals)
@@ -77,7 +78,7 @@ namespace dotFlip
             {
                 _mouseDown = true;
 
-                _undoStack.Push(Visuals.Count);
+                SaveCurrentState();
                 _redoStack.Clear();
 
                 Point point = e.GetPosition(this);
@@ -130,6 +131,7 @@ namespace dotFlip
 
         public void CopyPage(Page prevPage)
         {
+            SaveCurrentState();
             foreach (Visual v in prevPage.Visuals)
             {
                 DrawingVisual visual = new DrawingVisual();
@@ -145,7 +147,21 @@ namespace dotFlip
 
         public void ClearPage()
         {
-            Visuals.Clear();
+            SaveCurrentState();
+
+            var splash = new Rectangle
+            {
+                RenderSize = this.RenderSize,
+                Fill = this.Background,
+            };
+
+            Visuals.Add(splash);
+            AddVisualChild(splash);
+        }
+
+        private void SaveCurrentState()
+        {
+            _undoStack.Push(Visuals.Count);
         }
     }
 }
