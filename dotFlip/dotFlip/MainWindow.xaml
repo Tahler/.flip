@@ -32,7 +32,44 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Background="Red" Content="current tool / color here"/>
-                <Label Grid.Row="1" Background="Blue" Content="toolbox here"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.ColumnSpan="5" Source="Image/pouchback.png" Margin="0,-110,0.4,-64" RenderTransformOrigin="0.463,0.509"/>
+                    <Button x:Name="Pencil" Grid.Column="1" Click="Pencil_Click" Margin="6,46,53.2,29" Grid.ColumnSpan="2">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Image Source="Image/pencil.png"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button x:Name="Pen" Grid.Column="1" Margin="54,53,6.2,33" Grid.ColumnSpan="2">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Image Source="Image/pen.png"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button x:Name="Highlighter" Grid.Column="2" Margin="53.4,53,58.4,40" Grid.ColumnSpan="3">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Image Source="Image/high.png"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Image Grid.ColumnSpan="5" Source="Image/pouch.png" Margin="-14,-40,-25.6,-155" RenderTransformOrigin="0.463,0.509"/>
+                </Grid>
             </Grid>
             <Label Grid.Column="1" Background="Green" Content="sticky note here"/>
         </Grid>

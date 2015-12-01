@@ -24,5 +24,10 @@ namespace dotFlip
         {
             InitializeComponent();
         }
+
+        private void Pencil_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
