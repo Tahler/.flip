@@ -29,7 +29,6 @@ namespace dotFlip
             _undoStack = new Stack<int>();
             _redoStack = new Stack<List<Visual>>();
 
-            //MouseEnter += (sender, e) => Page_MouseDown(e.GetPosition(this));
             MouseDown += (sender, e) => Page_MouseDown(e.GetPosition(this));
             MouseMove += (sender, e) => Page_MouseMove(e.GetPosition(this));
             MouseUp += (sender, e) => Page_MouseUp(e.GetPosition(this));
