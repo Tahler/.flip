@@ -44,8 +44,8 @@ namespace dotFlip
             }
             UpdateNavigation();
 
-            btnNext.Click += (sender, e) => flipbook.NextPage();
-            sldrNavigation.ValueChanged += (sender, e) => flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
+            btnNext.Click += (sender, e) => _flipbook.NextPage();
+            sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
         }
 
         private void Flipbook_PageChanged(Page currentPage, Page ghostPage)
@@ -79,10 +79,10 @@ namespace dotFlip
 
         private void UpdateNavigation()
         {
-            sldrNavigation.Maximum = flipbook.PageCount;
-            sldrNavigation.IsEnabled = flipbook.PageCount > 1;
-            sldrNavigation.Value = flipbook.GetPageNumber(flipbook.CurrentPage);
-            lblTotalPages.Content = "of " + flipbook.PageCount;
+            sldrNavigation.Maximum = _flipbook.PageCount;
+            sldrNavigation.IsEnabled = _flipbook.PageCount > 1;
+            sldrNavigation.Value = _flipbook.GetPageNumber(_flipbook.CurrentPage);
+            lblTotalPages.Content = "of " + _flipbook.PageCount;
         }
 
         private void UpdateColorHistory(Color c)
