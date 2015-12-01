@@ -112,7 +112,6 @@ namespace dotFlip
             }
 
             CurrentPage = _pages[index];
-            if (ShowGhostStrokes) UpdateGhostStrokes();
         }
 
         public void NextPage()
@@ -139,16 +138,6 @@ namespace dotFlip
             {
                 Page prevPage = _pages[index - 1];
                 _currentPage.CopyPage(prevPage);
-            }
-        }
-
-        private void UpdateGhostStrokes()
-        {
-            int index = _pages.IndexOf(CurrentPage);
-            if (index > 0)
-            {
-                Page prevPage = _pages[index - 1];
-                CurrentPage.UpdateGhostStrokes(prevPage);
             }
         }
 
