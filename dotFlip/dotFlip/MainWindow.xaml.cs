@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -33,8 +34,7 @@ namespace dotFlip
             _flipbook = new Flipbook(Colors.LightYellow);
             _flipbook.PageChanged += Flipbook_PageChanged;
 
-            Page currentPage = _flipbook.CurrentPage;
-            flipbookHolder.Children.Add(currentPage);
+            _flipbook.RefreshPage();
 
             _buttonsForColor = new List<Button>();
             foreach (Button b in ColorHistory.Children)
@@ -43,9 +43,21 @@ namespace dotFlip
             }
         }
 
-        private void Flipbook_PageChanged(Page oldPage, Page currentPage, Page ghostPage)
+        private void Flipbook_PageChanged(Page currentPage, Page ghostPage)
         {
-            flipbookHolder.Children.Remove(oldPage);
+            flipbookHolder.Children.Clear();
+
+            // Readd the border, since clearing removes it
+            flipbookHolder.Children.Add(new Border
+            {
+                BorderBrush = Brushes.Black,
+                BorderThickness = new Thickness(10),
+                Margin = new Thickness(-1),
+                Effect = new DropShadowEffect
+                {
+                    Color = Colors.Black,
+                }
+            });
 
             currentPage.Opacity = 1;
             currentPage.IsHitTestVisible = true;
