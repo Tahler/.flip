@@ -20,7 +20,7 @@ namespace dotFlip
         private Stack<List<Visual>> _redoStack;
 
         public IList<Visual> Visuals { get; private set; }
-        public IList<Visual> GhostVisuals { get; } 
+        public IList<Visual> GhostVisuals { get; }
 
         public Page(Flipbook parent)
         {
@@ -69,7 +69,7 @@ namespace dotFlip
                 {
                     Visuals.Add(visual);
                 }
-                
+
                 _parent.RefreshPage();
             }
         }
@@ -113,7 +113,7 @@ namespace dotFlip
                 ITool currentTool = _parent.CurrentTool;
                 context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
             }
-            
+
             Visuals.Add(path);
             AddVisualChild(path);
         }
