@@ -6,6 +6,9 @@
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="Aquamarine"></Setter>
             </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Gray"></Setter>
+            </Trigger>
         </Style.Triggers>
         <Setter Property="Background" Value="Green"></Setter>
         <Setter Property="Template">
@@ -23,6 +26,9 @@
         <Style.Triggers>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="Aquamarine"></Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Gray"></Setter>
             </Trigger>
         </Style.Triggers>
         <Setter Property="Background" Value="Green"></Setter>
@@ -42,6 +48,9 @@
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="Aquamarine"></Setter>
             </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Gray"></Setter>
+            </Trigger>
         </Style.Triggers>
         <Setter Property="Background" Value="Green"></Setter>
         <Setter Property="Template">
@@ -59,6 +68,9 @@
         <Style.Triggers>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="Aquamarine"></Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Gray"></Setter>
             </Trigger>
         </Style.Triggers>
         <Setter Property="Background" Value="Green"></Setter>
@@ -81,6 +93,9 @@
             <Trigger Property="IsChecked" Value="False">
                 <Setter Property="Background" Value="Transparent"></Setter>
             </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Gray"></Setter>
+            </Trigger>
         </Style.Triggers>
         <Setter Property="Background" Value="White"></Setter>
         <Setter Property="Template">
@@ -96,6 +111,9 @@
         <Style.Triggers>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="Aquamarine"></Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Gray"></Setter>
             </Trigger>
         </Style.Triggers>
         <Setter Property="Background" Value="Black"></Setter>
@@ -122,6 +140,9 @@
         <Style.Triggers>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="Aquamarine"></Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Gray"></Setter>
             </Trigger>
         </Style.Triggers>
         <Setter Property="Background" Value="Black"></Setter>
