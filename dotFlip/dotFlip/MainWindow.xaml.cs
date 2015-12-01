@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -41,6 +42,9 @@ namespace dotFlip
             {
                 _buttonsForColor.Add(b);
             }
+            UpdateNavigation();
+
+            btnNext.Click += (sender, e) => flipbook.NextPage(); 
         }
 
         private void Flipbook_PageChanged(Page currentPage, Page ghostPage)
@@ -55,6 +59,16 @@ namespace dotFlip
                 ghostPage.IsHitTestVisible = false;
                 flipbookHolder.Children.Add(ghostPage);
             }
+            UpdateNavigation();
+        }
+
+        private void UpdateNavigation()
+        {
+            sldrNavigation.Maximum = flipbook.PageCount;
+            sldrNavigation.IsEnabled = flipbook.PageCount > 1;
+            sldrNavigation.Value = flipbook.GetPageNumber(flipbook.CurrentPage);
+            lblTotalPages.Content = "of " + flipbook.PageCount;
+            txtNavigation.Text = sldrNavigation.Value.ToString();
         }
 
         private void UpdateColorHistory(Color c)
