@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using dotFlip.Tools;
-using System.Threading.Tasks;
-using System.Windows.Shapes;
 
 namespace dotFlip
 {
@@ -154,11 +151,11 @@ namespace dotFlip
         {
             SaveCurrentState();
 
-            var splash = new Rectangle
+            DrawingVisual splash = new DrawingVisual();
+            using (var context = splash.RenderOpen())
             {
-                RenderSize = this.RenderSize,
-                Fill = this.Background,
-            };
+                context.DrawRectangle(Background, null, new Rect(this.RenderSize));
+            }
 
             Visuals.Add(splash);
             AddVisualChild(splash);
