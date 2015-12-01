@@ -1,0 +1,15 @@
+﻿<Window x:Class="dotFlip.ColorPickerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:dotFlip"
+        mc:Ignorable="d"
+        Title="Window1" Height="432" Width="236" WindowStyle="ToolWindow">
+    <Window.Resources>
+    </Window.Resources>
+    <Grid>
+        <xctk:ColorPicker Grid.Row="0" IsOpen="True" Name="Tool_ClrPicker" Width="0" Height="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+    </Grid>
+</Window>
