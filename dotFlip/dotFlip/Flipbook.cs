@@ -16,6 +16,8 @@ namespace dotFlip
         private SolidColorBrush _background;
         private Dictionary<string, ITool> _tools;
 
+        public bool ShowGhostStorkes { get; set; }
+
         public Page CurrentPage
         {
             get { return _currentPage; }
@@ -135,20 +137,6 @@ namespace dotFlip
             {
                 Page prevPage = _pages[index - 1];
                 _currentPage.CopyPage(prevPage);
-            }
-        }
-
-        public void ToggleGhostStrokes()
-        {
-            _currentPage.ShowGhostStrokes = !_currentPage.ShowGhostStrokes;
-            int index = _pages.IndexOf(_currentPage);
-            if (_currentPage.ShowGhostStrokes && index != 0)
-            {
-                UpdateGhostStrokes();
-            }
-            else
-            {
-                RefreshPage();
             }
         }
 

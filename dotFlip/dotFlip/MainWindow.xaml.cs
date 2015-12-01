@@ -121,5 +121,40 @@ namespace dotFlip
         {
 
         }
+
+        private void BtnNext_OnClick(object sender, RoutedEventArgs e)
+        {
+            flipbook.NextPage();
+        }
+
+        private void BtnPrev_OnClick(object sender, RoutedEventArgs e)
+        {
+            flipbook.PreviousPage();
+        }
+
+        private void BtnUndo_OnClick(object sender, RoutedEventArgs e)
+        {
+            flipbook.CurrentPage.Undo();
+        }
+
+        private void BtnRedo_OnClick(object sender, RoutedEventArgs e)
+        {
+            flipbook.CurrentPage.Redo();
+        }
+
+        private void BtnCopy_OnClick(object sender, RoutedEventArgs e)
+        {
+            flipbook.CopyPreviousPage();
+        }
+
+        private void BtnGhost_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BtnDelete_OnClick(object sender, RoutedEventArgs e)
+        {
+            flipbook.DeletePage(flipbook.CurrentPage);
+        }
     }
 }
