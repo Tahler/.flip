@@ -44,7 +44,7 @@ namespace dotFlip
 
         private void Flipbook_PageChanged(Page currentPage)
         {
-            flipbookHolder.Children.RemoveAt(0);
+            flipbookHolder.Children.Clear();
             flipbookHolder.Children.Add(currentPage);
         }
 
