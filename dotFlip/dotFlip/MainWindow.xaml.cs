@@ -149,7 +149,9 @@ namespace dotFlip
 
         private void BtnGhost_OnClick(object sender, RoutedEventArgs e)
         {
-            //throw new NotImplementedException();
+            //Replace with dependancy property
+            flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value;
+            //flipbook.RefreshPage();
         }
 
         private void BtnDelete_OnClick(object sender, RoutedEventArgs e)

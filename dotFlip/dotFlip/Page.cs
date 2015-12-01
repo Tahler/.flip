@@ -15,7 +15,6 @@ namespace dotFlip
         private bool _mouseDown;
         private Flipbook _parent;
 
-        public bool ShowGhostStrokes { get; set; }
         private Stack<int> _undoStack; // Holds the list of indices to "rollback" to in case of an undo call
         private Stack<List<Visual>> _redoStack;
 
@@ -124,7 +123,7 @@ namespace dotFlip
             drawingContext.DrawRectangle(background, null, new Rect(RenderSize));
         }
 
-        protected override int VisualChildrenCount => (ShowGhostStrokes) ? Visuals.Count + GhostVisuals.Count : Visuals.Count;
+        protected override int VisualChildrenCount => (_parent.ShowGhostStrokes) ? Visuals.Count + GhostVisuals.Count : Visuals.Count;
 
         protected override Visual GetVisualChild(int index)
         {
