@@ -4,10 +4,11 @@ using System.Windows.Media;
 using dotFlip.Tools;
 using Pen = dotFlip.Tools.Pen;
 using System.Threading.Tasks;
+using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
 namespace dotFlip
 {
-    public delegate void PageChangedHandler(Page currentPage);
+    public delegate void PageChangedHandler(Page currentPage, Page ghostPage);
 
     public class Flipbook
     {
@@ -25,7 +26,7 @@ namespace dotFlip
             set
             {
                 _currentPage = value;
-                PageChanged(_currentPage); // Invoke event
+                PageChanged(_currentPage, GetPreviousPage(_currentPage)); // Invoke event
             }
         }
 
@@ -93,7 +94,7 @@ namespace dotFlip
 
         public void RefreshPage()
         {
-            PageChanged(_currentPage);
+            PageChanged(_currentPage, GetPreviousPage(_currentPage));
         }
 
         public void MoveToPage(int index)
@@ -158,6 +159,20 @@ namespace dotFlip
                 await Task.Delay(delay);
                 CurrentPage = page;
             }
+        }
+
+        private Page GetPreviousPage(Page p)
+        {
+            Page prev = null;
+            if (_pages != null)
+            {
+                int index = _pages.IndexOf(p);
+                if (index > 0)
+                {
+                    prev = _pages[index - 1];
+                }
+            }
+            return prev;
         }
     }
 }
