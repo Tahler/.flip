@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using dotFlip.Tools;
 
@@ -13,14 +12,14 @@ namespace dotFlip
         private bool _mouseDown;
         private Flipbook _parent;
 
-        private Stack<int> _undoStack; // Holds the list of indices to "rollback" to in case of an undo call
+        private Stack<int> _undoStack; // Holds the list of indices to "rollback" to in case of an Undo() call
         private Stack<List<Visual>> _redoStack;
 
         public IList<Visual> Visuals { get; private set; }
 
         public Page(Flipbook parent)
         {
-            this._parent = parent;
+            _parent = parent;
             ClipToBounds = true;
 
             Background = parent.Brush;
