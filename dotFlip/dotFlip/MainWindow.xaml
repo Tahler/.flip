@@ -160,7 +160,6 @@
                     </Button>
                     <Image Grid.ColumnSpan="5" Source="Image/pouch.png" Margin="-14,68,-25.6,-13" RenderTransformOrigin="0.463,0.509"/>
                 </Grid>
-                <Label Grid.Row="1" Background="Blue" Content="toolbox here"/>
                 <UniformGrid x:Name="ColorHistory" Columns="3"  Margin="100,20,20,0" Width="128" Height="128" VerticalAlignment="Top" HorizontalAlignment="Right">
                     <Button x:Name="ColorButton1" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
                         <Button.Content>
