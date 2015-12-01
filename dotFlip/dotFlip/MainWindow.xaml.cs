@@ -49,7 +49,7 @@ namespace dotFlip
             currentPage.Opacity = 1;
             currentPage.IsHitTestVisible = true;
             flipbookHolder.Children.Add(currentPage);
-            if (ghostPage != null)
+            if (ghostPage != null && flipbook.ShowGhostStrokes)
             {
                 ghostPage.Opacity = 0.05;
                 ghostPage.IsHitTestVisible = false;
