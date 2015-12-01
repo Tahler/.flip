@@ -4,7 +4,6 @@ using System.Windows.Media;
 using dotFlip.Tools;
 using Pen = dotFlip.Tools.Pen;
 using System.Threading.Tasks;
-using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
 namespace dotFlip
 {

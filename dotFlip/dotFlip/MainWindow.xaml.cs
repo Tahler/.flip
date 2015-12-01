@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -23,7 +24,7 @@ namespace dotFlip
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Flipbook flipbook;
+        private Flipbook _flipbook;
         private Color[] _colorHistory;
         private List<Button> _buttonsForColor;
 
@@ -31,11 +32,10 @@ namespace dotFlip
         {
             InitializeComponent();
             _colorHistory = new Color[]{ Colors.White, Colors.Black, Colors.Gray, Colors.Blue, Colors.Green, Colors.Red, Colors.Pink, Colors.Orange, Colors.Orchid};
-            flipbook = new Flipbook(Colors.LightYellow);
-            flipbook.PageChanged += Flipbook_PageChanged;
+            _flipbook = new Flipbook(Colors.LightYellow);
+            _flipbook.PageChanged += Flipbook_PageChanged;
 
-            Page currentPage = flipbook.CurrentPage;
-            flipbookHolder.Children.Add(currentPage);
+            _flipbook.RefreshPage();
 
             _buttonsForColor = new List<Button>();
             foreach (Button b in ColorHistory.Children)
@@ -51,10 +51,24 @@ namespace dotFlip
         private void Flipbook_PageChanged(Page currentPage, Page ghostPage)
         {
             flipbookHolder.Children.Clear();
+
+            // Readd the border, since clearing removes it
+            flipbookHolder.Children.Add(new Border
+            {
+                BorderBrush = Brushes.Black,
+                BorderThickness = new Thickness(10),
+                Margin = new Thickness(-1),
+                Effect = new DropShadowEffect
+                {
+                    Color = Colors.Black,
+                }
+            });
+
             currentPage.Opacity = 1;
             currentPage.IsHitTestVisible = true;
             flipbookHolder.Children.Add(currentPage);
-            if (ghostPage != null && flipbook.ShowGhostStrokes)
+
+            if (ghostPage != null && _flipbook.ShowGhostStrokes)
             {
                 ghostPage.Opacity = 0.05;
                 ghostPage.IsHitTestVisible = false;
@@ -118,13 +132,13 @@ namespace dotFlip
 
         private void ColorButton_Click(object sender, RoutedEventArgs e)
         {
-            Button but = sender as Button;
-            if(but != null)
+            Button button = sender as Button;
+            if(button != null)
             {
-                Rectangle rect = but.Content as Rectangle;
+                Rectangle rect = button.Content as Rectangle;
                 if(rect != null)
                 {
-                    ToolColorTester.Background = rect.Fill as SolidColorBrush;
+                    //ToolColorTester.Background = rect.Fill as SolidColorBrush;
                 }
             }
         }
@@ -147,39 +161,39 @@ namespace dotFlip
 
         private void BtnNext_OnClick(object sender, RoutedEventArgs e)
         {
-            flipbook.NextPage();
+            _flipbook.NextPage();
         }
 
         private void BtnPrev_OnClick(object sender, RoutedEventArgs e)
         {
-            flipbook.PreviousPage();
+            _flipbook.PreviousPage();
         }
 
         private void BtnUndo_OnClick(object sender, RoutedEventArgs e)
         {
-            flipbook.CurrentPage.Undo();
+            _flipbook.CurrentPage.Undo();
         }
 
         private void BtnRedo_OnClick(object sender, RoutedEventArgs e)
         {
-            flipbook.CurrentPage.Redo();
+            _flipbook.CurrentPage.Redo();
         }
 
         private void BtnCopy_OnClick(object sender, RoutedEventArgs e)
         {
-            flipbook.CopyPreviousPage();
+            _flipbook.CopyPreviousPage();
         }
 
         private void BtnGhost_OnClick(object sender, RoutedEventArgs e)
         {
             //Replace with dependancy property
-            flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value;
-            flipbook.RefreshPage();
+            _flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value;
+            _flipbook.RefreshPage();
         }
 
         private void BtnDelete_OnClick(object sender, RoutedEventArgs e)
         {
-            flipbook.DeletePage(flipbook.CurrentPage);
+            _flipbook.DeletePage(_flipbook.CurrentPage);
         }
     }
 }
