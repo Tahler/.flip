@@ -149,7 +149,7 @@ namespace dotFlip
 
         private void BtnGhost_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void BtnDelete_OnClick(object sender, RoutedEventArgs e)

@@ -109,7 +109,7 @@
                     <Button x:Name="btnRedo"  Margin="5" Style="{StaticResource RedoButton}" Click="BtnRedo_OnClick"/>
                     <Button x:Name="btnCopy"  Margin="5" Style="{StaticResource CopyButton}" Click="BtnCopy_OnClick"/>
                     <Button x:Name="btnDelete" Margin="5" Style="{StaticResource DeleteButton}" Click="BtnDelete_OnClick"/>
-                    <Button x:Name="btnGhost"  Margin="5" Style="{StaticResource GhostButton}" Click="BtnGhost_OnClick"/>
+                    <CheckBox x:Name="btnGhost"  Margin="5" Style="{StaticResource GhostButton}" Click="BtnGhost_OnClick"/>
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>

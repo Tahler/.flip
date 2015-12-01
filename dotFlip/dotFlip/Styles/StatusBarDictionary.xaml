@@ -69,16 +69,19 @@
         </Setter>
     </Style>
 
-    <Style x:Key="GhostButton" TargetType="{x:Type Button}">
+    <Style x:Key="GhostButton" TargetType="{x:Type CheckBox}">
         <Style.Triggers>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="Aquamarine"></Setter>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="White"></Setter>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter Property="Background" Value="Transparent"></Setter>
             </Trigger>
         </Style.Triggers>
         <Setter Property="Background" Value="White"></Setter>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
+                <ControlTemplate TargetType="{x:Type CheckBox}">
                     <Path  Fill="{TemplateBinding Background}" StrokeThickness="1" Stroke="#000" Data="F1 M 10.041,0.000 C 10.543,0.000 11.045,0.000 11.547,0.000 C 11.665,0.032 11.781,0.075 11.900,0.096 C 14.332,0.523 16.189,2.211 16.518,4.474 C 16.673,5.535 16.574,6.635 16.565,7.717 C 16.559,8.450 16.584,10.955 16.793,11.429 C 17.536,13.111 18.661,14.417 20.453,15.043 C 20.777,15.156 21.098,15.278 21.421,15.396 C 21.421,15.564 21.421,15.731 21.421,15.898 C 21.195,16.087 20.995,16.332 20.737,16.451 C 20.299,16.654 19.834,16.826 19.362,16.921 C 18.815,17.031 18.516,17.290 18.404,17.850 C 18.290,18.420 18.072,18.531 17.510,18.445 C 17.372,18.424 17.236,18.398 17.099,18.375 C 16.013,18.193 14.984,18.354 14.069,18.977 C 13.251,19.534 12.419,20.048 11.464,20.333 C 10.962,20.333 10.460,20.333 9.957,20.333 C 9.220,19.959 8.435,19.655 7.756,19.193 C 6.657,18.445 5.506,18.151 4.201,18.408 C 3.335,18.578 3.226,18.502 3.007,17.650 C 2.909,17.269 2.702,17.061 2.310,16.979 C 1.876,16.889 1.455,16.740 1.028,16.615 C 0.552,16.476 0.176,16.220 0.000,15.731 C 0.000,15.647 0.000,15.564 0.000,15.480 C 0.246,15.361 0.481,15.205 0.739,15.128 C 2.676,14.549 3.886,13.205 4.682,11.421 C 4.873,10.992 4.913,8.411 4.899,7.768 C 4.882,6.960 4.838,6.151 4.873,5.345 C 4.991,2.653 6.384,0.948 8.995,0.251 C 9.341,0.158 9.692,0.083 10.041,0.000 Z"/>
                 </ControlTemplate>
             </Setter.Value>
