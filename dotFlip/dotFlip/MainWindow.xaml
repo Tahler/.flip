@@ -95,7 +95,7 @@
             <StatusBarItem Grid.Column="0">
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Button x:Name="btnPrev"  Margin="5" Style="{StaticResource PrevButton}"  Content="Previous page" Click="BtnPrev_OnClick"/>
-                    <TextBox Width="25" x:Name="txtNavigation" Text="1"/>
+                    <TextBox Width="25" x:Name="txtNavigation" Text="{Binding ElementName=sldrNavigation, Path=Value, Mode=TwoWay}"/>
                     <Label x:Name="lblTotalPages" Content="of x"/>
                     <Button x:Name="btnNext"  Margin="5"  Style="{StaticResource NextButton}" Content="Next Page" />
                 </StackPanel>
