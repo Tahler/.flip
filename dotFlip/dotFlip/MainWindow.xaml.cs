@@ -26,7 +26,7 @@ namespace dotFlip
         public MainWindow()
         {
             InitializeComponent();
-            _colorHistory = new Color[]{ Colors.White, Colors.White, Colors.White, Colors.White, Colors.White, Colors.White, Colors.White, Colors.White};
+            _colorHistory = new Color[]{ Colors.White, Colors.Black, Colors.Gray, Colors.Blue, Colors.Green, Colors.Red, Colors.Pink, Colors.Orange, Colors.Orchid};
             _buttonsForColor = new List<Button>();
             foreach(Button b in ColorHistory.Children)
             {
@@ -92,10 +92,20 @@ namespace dotFlip
                 Rectangle rect = but.Content as Rectangle;
                 if(rect != null)
                 {
-                    SolidColorBrush b = rect.Fill as SolidColorBrush;
-                    Tool_ClrPicker.SelectedColor = b.Color;
+                    ToolColorTester.Background = rect.Fill as SolidColorBrush;
                 }
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateButtonColors();
+        }
+
+        private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
+        {
+            ColorPickerWindow clrPickerWindow = new ColorPickerWindow();
+            clrPickerWindow.Show();
         }
     }
 }
