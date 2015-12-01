@@ -80,7 +80,6 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <xctk:ColorPicker Grid.Row="0" Name="Tool_ClrPicker" SelectedColorChanged="ToolClrPcker_Background_SelectedColorChanged" Margin="0,41,10,299" HorizontalAlignment="Right" Width="161" />
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -89,7 +88,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Image Grid.ColumnSpan="5" Source="Image/pouchback.png" Margin="0,-110,0.4,-64" RenderTransformOrigin="0.463,0.509"/>
+                    <Image Grid.ColumnSpan="5" Source="Image/pouchback.png" Margin="0,60,0.4,140" RenderTransformOrigin="0.463,0.509"/>
                     <Button x:Name="Pencil" Grid.Column="1" Click="Pencil_Click" Margin="6,46,53.2,29" Grid.ColumnSpan="2">
                         <Button.Template>
                             <ControlTemplate>
@@ -117,7 +116,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Image Grid.ColumnSpan="5" Source="Image/pouch.png" Margin="-14,-40,-25.6,-155" RenderTransformOrigin="0.463,0.509"/>
+                    <Image Grid.ColumnSpan="5" Source="Image/pouch.png" Margin="-14,68,-25.6,-13" RenderTransformOrigin="0.463,0.509"/>
                 </Grid>
                 <Label x:Name="Tool_Color_Label" Content="Tool Color:" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="26" Width="161"/>
                 <xctk:ColorPicker Grid.Row="0" Name="Tool_ClrPicker" SelectedColorChanged="ToolClrPcker_Background_SelectedColorChanged" Margin="0,41,10,295" HorizontalAlignment="Right" Width="161" />
@@ -195,7 +194,6 @@
                         </Button.Content>
                     </Button>
                 </UniformGrid>
-                <Label Grid.Row="1" Content="toolbox here"/>
             </Grid>
             <StackPanel Grid.Column="1" 
                         Background="#EEE" 
