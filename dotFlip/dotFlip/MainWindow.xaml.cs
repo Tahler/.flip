@@ -45,6 +45,12 @@ namespace dotFlip
             UpdateNavigation();
 
             btnNext.Click += (sender, e) => _flipbook.NextPage();
+            btnPrev.Click += (sender, e) => _flipbook.PreviousPage();
+            btnCopy.Click += (sender, e) => _flipbook.CopyPreviousPage();
+            btnGhost.Click += (sender, e) => { _flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value; _flipbook.RefreshPage(); };
+            btnRedo.Click += (sender, e) => _flipbook.CurrentPage.Redo();
+            btnUndo.Click += (sender, e) => _flipbook.CurrentPage.Undo();
+            btnDelete.Click += (sender, e) => _flipbook.DeletePage(_flipbook.CurrentPage);
             sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
         }
 
@@ -159,41 +165,5 @@ namespace dotFlip
 
         }
 
-        private void BtnNext_OnClick(object sender, RoutedEventArgs e)
-        {
-            _flipbook.NextPage();
-        }
-
-        private void BtnPrev_OnClick(object sender, RoutedEventArgs e)
-        {
-            _flipbook.PreviousPage();
-        }
-
-        private void BtnUndo_OnClick(object sender, RoutedEventArgs e)
-        {
-            _flipbook.CurrentPage.Undo();
-        }
-
-        private void BtnRedo_OnClick(object sender, RoutedEventArgs e)
-        {
-            _flipbook.CurrentPage.Redo();
-        }
-
-        private void BtnCopy_OnClick(object sender, RoutedEventArgs e)
-        {
-            _flipbook.CopyPreviousPage();
-        }
-
-        private void BtnGhost_OnClick(object sender, RoutedEventArgs e)
-        {
-            //Replace with dependancy property
-            _flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value;
-            _flipbook.RefreshPage();
-        }
-
-        private void BtnDelete_OnClick(object sender, RoutedEventArgs e)
-        {
-            _flipbook.DeletePage(_flipbook.CurrentPage);
-        }
     }
 }

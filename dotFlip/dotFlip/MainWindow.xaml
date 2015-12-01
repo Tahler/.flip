@@ -94,7 +94,7 @@
 
             <StatusBarItem Grid.Column="0">
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <Button x:Name="btnPrev"  Margin="5" Style="{StaticResource PrevButton}"  Content="Previous page" Click="BtnPrev_OnClick"/>
+                    <Button x:Name="btnPrev"  Margin="5" Style="{StaticResource PrevButton}"  Content="Previous page"/>
                     <TextBox Width="25" x:Name="txtNavigation" Text="{Binding ElementName=sldrNavigation, Path=Value, Mode=TwoWay}"/>
                     <Label x:Name="lblTotalPages" Content="of x"/>
                     <Button x:Name="btnNext"  Margin="5"  Style="{StaticResource NextButton}" Content="Next Page" />
@@ -105,11 +105,11 @@
             </StatusBarItem>
             <StatusBarItem Grid.Column="2" Margin="5">
                 <StackPanel Orientation="Horizontal" >
-                    <Button x:Name="btnUndo"  Margin="5" Style="{StaticResource UndoButton}" Click="BtnUndo_OnClick"/>
-                    <Button x:Name="btnRedo"  Margin="5" Style="{StaticResource RedoButton}" Click="BtnRedo_OnClick"/>
-                    <Button x:Name="btnCopy"  Margin="5" Style="{StaticResource CopyButton}" Click="BtnCopy_OnClick"/>
-                    <Button x:Name="btnDelete" Margin="5" Style="{StaticResource DeleteButton}" Click="BtnDelete_OnClick"/>
-                    <CheckBox x:Name="btnGhost"  Margin="5" Style="{StaticResource GhostButton}" Click="BtnGhost_OnClick"/>
+                    <Button x:Name="btnUndo"  Margin="5" Style="{StaticResource UndoButton}" />
+                    <Button x:Name="btnRedo"  Margin="5" Style="{StaticResource RedoButton}" />
+                    <Button x:Name="btnCopy"  Margin="5" Style="{StaticResource CopyButton}" />
+                    <Button x:Name="btnDelete" Margin="5" Style="{StaticResource DeleteButton}"/>
+                    <CheckBox x:Name="btnGhost"  Margin="5" Style="{StaticResource GhostButton}"/>
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>
