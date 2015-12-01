@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace dotFlip
 {
-    public delegate void PageChangedHandler(Page currentPage);
+    public delegate void PageChangedHandler(Page oldPage, Page currentPage);
 
     public class Flipbook
     {
@@ -24,8 +24,9 @@ namespace dotFlip
             get { return _currentPage; }
             set
             {
+                Page oldPage = _currentPage;
                 _currentPage = value;
-                PageChanged(_currentPage); // Invoke event
+                PageChanged(oldPage, _currentPage); // Invoke event
             }
         }
 
@@ -93,7 +94,7 @@ namespace dotFlip
 
         public void RefreshPage()
         {
-            PageChanged(_currentPage);
+            PageChanged(_currentPage, _currentPage);
         }
 
         public void MoveToPage(int index)

@@ -21,7 +21,7 @@ namespace dotFlip
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Flipbook flipbook;
+        private Flipbook _flipbook;
         private Color[] _colorHistory;
         private List<Button> _buttonsForColor;
 
@@ -29,10 +29,10 @@ namespace dotFlip
         {
             InitializeComponent();
             _colorHistory = new Color[]{ Colors.White, Colors.Black, Colors.Gray, Colors.Blue, Colors.Green, Colors.Red, Colors.Pink, Colors.Orange, Colors.Orchid};
-            flipbook = new Flipbook(Colors.LightYellow);
-            flipbook.PageChanged += Flipbook_PageChanged;
+            _flipbook = new Flipbook(Colors.LightYellow);
+            _flipbook.PageChanged += Flipbook_PageChanged;
 
-            Page currentPage = flipbook.CurrentPage;
+            Page currentPage = _flipbook.CurrentPage;
             flipbookHolder.Children.Add(currentPage);
 
             _buttonsForColor = new List<Button>();
@@ -42,9 +42,9 @@ namespace dotFlip
             }
         }
 
-        private void Flipbook_PageChanged(Page currentPage)
+        private void Flipbook_PageChanged(Page oldPage, Page currentPage)
         {
-            flipbookHolder.Children.Clear();
+            flipbookHolder.Children.Remove(oldPage);
             flipbookHolder.Children.Add(currentPage);
         }
 
@@ -95,13 +95,13 @@ namespace dotFlip
 
         private void ColorButton_Click(object sender, RoutedEventArgs e)
         {
-            Button but = sender as Button;
-            if(but != null)
+            Button button = sender as Button;
+            if(button != null)
             {
-                Rectangle rect = but.Content as Rectangle;
+                Rectangle rect = button.Content as Rectangle;
                 if(rect != null)
                 {
-                    ToolColorTester.Background = rect.Fill as SolidColorBrush;
+                    //ToolColorTester.Background = rect.Fill as SolidColorBrush;
                 }
             }
         }
@@ -124,39 +124,39 @@ namespace dotFlip
 
         private void BtnNext_OnClick(object sender, RoutedEventArgs e)
         {
-            flipbook.NextPage();
+            _flipbook.NextPage();
         }
 
         private void BtnPrev_OnClick(object sender, RoutedEventArgs e)
         {
-            flipbook.PreviousPage();
+            _flipbook.PreviousPage();
         }
 
         private void BtnUndo_OnClick(object sender, RoutedEventArgs e)
         {
-            flipbook.CurrentPage.Undo();
+            _flipbook.CurrentPage.Undo();
         }
 
         private void BtnRedo_OnClick(object sender, RoutedEventArgs e)
         {
-            flipbook.CurrentPage.Redo();
+            _flipbook.CurrentPage.Redo();
         }
 
         private void BtnCopy_OnClick(object sender, RoutedEventArgs e)
         {
-            flipbook.CopyPreviousPage();
+            _flipbook.CopyPreviousPage();
         }
 
         private void BtnGhost_OnClick(object sender, RoutedEventArgs e)
         {
             //Replace with dependancy property
-            flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value;
-            flipbook.RefreshPage();
+            _flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value;
+            _flipbook.RefreshPage();
         }
 
         private void BtnDelete_OnClick(object sender, RoutedEventArgs e)
         {
-            flipbook.DeletePage(flipbook.CurrentPage);
+            _flipbook.DeletePage(_flipbook.CurrentPage);
         }
     }
 }

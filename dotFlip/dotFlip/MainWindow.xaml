@@ -245,9 +245,6 @@
                     </Button>
                 </UniformGrid>
             </Grid>
-            <Label Background="Green" Content="sticky note here" Grid.Column="1"/>
-            <Label x:Name="StickyNoteColorTester" Content="StickyNote" Grid.Column="1" HorizontalAlignment="Left" Margin="150,122,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="ToolColorTester" Content="Tool" Grid.Column="1" HorizontalAlignment="Left" Margin="192,99,0,0" VerticalAlignment="Top"/>
             <StackPanel Grid.Column="1" 
                         Background="#EEE" 
                         HorizontalAlignment="Center"
