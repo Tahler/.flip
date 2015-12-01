@@ -98,9 +98,5 @@ namespace dotFlip
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            txtPageNum.Text = "6";
-        }
     }
 }
