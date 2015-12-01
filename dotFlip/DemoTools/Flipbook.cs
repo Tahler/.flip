@@ -22,7 +22,7 @@ namespace dotFlip
             set
             {
                 _currentPage = value;
-                PageChanged(_currentPage); // Invoke event
+                PageChanged(_currentPage); // Invoke event three
             }
         }
 

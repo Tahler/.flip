@@ -107,7 +107,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Button x:Name="Highlighter" Grid.Column="2" Margin="53.4,53,58.4,40" Grid.ColumnSpan="3">
+                    <Button x:Name="Highlighter" Grid.Column="2" Grid.ColumnSpan="3" Margin="59.4,41,59.4,46">
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
