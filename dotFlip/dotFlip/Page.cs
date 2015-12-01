@@ -72,6 +72,11 @@ namespace dotFlip
             }
         }
 
+        private void SaveCurrentState()
+        {
+            _undoStack.Push(Visuals.Count);
+        }
+
         private void Page_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (!_mouseDown)
@@ -145,7 +150,7 @@ namespace dotFlip
             }
         }
 
-        public void ClearPage()
+        public void Clear()
         {
             SaveCurrentState();
 
@@ -157,11 +162,6 @@ namespace dotFlip
 
             Visuals.Add(splash);
             AddVisualChild(splash);
-        }
-
-        private void SaveCurrentState()
-        {
-            _undoStack.Push(Visuals.Count);
         }
     }
 }

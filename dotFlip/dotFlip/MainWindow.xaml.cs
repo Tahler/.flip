@@ -44,6 +44,7 @@ namespace dotFlip
             }
             UpdateNavigation();
 
+            clearPageMenuItem.Click += (sender, e) => _flipbook.CurrentPage.Clear();
             btnNext.Click += (sender, e) => _flipbook.NextPage();
             btnPrev.Click += (sender, e) => _flipbook.PreviousPage();
             btnCopy.Click += (sender, e) => _flipbook.CopyPreviousPage();
@@ -165,5 +166,9 @@ namespace dotFlip
 
         }
 
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

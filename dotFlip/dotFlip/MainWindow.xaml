@@ -72,10 +72,11 @@
             <MenuItem Header="File">
                 <MenuItem Header="Save"/>
             </MenuItem>
-            <MenuItem Header="Edit">
-                <MenuItem Header="Sticky Note Background">
-                    <xctk:ColorPicker Grid.Row="0" Name="StickyNote_ClrPicker" SelectedColorChanged="StickyNoteClrPcker_Background_SelectedColorChanged" Margin="0,0,-50,0" HorizontalAlignment="Right" Width="161" />
+            <MenuItem Header="Page">
+                <MenuItem Header="Background">
+                    <xctk:ColorPicker Name="StickyNote_ClrPicker" SelectedColorChanged="StickyNoteClrPcker_Background_SelectedColorChanged" Margin="0,0,-50,0" HorizontalAlignment="Right" Width="161" />
                 </MenuItem>
+                <MenuItem x:Name="clearPageMenuItem" Header="Clear"/>
             </MenuItem>
             <MenuItem Header="View"/>
         </Menu>
