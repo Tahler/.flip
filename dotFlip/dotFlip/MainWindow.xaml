@@ -365,7 +365,7 @@
                     </Button>
                     <Image Source="Image/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,90,10.4,0" VerticalAlignment="Bottom"/>
                 </Grid>
-                <Border Margin="5" MaxHeight="290" MinHeight="300" MaxWidth="300" MinWidth="290" Grid.Column="0" Grid.Row="0" BorderBrush="Black" BorderThickness="2" CornerRadius="10" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Border Margin="5" MaxHeight="300" MinHeight="300" MaxWidth="300" MinWidth="290" Grid.Column="0" Grid.Row="0" BorderBrush="Black" BorderThickness="2" CornerRadius="10" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center" >
                     <Grid Height="300"  VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"></ColumnDefinition>

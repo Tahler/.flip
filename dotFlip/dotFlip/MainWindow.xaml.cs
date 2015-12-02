@@ -203,9 +203,8 @@ namespace dotFlip
 
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerWindow clrPickerWindow;
-            clrPickerWindow = new ColorPickerWindow(this);
-            clrPickerWindow.Show();
+            var clrPickerWindow = new ColorPickerWindow(this);
+            clrPickerWindow.ShowDialog();
         }
 
         private void Pencil_Click(object sender, RoutedEventArgs e)

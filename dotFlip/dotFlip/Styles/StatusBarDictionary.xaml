@@ -132,7 +132,7 @@
                 <Setter Property="Background" Value="White"></Setter>
             </Trigger>
             <Trigger Property="IsChecked" Value="False">
-                <Setter Property="Background" Value="Transparent"></Setter>
+                <Setter Property="Background" Value="Black"></Setter>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="Gray"></Setter>
