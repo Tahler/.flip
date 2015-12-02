@@ -16,14 +16,14 @@ namespace dotFlip
         private SolidColorBrush _background;
         private Dictionary<string, ITool> _tools;
 
-        private bool _shouldIsShowingGhostStrokes;
+        private bool _isShowingGhostStrokes;
 
         public bool IsShowingGhostStrokes
         {
-            get { return _shouldIsShowingGhostStrokes; }
+            get { return _isShowingGhostStrokes; }
             set
             {
-                _shouldIsShowingGhostStrokes = value;
+                _isShowingGhostStrokes = value;
                 RefreshPage();
             }
         }
@@ -36,7 +36,7 @@ namespace dotFlip
             set
             {
                 _currentPage = value;
-                PageChanged(_currentPage, GetPreviousPage(_currentPage)); // Invoke event
+                RefreshPage();
             }
         }
 
@@ -105,7 +105,7 @@ namespace dotFlip
 
         public void RefreshPage()
         {
-            PageChanged(_currentPage, GetPreviousPage(_currentPage));
+            PageChanged(_currentPage, _isShowingGhostStrokes ? GetPreviousPage(_currentPage) : null);
         }
 
         public void MoveToPage(int index)
