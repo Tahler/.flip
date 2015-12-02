@@ -208,18 +208,18 @@
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Image Source="Image/pen.png">
                                         <Image.Style>
-      <Style TargetType="{x:Type Image}">
-         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-               <Setter Property="Effect">
-                  <Setter.Value>
-                     <DropShadowEffect ShadowDepth="0" Color="Blue" Opacity="1" BlurRadius="20"/>
-                  </Setter.Value>
-               </Setter>
-            </Trigger>
-         </Style.Triggers>
-      </Style>
-   </Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="0" Color="Blue" Opacity="1" BlurRadius="20"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
                                     </Image>
                                 </Border>
                             </ControlTemplate>
@@ -359,10 +359,10 @@
                 <Button x:Name="button" Style="{StaticResource ColorPickerButton}"  Content="Button" Margin="160,153,0,0" Click="ColorPickerbutton_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
             </Grid>
-            <StackPanel Grid.Column="2" 
+            <StackPanel Grid.Column="1" 
                         Background="#EEE" 
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center" Margin="147,51">
+                        VerticalAlignment="Center">
                 <Grid x:Name="flipbookHolder"
                       Width="{StaticResource FlipbookWidth}"
                       Height="{StaticResource FlipbookWidth}"/>

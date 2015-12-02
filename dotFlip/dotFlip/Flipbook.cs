@@ -110,8 +110,7 @@ namespace dotFlip
 
         public void MoveToPage(int index)
         {
-            if (index < 0)
-                index = _pages.Count - 1;
+            if (index < 0) return;
 
             if (_pages.Count - 1 <= index)
             {
