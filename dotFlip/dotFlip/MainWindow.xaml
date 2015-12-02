@@ -73,10 +73,11 @@
             <MenuItem Header="File">
                 <MenuItem Header="Save"/>
             </MenuItem>
-            <MenuItem Header="Edit">
-                <MenuItem Header="Sticky Note Background">
-                    <xctk:ColorPicker Grid.Row="0" Name="StickyNote_ClrPicker" SelectedColorChanged="StickyNoteClrPcker_Background_SelectedColorChanged" Margin="0,0,-50,0" HorizontalAlignment="Right" Width="161" />
+            <MenuItem Header="Page">
+                <MenuItem Header="Background">
+                    <xctk:ColorPicker Name="StickyNote_ClrPicker" SelectedColorChanged="StickyNoteClrPcker_Background_SelectedColorChanged" Margin="0,0,-50,0" HorizontalAlignment="Right" Width="161" />
                 </MenuItem>
+                <MenuItem x:Name="clearPageMenuItem" Header="Clear"/>
             </MenuItem>
             <MenuItem Header="View"/>
         </Menu>
@@ -102,7 +103,10 @@
                 </StackPanel>
             </StatusBarItem>
             <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Stretch">
-                <Slider x:Name="sldrNavigation" Value="1" Minimum="1" Margin="5" TickFrequency="1" IsSnapToTickEnabled="True"></Slider>
+                <DockPanel>
+                    <CheckBox x:Name="chkPlay" Margin="5" Style="{StaticResource PlayButton}"  DockPanel.Dock="Left" Click="chkPlay_Click"/>
+                        <Slider x:Name="sldrNavigation" Foreground="Green" TickPlacement="BottomRight"  Value="1" Minimum="1" Margin="5" TickFrequency="1" IsSnapToTickEnabled="True"></Slider>
+                </DockPanel>
             </StatusBarItem>
             <StatusBarItem Grid.Column="2" Margin="5">
                 <StackPanel Orientation="Horizontal" >
@@ -228,7 +232,7 @@
                     </Button>
                     <Image Source="Image/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,90,10.4,0" VerticalAlignment="Bottom"/>
                 </Grid>
-                <UniformGrid x:Name="ColorHistory" Columns="3"  Margin="100,20,20,0" Width="128" Height="128" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <UniformGrid x:Name="ColorHistory" Columns="3"  Margin="0,20,10,0" Width="128" Height="128" VerticalAlignment="Top" HorizontalAlignment="Right">
                     <Button x:Name="ColorButton1" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
                         <Button.Content>
                             <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
@@ -311,6 +315,8 @@
                         </Button.Content>
                     </Button>
                 </UniformGrid>
+                <Button x:Name="button" Style="{StaticResource ColorPickerButton}"  Content="Button" Margin="160,153,0,0" Click="ColorPickerbutton_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
             </Grid>
             <StackPanel Grid.Column="1" 
                         Background="#EEE" 

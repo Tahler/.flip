@@ -44,13 +44,23 @@ namespace dotFlip
             }
             UpdateNavigation();
 
+            clearPageMenuItem.Click += (sender, e) => _flipbook.CurrentPage.Clear();
             btnNext.Click += (sender, e) => _flipbook.NextPage();
             btnPrev.Click += (sender, e) => _flipbook.PreviousPage();
             btnCopy.Click += (sender, e) => _flipbook.CopyPreviousPage();
             btnGhost.Click += (sender, e) => { _flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value; _flipbook.RefreshPage(); };
             btnRedo.Click += (sender, e) => _flipbook.CurrentPage.Redo();
             btnUndo.Click += (sender, e) => _flipbook.CurrentPage.Undo();
-            btnDelete.Click += (sender, e) => _flipbook.DeletePage(_flipbook.CurrentPage);
+            btnDelete.Click += (sender, e) =>
+            {
+                MessageBoxResult messageBoxResult =
+                    System.Windows.MessageBox.Show("Are you sure you want to delete this page?", "Delete Page",
+                        MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    _flipbook.DeletePage(_flipbook.CurrentPage);
+                }
+            };
             sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
         }
 
@@ -86,7 +96,8 @@ namespace dotFlip
         private void UpdateNavigation()
         {
             sldrNavigation.Maximum = _flipbook.PageCount;
-            sldrNavigation.IsEnabled = _flipbook.PageCount > 1;
+            sldrNavigation.IsEnabled = _flipbook.PageCount > 1 && !_flipbook.IsPlaying;
+            chkPlay.IsEnabled = _flipbook.PageCount > 1;
             sldrNavigation.Value = _flipbook.GetPageNumber(_flipbook.CurrentPage);
             lblTotalPages.Content = "of " + _flipbook.PageCount;
         }
@@ -121,13 +132,10 @@ namespace dotFlip
             //}
         }
 
-        private void ToolClrPcker_Background_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        public void changeToolColor(Color c)
         {
-            Color color = (Color)e.NewValue;
-            Brush backgroundColor = new SolidColorBrush(color);
-
-            UpdateColorHistory(color);
-
+            UpdateColorHistory(c);
+            _flipbook.CurrentTool.ChangeColor(c);
         }
 
         private void StickyNoteClrPcker_Background_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
@@ -144,7 +152,8 @@ namespace dotFlip
                 Rectangle rect = button.Content as Rectangle;
                 if(rect != null)
                 {
-                    //ToolColorTester.Background = rect.Fill as SolidColorBrush;
+                    SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
+                    _flipbook.CurrentTool.ChangeColor(rectColor.Color);
                 }
             }
         }
@@ -156,7 +165,8 @@ namespace dotFlip
 
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerWindow clrPickerWindow = new ColorPickerWindow();
+            ColorPickerWindow clrPickerWindow;
+            clrPickerWindow = new ColorPickerWindow(this);
             clrPickerWindow.Show();
         }
 
@@ -168,6 +178,42 @@ namespace dotFlip
         private void Pen_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Pen");
+        }
+
+        private void chkPlay_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.IsPlaying = chkPlay.IsChecked.Value;
+            if (chkPlay.IsChecked.Value)
+            {
+                btnNext.IsEnabled = false;
+                btnPrev.IsEnabled = false;
+                btnUndo.IsEnabled = false;
+                btnUndo.IsEnabled = false;
+                btnCopy.IsEnabled = false;
+                btnRedo.IsEnabled = false;
+                btnDelete.IsEnabled = false;
+                txtNavigation.IsEnabled = false;
+                sldrNavigation.IsEnabled = false;
+                btnGhost.IsChecked = false;
+                btnGhost.IsEnabled = false;
+                _flipbook.ShowGhostStrokes = false;
+                flipbookHolder.IsHitTestVisible = false;
+            }
+            else
+            {
+                btnNext.IsEnabled = true;
+                btnPrev.IsEnabled = true;
+                btnUndo.IsEnabled = true;
+                btnUndo.IsEnabled = true;
+                btnCopy.IsEnabled = true;
+                btnDelete.IsEnabled = true;
+                txtNavigation.IsEnabled = true;
+                sldrNavigation.IsEnabled = true;
+                btnRedo.IsEnabled = true;
+                btnGhost.IsEnabled = true;
+                flipbookHolder.IsHitTestVisible = true;
+            }
+            _flipbook.PlayAnimation(500);
         }
 
         private void eraserButton_Click(object sender, RoutedEventArgs e)

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using dotFlip.Tools;
-using System.Threading.Tasks;
 
 namespace dotFlip
 {
@@ -15,14 +12,14 @@ namespace dotFlip
         private bool _mouseDown;
         private Flipbook _parent;
 
-        private Stack<int> _undoStack; // Holds the list of indices to "rollback" to in case of an undo call
+        private Stack<int> _undoStack; // Holds the list of indices to "rollback" to in case of an Undo() call
         private Stack<List<Visual>> _redoStack;
 
         public IList<Visual> Visuals { get; private set; }
 
         public Page(Flipbook parent)
         {
-            this._parent = parent;
+            _parent = parent;
             ClipToBounds = true;
 
             Background = parent.Brush;
@@ -31,9 +28,10 @@ namespace dotFlip
             _undoStack = new Stack<int>();
             _redoStack = new Stack<List<Visual>>();
 
-            MouseDown += Page_MouseDown;
-            MouseMove += Page_MouseMove;
-            MouseUp += Page_MouseUp;
+            MouseDown += (sender, e) => Page_MouseDown(e.GetPosition(this));
+            MouseMove += (sender, e) => Page_MouseMove(e.GetPosition(this));
+            MouseUp += (sender, e) => Page_MouseUp(e.GetPosition(this));
+            MouseLeave += (sender, e) => Page_MouseLeave(e.GetPosition(this));
         }
 
         public void Undo()
@@ -59,7 +57,7 @@ namespace dotFlip
         {
             if (_redoStack.Count != 0)
             {
-                _undoStack.Push(Visuals.Count);
+                SaveCurrentState();
 
                 List<Visual> redoVisuals = _redoStack.Pop();
                 foreach (var visual in redoVisuals)
@@ -71,33 +69,42 @@ namespace dotFlip
             }
         }
 
-        private void Page_MouseDown(object sender, MouseButtonEventArgs e)
+        private void SaveCurrentState()
+        {
+            _undoStack.Push(Visuals.Count);
+        }
+
+        private void Page_MouseDown(Point mousePoint)
         {
             if (!_mouseDown)
             {
                 _mouseDown = true;
 
-                _undoStack.Push(Visuals.Count);
+                SaveCurrentState();
                 _redoStack.Clear();
 
-                Point point = e.GetPosition(this);
-                Draw(point);
-                _previousPoint = point;
+                Draw(mousePoint);
+                _previousPoint = mousePoint;
             }
         }
 
-        private void Page_MouseMove(object sender, MouseEventArgs e)
+        private void Page_MouseMove(Point mousePoint)
         {
             if (_mouseDown)
             {
-                Point nextPoint = e.GetPosition(this);
-                IEnumerable<Point> line = Bresenham.GetPointsOnLine(_previousPoint, nextPoint);
+                IEnumerable<Point> line = Bresenham.GetPointsOnLine(_previousPoint, mousePoint);
                 foreach (var point in line) Draw(point);
-                _previousPoint = nextPoint;
+                _previousPoint = mousePoint;
             }
         }
 
-        private void Page_MouseUp(object sender, MouseButtonEventArgs e)
+        private void Page_MouseLeave(Point mousePoint)
+        {
+            Page_MouseMove(mousePoint);
+            Page_MouseUp(mousePoint);
+        }
+
+        private void Page_MouseUp(Point mousePoint)
         {
             _mouseDown = false;
         }
@@ -130,6 +137,7 @@ namespace dotFlip
 
         public void CopyPage(Page prevPage)
         {
+            SaveCurrentState();
             foreach (Visual v in prevPage.Visuals)
             {
                 DrawingVisual visual = new DrawingVisual();
@@ -143,9 +151,18 @@ namespace dotFlip
             }
         }
 
-        public void ClearPage()
+        public void Clear()
         {
-            Visuals.Clear();
+            SaveCurrentState();
+
+            DrawingVisual splash = new DrawingVisual();
+            using (var context = splash.RenderOpen())
+            {
+                context.DrawRectangle(Background, null, new Rect(this.RenderSize));
+            }
+
+            Visuals.Add(splash);
+            AddVisualChild(splash);
         }
     }
 }

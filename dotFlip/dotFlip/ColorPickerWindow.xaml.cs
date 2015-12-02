@@ -19,19 +19,24 @@ namespace dotFlip
     /// </summary>
     public partial class ColorPickerWindow : Window
     {
-        public ColorPickerWindow()
+        private MainWindow _parent;
+
+        private Color _selectedColor;
+        public ColorPickerWindow(MainWindow parent)
         {
+            _parent = parent;
             InitializeComponent();
         }
 
-        private void Tool_ClrPicker_LostFocus(object sender, RoutedEventArgs e)
+        private void colorPickedButton_Click(object sender, RoutedEventArgs e)
         {
+            _parent.changeToolColor(_selectedColor);
             this.Close();
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            colorPicker.SelectedColorChanged += (object s, RoutedPropertyChangedEventArgs<Color?> ev) => { _selectedColor = (Color)colorPicker.SelectedColor; };
         }
     }
 }
