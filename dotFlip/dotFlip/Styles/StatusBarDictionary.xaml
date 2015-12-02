@@ -37,6 +37,26 @@
         </Setter>
     </Style>
 
+    <Style x:Key="ColorPickerButton" TargetType="{x:Type Button}">
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="Aquamarine"></Setter>
+            </Trigger>
+        </Style.Triggers>
+        <Setter Property="Background" Value="Green"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Rectangle Width="129" Height="50" Stroke="Black" StrokeThickness="2" Fill="{TemplateBinding Background}"/>
+                        <Label Content="More Colors..." FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Grid>
+                    
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="UndoButton" TargetType="{x:Type Button}">
         <Style.Triggers>
             <Trigger Property="IsPressed" Value="True">

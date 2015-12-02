@@ -5,11 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:dotFlip"
+        xmlns:controls="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
-        Title="Window1" Height="432" Width="236" WindowStyle="ToolWindow">
+        Title="Window1" Height="320" Width="236" WindowStyle="ToolWindow" Loaded="Window_Loaded">
     <Window.Resources>
     </Window.Resources>
-    <Grid>
-        <xctk:ColorPicker Grid.Row="0" IsOpen="True" Name="Tool_ClrPicker" Width="0" Height="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+    <Grid  >
+        <xctk:ColorCanvas x:Name="colorPicker"  Height="300" VerticalAlignment="Top"/>
+        <Button x:Name="colorPickedButton" Content="Done" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="143,267,0,0" Click="colorPickedButton_Click"/>
+
     </Grid>
 </Window>
