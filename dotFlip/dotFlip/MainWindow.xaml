@@ -90,7 +90,8 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Save"/>
+                <MenuItem Header="Save"
+                          Command="ApplicationCommands.Save"/>
                 <MenuItem Header="Export"/>
             </MenuItem>
             <MenuItem Header="Edit">
@@ -98,9 +99,14 @@
                           Command="ApplicationCommands.Undo"/>
                 <MenuItem Header="Redo"
                           Command="ApplicationCommands.Redo"/>
+                <MenuItem Header="Copy Previous Page"
+                          Command="local:Commands.CopyPreviousPage"/>
+                <MenuItem Header="Show Ghost Strokes"
+                          Command="local:Commands.ShowGhostStrokes"/>
                 <MenuItem Header="Clear Page"
-                          x:Name="clearPageMenuItem"/>
+                          Command="local:Commands.ClearPage"/>
                 <MenuItem Header="Delete Page"
+                          Command="local:Commands.DeletePage"
                           x:Name="deletePageMenuItem"/>
                 <MenuItem Header="Set Canvas Background">
                     <xctk:ColorPicker Name="StickyNote_ClrPicker" 
@@ -109,16 +115,21 @@
                                       Width="161" />
                 </MenuItem>
                 <MenuItem Header="Restart"
+                          Command="local:Commands.Restart"
+                          ToolTip="Delete all existing pages"
                           x:Name="restartMenuItem"/>
             </MenuItem>
             <MenuItem Header="Navigation">
                 <MenuItem Header="Previous Page"
+                          Command="local:Commands.PreviousPage"
                           x:Name="previousPageMenuItem"/>
                 <MenuItem Header="Next Page"
+                          Command="local:Commands.NextPage"
                           x:Name="nextPageMenuItem"/>
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem Header="Set Editor Background"
+                          ToolTip="Set the Background of the Editor Window"
                           x:Name="editorBackgroundMenuItem"/>
             </MenuItem>
         </Menu>

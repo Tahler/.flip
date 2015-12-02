@@ -141,7 +141,7 @@ namespace dotFlip
             return _pages.IndexOf(page) + 1;
         }
 
-        public void CopyPreviousPage()
+        public void CopyPreviousPageToCurrentPage()
         {
             int index = _pages.IndexOf(_currentPage);
             if (index > 0)

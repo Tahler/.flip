@@ -57,13 +57,17 @@ namespace dotFlip
             CommandBindings.Add(new CommandBinding(Commands.PreviousPage, (sender, e) => _flipbook.PreviousPage()));
             CommandBindings.Add(new CommandBinding(Commands.NextPage, (sender, e) => _flipbook.NextPage()));
             CommandBindings.Add(new CommandBinding(Commands.ShowGhostStrokes, (sender, e) => _flipbook.ShowGhostStrokes = !_flipbook.ShowGhostStrokes));
+            CommandBindings.Add(new CommandBinding(Commands.CopyPreviousPage, (sender, e) => _flipbook.CopyPreviousPageToCurrentPage()));
+            CommandBindings.Add(new CommandBinding(Commands.ClearPage, (sender, e) => _flipbook.CurrentPage.Clear()));
+            CommandBindings.Add(new CommandBinding(Commands.DeletePage, (sender, e) => _flipbook.DeletePage(_flipbook.CurrentPage)));
+            CommandBindings.Add(new CommandBinding(Commands.Restart, (sender, e) => _flipbook.DeleteAllPages()));
         }
 
         private void InitializeButtonClickEvents()
         {
             btnNext.Click += (sender, e) => _flipbook.NextPage();
             btnPrev.Click += (sender, e) => _flipbook.PreviousPage();
-            btnCopy.Click += (sender, e) => _flipbook.CopyPreviousPage();
+            btnCopy.Click += (sender, e) => _flipbook.CopyPreviousPageToCurrentPage();
             btnGhost.Click += (sender, e) => _flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value;
             btnRedo.Click += (sender, e) => _flipbook.CurrentPage.Redo();
             btnUndo.Click += (sender, e) => _flipbook.CurrentPage.Undo();
@@ -71,8 +75,6 @@ namespace dotFlip
 
         private void InitializeMenuItemClickEvents()
         {
-
-            clearPageMenuItem.Click += (sender, e) => _flipbook.CurrentPage.Clear();
             btnDelete.Click += (sender, e) =>
             {
                 Point lowerRightPoint = this.PointToScreen(new Point(0, 0));
