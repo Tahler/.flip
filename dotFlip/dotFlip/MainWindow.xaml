@@ -376,7 +376,7 @@
                             <RowDefinition Height="*"></RowDefinition>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Column="1" Grid.Row="0">
-                            <UniformGrid  x:Name="ColorHistory" Columns="3"  Width="128" Height="128" VerticalAlignment="Top" HorizontalAlignment="Center">
+                            <UniformGrid  x:Name="ColorHistory" Columns="3"  Width="128" Height="128" Margin="0 5 0 0" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <Button x:Name="ColorButton1" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
                                 <Button x:Name="ColorButton2" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
                                 <Button x:Name="ColorButton3" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
@@ -387,7 +387,7 @@
                                 <Button x:Name="ColorButton8" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
                                 <Button x:Name="ColorButton9" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
                             </UniformGrid>
-                            <Button x:Name="moreColorsButton" Style="{StaticResource ColorPickerButton}" Click="ColorPickerbutton_Click" HorizontalAlignment="Center" Margin="0 5 0 0" VerticalAlignment="Bottom"/>
+                            <Button x:Name="moreColorsButton" Style="{StaticResource ColorPickerButton}" Click="ColorPickerbutton_Click" HorizontalAlignment="Center" Margin="0 5 0 0" VerticalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Grid.Row="1" Grid.Column="1">
                             <Label x:Name="toolThicknessLabel" Content="Thickness" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="18"/>
