@@ -51,7 +51,16 @@ namespace dotFlip
             btnGhost.Click += (sender, e) => { _flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value; _flipbook.RefreshPage(); };
             btnRedo.Click += (sender, e) => _flipbook.CurrentPage.Redo();
             btnUndo.Click += (sender, e) => _flipbook.CurrentPage.Undo();
-            btnDelete.Click += (sender, e) => _flipbook.DeletePage(_flipbook.CurrentPage);
+            btnDelete.Click += (sender, e) =>
+            {
+                MessageBoxResult messageBoxResult =
+                    System.Windows.MessageBox.Show("Are you sure you want to delete this page?", "Delete Page",
+                        MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    _flipbook.DeletePage(_flipbook.CurrentPage);
+                }
+            };
             sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
         }
 
