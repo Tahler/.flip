@@ -56,7 +56,15 @@ namespace dotFlip
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, (sender, e) => _flipbook.CurrentPage.Redo()));
             CommandBindings.Add(new CommandBinding(Commands.PreviousPage, (sender, e) => _flipbook.PreviousPage()));
             CommandBindings.Add(new CommandBinding(Commands.NextPage, (sender, e) => _flipbook.NextPage()));
-            CommandBindings.Add(new CommandBinding(Commands.ShowGhostStrokes, (sender, e) => _flipbook.ShowGhostStrokes = !_flipbook.ShowGhostStrokes));
+            CommandBindings.Add(new CommandBinding(Commands.ShowGhostStrokes, (sender, e) =>
+            {
+                _flipbook.IsShowingGhostStrokes = !_flipbook.IsShowingGhostStrokes;
+                bool isShowing = _flipbook.IsShowingGhostStrokes;
+                string tooltip = (isShowing ? "Hide" : "Show") + " Ghost Strokes";
+                btnGhost.ToolTip = tooltip;
+                btnGhost.IsChecked = isShowing;
+                ghostStrokesMenuItem.Header = tooltip;
+            }));
             CommandBindings.Add(new CommandBinding(Commands.CopyPreviousPage, (sender, e) => _flipbook.CopyPreviousPageToCurrentPage()));
             CommandBindings.Add(new CommandBinding(Commands.ClearPage, (sender, e) => _flipbook.CurrentPage.Clear()));
             CommandBindings.Add(new CommandBinding(Commands.DeletePage, (sender, e) => _flipbook.DeletePage(_flipbook.CurrentPage)));
@@ -68,7 +76,6 @@ namespace dotFlip
             btnNext.Click += (sender, e) => _flipbook.NextPage();
             btnPrev.Click += (sender, e) => _flipbook.PreviousPage();
             btnCopy.Click += (sender, e) => _flipbook.CopyPreviousPageToCurrentPage();
-            btnGhost.Click += (sender, e) => _flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value;
             btnRedo.Click += (sender, e) => _flipbook.CurrentPage.Redo();
             btnUndo.Click += (sender, e) => _flipbook.CurrentPage.Undo();
         }
@@ -112,7 +119,7 @@ namespace dotFlip
             currentPage.IsHitTestVisible = true;
             flipbookHolder.Children.Add(currentPage);
 
-            if (ghostPage != null && _flipbook.ShowGhostStrokes)
+            if (ghostPage != null && _flipbook.IsShowingGhostStrokes)
             {
                 ghostPage.Opacity = 0.05;
                 ghostPage.IsHitTestVisible = false;
@@ -127,7 +134,7 @@ namespace dotFlip
             sldrNavigation.IsEnabled = _flipbook.PageCount > 1 && !_flipbook.IsPlaying;
             chkPlay.IsEnabled = _flipbook.PageCount > 1;
             sldrNavigation.Value = _flipbook.GetPageNumber(_flipbook.CurrentPage);
-            lblTotalPages.Content = "of " + _flipbook.PageCount;
+            lblTotalPages.Content = _flipbook.PageCount;
         }
 
         private void UpdateColorHistory(Color c)
@@ -238,7 +245,7 @@ namespace dotFlip
                 sldrNavigation.IsEnabled = false;
                 btnGhost.IsChecked = false;
                 btnGhost.IsEnabled = false;
-                _flipbook.ShowGhostStrokes = false;
+                _flipbook.IsShowingGhostStrokes = false;
                 flipbookHolder.IsHitTestVisible = false;
             }
             else
