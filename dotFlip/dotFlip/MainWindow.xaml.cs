@@ -184,6 +184,7 @@ namespace dotFlip
                 btnGhost.IsChecked = false;
                 btnGhost.IsEnabled = false;
                 _flipbook.ShowGhostStrokes = false;
+                flipbookHolder.IsHitTestVisible = false;
             }
             else
             {
@@ -197,6 +198,7 @@ namespace dotFlip
                 sldrNavigation.IsEnabled = true;
                 btnRedo.IsEnabled = true;
                 btnGhost.IsEnabled = true;
+                flipbookHolder.IsHitTestVisible = true;
             }
             _flipbook.PlayAnimation(500);
         }
