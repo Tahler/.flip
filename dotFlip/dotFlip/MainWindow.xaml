@@ -440,7 +440,9 @@
                                 <Button x:Name="ColorButton9" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
                             </UniformGrid>
                             <Button x:Name="moreColorsButton" 
-                                    Style="{StaticResource ColorPickerButton}" 
+                                    Style="{StaticResource ColorPickerButtonStyle}" 
+                                    Content="More Colors"
+                                    Width="120"
                                     Click="ColorPickerbutton_Click" 
                                     Margin="0 5 0 0" 
                                     HorizontalAlignment="Center" 
