@@ -80,6 +80,7 @@ namespace dotFlip
                 }
             }));
             CommandBindings.Add(new CommandBinding(Commands.Restart, (sender, e) => _flipbook.DeleteAllPages()));
+            CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) => PlayAnimation()));
         }
 
         private void InitializeMenuItemClickEvents()
@@ -201,24 +202,11 @@ namespace dotFlip
 
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerWindow clrPickerWindow;
-            clrPickerWindow = new ColorPickerWindow(this);
+            ColorPickerWindow clrPickerWindow = new ColorPickerWindow(this);
             clrPickerWindow.Show();
         }
 
-        private void Pencil_Click(object sender, RoutedEventArgs e)
-        {
-            _flipbook.UseTool("Pencil");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Image/pencil.png"));
-        }
-
-        private void Pen_Click(object sender, RoutedEventArgs e)
-        {
-            _flipbook.UseTool("Pen");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Image/pen.png"));
-        }
-
-        private void chkPlay_Click(object sender, RoutedEventArgs e)
+        private void PlayAnimation()
         {
             _flipbook.IsPlaying = chkPlay.IsChecked.Value;
             if (chkPlay.IsChecked.Value)
@@ -253,6 +241,19 @@ namespace dotFlip
             }
             _flipbook.PlayAnimation(500);
         }
+
+        private void Pencil_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Pencil");
+            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Image/pencil.png"));
+        }
+
+        private void Pen_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Pen");
+            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Image/pen.png"));
+        }
+
         private void eraserButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Eraser");
