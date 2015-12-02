@@ -67,13 +67,23 @@ namespace dotFlip
             btnGhost.Click += (sender, e) => _flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value;
             btnRedo.Click += (sender, e) => _flipbook.CurrentPage.Redo();
             btnUndo.Click += (sender, e) => _flipbook.CurrentPage.Undo();
-            btnDelete.Click += (sender, e) => _flipbook.DeletePage(_flipbook.CurrentPage);
         }
 
         private void InitializeMenuItemClickEvents()
         {
 
             clearPageMenuItem.Click += (sender, e) => _flipbook.CurrentPage.Clear();
+            btnDelete.Click += (sender, e) =>
+            {
+                MessageBoxResult messageBoxResult =
+                    System.Windows.MessageBox.Show("Are you sure you want to delete this page?", "Delete Page",
+                        MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                {
+                    _flipbook.DeletePage(_flipbook.CurrentPage);
+                }
+            };
+            sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
         }
 
         private void Flipbook_PageChanged(Page currentPage, Page ghostPage)
@@ -144,13 +154,10 @@ namespace dotFlip
             //}
         }
 
-        private void ToolClrPcker_Background_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        public void changeToolColor(Color c)
         {
-            Color color = (Color)e.NewValue;
-            Brush backgroundColor = new SolidColorBrush(color);
-
-            UpdateColorHistory(color);
-
+            UpdateColorHistory(c);
+            _flipbook.CurrentTool.ChangeColor(c);
         }
 
         private void StickyNoteClrPcker_Background_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
@@ -167,7 +174,8 @@ namespace dotFlip
                 Rectangle rect = button.Content as Rectangle;
                 if(rect != null)
                 {
-                    //ToolColorTester.Background = rect.Fill as SolidColorBrush;
+                    SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
+                    _flipbook.CurrentTool.ChangeColor(rectColor.Color);
                 }
             }
         }
@@ -179,13 +187,19 @@ namespace dotFlip
 
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerWindow clrPickerWindow = new ColorPickerWindow();
+            ColorPickerWindow clrPickerWindow;
+            clrPickerWindow = new ColorPickerWindow(this);
             clrPickerWindow.Show();
         }
 
         private void Pencil_Click(object sender, RoutedEventArgs e)
         {
+            _flipbook.UseTool("Pencil");
+        }
 
+        private void Pen_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Pen");
         }
 
         private void chkPlay_Click(object sender, RoutedEventArgs e)
@@ -205,6 +219,7 @@ namespace dotFlip
                 btnGhost.IsChecked = false;
                 btnGhost.IsEnabled = false;
                 _flipbook.ShowGhostStrokes = false;
+                flipbookHolder.IsHitTestVisible = false;
             }
             else
             {
@@ -218,9 +233,19 @@ namespace dotFlip
                 sldrNavigation.IsEnabled = true;
                 btnRedo.IsEnabled = true;
                 btnGhost.IsEnabled = true;
+                flipbookHolder.IsHitTestVisible = true;
             }
             _flipbook.PlayAnimation(500);
         }
 
+        private void eraserButton_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Eraser");
+        }
+
+        private void highlighterButton_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Highlighter");
+        }
     }
 }
