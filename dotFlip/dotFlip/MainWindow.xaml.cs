@@ -162,8 +162,22 @@ namespace dotFlip
 
         private void Pencil_Click(object sender, RoutedEventArgs e)
         {
-
+            _flipbook.UseTool("Pencil");
         }
 
+        private void Pen_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Pen");
+        }
+
+        private void eraserButton_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Eraser");
+        }
+
+        private void highlighterButton_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Highlighter");
+        }
     }
 }
