@@ -186,11 +186,13 @@ namespace dotFlip
         private void Pencil_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Pencil");
+            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Image/pencil.png"));
         }
 
         private void Pen_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Pen");
+            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Image/pen.png"));
         }
 
         private void chkPlay_Click(object sender, RoutedEventArgs e)
@@ -231,11 +233,13 @@ namespace dotFlip
         private void eraserButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Eraser");
+            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Image/eraser.png"));
         }
 
         private void highlighterButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Highlighter");
+            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Image/high.png"));
         }
     }
 }
