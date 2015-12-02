@@ -104,7 +104,6 @@
                 <MenuItem Header="Set Canvas Background">
                     <xctk:ColorPicker Name="StickyNote_ClrPicker" 
                                       SelectedColorChanged="StickyNoteClrPcker_Background_SelectedColorChanged" 
-                                      Margin="0,0,-50,0" 
                                       HorizontalAlignment="Right" 
                                       Width="161" />
                 </MenuItem>
@@ -274,89 +273,19 @@
                     <Image Source="Image/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,90,10.4,0" VerticalAlignment="Bottom"/>
                 </Grid>
                 <UniformGrid x:Name="ColorHistory" Columns="3"  Margin="0,20,10,0" Width="128" Height="128" VerticalAlignment="Top" HorizontalAlignment="Right">
-                    <Button x:Name="ColorButton1" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton2" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton3" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton4" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton5" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2" StrokeThickness="46">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton6" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton7" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton8" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton9" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
+                    <Button x:Name="ColorButton1" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton2" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton3" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton4" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton5" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton6" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton7" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton8" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton9" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
                 </UniformGrid>
-                <Button x:Name="button" Style="{StaticResource ColorPickerButton}"  Content="Button" Margin="160,153,0,0" Click="ColorPickerbutton_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Button x:Name="moreColorsButton" Style="{StaticResource ColorPickerButton}" Margin="160,153,0,0" Click="ColorPickerbutton_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Slider x:Name="toolThicknessSlider" HorizontalAlignment="Left" Margin="160,245,0,0" VerticalAlignment="Top" Width="129"/>
+                <Label x:Name="toolThicknessLabel" Content="Thickness" HorizontalAlignment="Left" Margin="180,208,0,0" VerticalAlignment="Top" FontSize="18"/>
 
             </Grid>
             <StackPanel Grid.Column="1" 
