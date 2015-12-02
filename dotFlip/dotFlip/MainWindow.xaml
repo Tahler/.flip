@@ -12,7 +12,7 @@
         Left="100" Top="50"
         Loaded="Window_Loaded"
         Width="1200"
-        Height="800" 
+        Height="800"
         MinWidth="1200"
         MinHeight="900">
     <Window.InputBindings>
@@ -80,7 +80,7 @@
                 <EasingColorKeyFrame KeyTime="0:0:1" Value="White"/>
             </ColorAnimationUsingKeyFrames>
         </Storyboard>
-        <system:Double x:Key="FlipbookWidth">600</system:Double>
+        <system:Double x:Key="FlipbookWidth">650</system:Double>
         <Style x:Key="DarkGradientStyle" TargetType="DockPanel">
             <Setter Property="Background">
                 <Setter.Value>
@@ -230,12 +230,12 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Image Source="Image/pouchback.png" Margin="-10,70,0,151"  MaxHeight="150" MinHeight="150"  Grid.Column="0" Grid.ColumnSpan="6"/>
+                    <Image Source="Images/pouchback.png" Margin="-10,70,0,151"  MaxHeight="150" MinHeight="150"  Grid.Column="0" Grid.ColumnSpan="6"/>
                     <Button x:Name="Pencil" Grid.Column="1" Click="Pencil_Click" Margin="0,0,0,20" BorderThickness="0">
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/pencil.png">
+                                    <Image Source="Images/pencil.png">
                                         <Image.RenderTransform>
                                             <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
                                         </Image.RenderTransform>
@@ -281,7 +281,7 @@
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/pen.png">
+                                    <Image Source="Images/pen.png">
                                         <Image.RenderTransform>
                                             <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
                                         </Image.RenderTransform>
@@ -327,7 +327,7 @@
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/eraser.png">
+                                    <Image Source="Images/eraser.png">
                                         <Image.RenderTransform>
                                             <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
                                         </Image.RenderTransform>
@@ -373,7 +373,7 @@
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/high.png">
+                                    <Image Source="Images/high.png">
                                         <Image.RenderTransform>
                                             <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
                                         </Image.RenderTransform>
@@ -415,7 +415,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Image Source="Image/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,90,10.4,0" VerticalAlignment="Bottom"/>
+                    <Image Source="Images/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,90,10.4,0" VerticalAlignment="Bottom"/>
                 </Grid>
                 <Border Margin="5" MaxHeight="300" MinHeight="300" MaxWidth="300" MinWidth="290" Grid.Column="0" Grid.Row="0" BorderBrush="Black" BorderThickness="2" CornerRadius="10" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center" >
                     <Grid Height="300"  VerticalAlignment="Center">
@@ -439,7 +439,12 @@
                                 <Button x:Name="ColorButton8" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
                                 <Button x:Name="ColorButton9" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
                             </UniformGrid>
-                            <Button x:Name="moreColorsButton" Style="{StaticResource ColorPickerButton}" Click="ColorPickerbutton_Click" HorizontalAlignment="Center" Margin="0 5 0 0" VerticalAlignment="Center"/>
+                            <Button x:Name="moreColorsButton" 
+                                    Style="{StaticResource ColorPickerButton}" 
+                                    Click="ColorPickerbutton_Click" 
+                                    Margin="0 5 0 0" 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Grid.Row="1" Grid.Column="1">
                             <Label x:Name="toolThicknessLabel" Content="Thickness" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="18"/>

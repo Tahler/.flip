@@ -149,25 +149,28 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\pen.png" />
+    <Resource Include="Images\pen.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\high.png" />
+    <Resource Include="Images\high.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\toolKit.png" />
+    <Resource Include="Images\toolKit.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\pouch.png" />
+    <Resource Include="Images\pouch.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\pouchback.png" />
+    <Resource Include="Images\pouchback.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\pencil.png" />
+    <Resource Include="Images\pencil.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\eraser.png" />
+    <Resource Include="Images\eraser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\color-spectrum.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
