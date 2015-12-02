@@ -164,7 +164,7 @@
                 <ColumnDefinition MinWidth="300" MaxWidth="300"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,882,0">
+            <Grid Grid.Column="0" Grid.Row="1" >
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -365,23 +365,35 @@
                     </Button>
                     <Image Source="Image/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,90,10.4,0" VerticalAlignment="Bottom"/>
                 </Grid>
-                <Border BorderBrush="Black" BorderThickness="2" Height="300" VerticalAlignment="Top" Margin="0, 10, 0, 0">
-                    <Grid Height="300" VerticalAlignment="Top">
-                        <UniformGrid x:Name="ColorHistory" Columns="3"  Margin="0,20,10,0" Width="128" Height="128" VerticalAlignment="Top" HorizontalAlignment="Right">
-                            <Button x:Name="ColorButton1" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton2" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton3" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton4" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton5" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton6" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton7" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton8" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton9" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                        </UniformGrid>
-                        <Button x:Name="moreColorsButton" Style="{StaticResource ColorPickerButton}" Margin="160,153,0,0" Click="ColorPickerbutton_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <Slider x:Name="toolThicknessSlider" HorizontalAlignment="Left" Margin="160,245,0,0" VerticalAlignment="Top" Width="129"/>
-                        <Label x:Name="toolThicknessLabel" Content="Thickness" HorizontalAlignment="Left" Margin="180,208,0,0" VerticalAlignment="Top" FontSize="18"/>
-                        <Image x:Name="currentToolImage" Source="image/pen.png"  HorizontalAlignment="Left" Height="280" Margin="50,10,0,10" VerticalAlignment="Center" Width="63"/>
+                <Border MaxHeight="300" MinHeight="300" MaxWidth="300" MinWidth="300" Grid.Column="0" Grid.Row="0" BorderBrush="Black" BorderThickness="2" CornerRadius="10" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                    <Grid Height="290"  VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Column="1" Grid.Row="0">
+                            <UniformGrid  x:Name="ColorHistory" Columns="3"  Width="128" Height="128" VerticalAlignment="Top" HorizontalAlignment="Center">
+                                <Button x:Name="ColorButton1" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton2" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton3" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton4" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton5" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton6" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton7" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton8" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton9" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                            </UniformGrid>
+                            <Button x:Name="moreColorsButton" Style="{StaticResource ColorPickerButton}" Click="ColorPickerbutton_Click" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="1">
+                            <Label x:Name="toolThicknessLabel" Content="Thickness" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="18"/>
+                            <Slider x:Name="toolThicknessSlider" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="129"/>
+                        </StackPanel>
+                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"  x:Name="currentToolImage" Source="image/pen.png"  HorizontalAlignment="Center" Height="280"  VerticalAlignment="Center" Width="63"/>
                     </Grid>
                 </Border>
 
