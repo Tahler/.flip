@@ -1,0 +1,56 @@
+﻿<!--Original Source: http://stackoverflow.com/questions/3034741/create-popup-toaster-notifications-in-windows-with-net-->
+<Window x:Class="dotFlip.Notification"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dotFlip"
+        mc:Ignorable="d"
+        Title="Notification" Height="300" Width="300" WindowStyle="None" AllowsTransparency="True" Background="Transparent" SizeToContent="Height">
+    <Window.Resources>
+        <Storyboard x:Key="OnClosingStoryboard">
+                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:.25" FillBehavior="HoldEnd" />
+         </Storyboard>
+    </Window.Resources>
+    <Grid RenderTransformOrigin="0,1" >
+
+        <!-- Notification area -->
+        <Border BorderThickness="1" Background="Beige" BorderBrush="Black" CornerRadius="10">
+            <StackPanel Margin="20">
+                <TextBlock TextWrapping="Wrap" x:Name="Title"/>
+                <TextBlock x:Name="Message" TextWrapping="Wrap" Margin="5"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="btnYes" Grid.Column="1" Content="Yes" Width="50" HorizontalAlignment="Center" Click="BtnYes_OnClick"/>
+                    <Button x:Name="btnNo" Grid.Column="3" Content="No" Width="50" HorizontalAlignment="Center" Click="BtnNo_OnClick"/>
+                </Grid>
+
+            </StackPanel>
+        </Border>
+
+        <!-- Animation -->
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)">
+                            <SplineDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                            <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
+
+        <Grid.RenderTransform>
+            <ScaleTransform ScaleY="1" />
+        </Grid.RenderTransform>
+
+    </Grid>
+</Window>

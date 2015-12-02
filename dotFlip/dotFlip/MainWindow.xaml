@@ -9,8 +9,27 @@
         mc:Ignorable="d"
         Title=".Flip" 
         Width="1200"
+
         Height="800" Loaded="Window_Loaded"
-        MinWidth="1000">
+        MinWidth="1200"
+        MinHeight="900">
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl"
+                    Key="Z"
+                    Command="ApplicationCommands.Undo"/>
+        <KeyBinding Modifiers="Ctrl"
+                    Key="Y"
+                    Command="ApplicationCommands.Redo"/>
+        <KeyBinding Modifiers="Ctrl+Shift"
+                    Key="Z"
+                    Command="ApplicationCommands.Redo"/>
+        <KeyBinding Key="Left"
+                    Command="local:Commands.PreviousPage"/>
+        <KeyBinding Key="Right"
+                    Command="local:Commands.NextPage"/>
+        <KeyBinding Key="G"
+                    Command="local:Commands.ShowGhostStrokes"/>
+    </Window.InputBindings>
     <Window.Resources>
         <Style x:Key="customButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
@@ -72,16 +91,38 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Save"/>
+                <MenuItem Header="Export"/>
             </MenuItem>
-            <MenuItem Header="Page">
-                <MenuItem Header="Background">
-                    <xctk:ColorPicker Name="StickyNote_ClrPicker" SelectedColorChanged="StickyNoteClrPcker_Background_SelectedColorChanged" HorizontalAlignment="Right" Width="161" />
+            <MenuItem Header="Edit">
+                <MenuItem Header="Undo"
+                          Command="ApplicationCommands.Undo"/>
+                <MenuItem Header="Redo"
+                          Command="ApplicationCommands.Redo"/>
+                <MenuItem Header="Clear Page"
+                          x:Name="clearPageMenuItem"/>
+                <MenuItem Header="Delete Page"
+                          x:Name="deletePageMenuItem"/>
+                <MenuItem Header="Set Canvas Background">
+                    <xctk:ColorPicker Name="StickyNote_ClrPicker" 
+                                      SelectedColorChanged="StickyNoteClrPcker_Background_SelectedColorChanged" 
+                                      HorizontalAlignment="Right" 
+                                      Width="161" />
                 </MenuItem>
-                <MenuItem x:Name="clearPageMenuItem" Header="Clear"/>
+                <MenuItem Header="Restart"
+                          x:Name="restartMenuItem"/>
             </MenuItem>
-            <MenuItem Header="View"/>
+            <MenuItem Header="Navigation">
+                <MenuItem Header="Previous Page"
+                          x:Name="previousPageMenuItem"/>
+                <MenuItem Header="Next Page"
+                          x:Name="nextPageMenuItem"/>
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Set Editor Background"
+                          x:Name="editorBackgroundMenuItem"/>
+            </MenuItem>
         </Menu>
-        <StatusBar DockPanel.Dock="Bottom">
+        <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>
@@ -128,7 +169,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="1" Margin="10,0,0,0" MinWidth="288" MaxWidth="288" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <Grid Grid.Row="1" Margin="10,0,0,0" MinWidth="288" MaxWidth="288" MinHeight="351" MaxHeight="351" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
@@ -137,12 +178,35 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Image Source="Image/pouchback.png" Margin="-10,-60,0,0" Grid.Column="0" Grid.ColumnSpan="6"/>
+                    <Image Source="Image/pouchback.png" Margin="-10,70,0,151"  MaxHeight="150" MinHeight="150"  Grid.Column="0" Grid.ColumnSpan="6"/>
                     <Button x:Name="Pencil" Grid.Column="1" Click="Pencil_Click" Margin="0,0,0,20">
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Image Source="Image/pencil.png">
+                                        <Image.RenderTransform>
+                                            <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
+                                        </Image.RenderTransform>
+                                        <Image.Triggers>
+                                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                                <BeginStoryboard Name="myBeginStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="0" To="-50" Duration="0:0:.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="Button.MouseLeave">
+                                                <BeginStoryboard Name="myEndStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="-50" To="0" Duration="0:0:.3" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Image.Triggers>
                                         <Image.Style>
                                             <Style TargetType="{x:Type Image}">
                                                 <Style.Triggers>
@@ -166,6 +230,29 @@
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Image Source="Image/pen.png">
+                                        <Image.RenderTransform>
+                                            <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
+                                        </Image.RenderTransform>
+                                        <Image.Triggers>
+                                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                                <BeginStoryboard Name="myBeginStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="0" To="-50" Duration="0:0:.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="Button.MouseLeave">
+                                                <BeginStoryboard Name="myEndStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="-50" To="0" Duration="0:0:.3" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Image.Triggers>
                                         <Image.Style>
                                             <Style TargetType="{x:Type Image}">
                                                 <Style.Triggers>
@@ -189,6 +276,29 @@
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Image Source="Image/eraser.png">
+                                        <Image.RenderTransform>
+                                            <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
+                                        </Image.RenderTransform>
+                                        <Image.Triggers>
+                                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                                <BeginStoryboard Name="myBeginStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="0" To="-50" Duration="0:0:.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="Button.MouseLeave">
+                                                <BeginStoryboard Name="myEndStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="-50" To="0" Duration="0:0:.3" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Image.Triggers>
                                         <Image.Style>
                                             <Style TargetType="{x:Type Image}">
                                                 <Style.Triggers>
@@ -212,6 +322,29 @@
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
                                     <Image Source="Image/high.png">
+                                        <Image.RenderTransform>
+                                            <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
+                                        </Image.RenderTransform>
+                                        <Image.Triggers>
+                                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                                <BeginStoryboard Name="myBeginStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="0" To="-50" Duration="0:0:.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="Button.MouseLeave">
+                                                <BeginStoryboard Name="myEndStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="-50" To="0" Duration="0:0:.3" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Image.Triggers>
                                         <Image.Style>
                                             <Style TargetType="{x:Type Image}">
                                                 <Style.Triggers>

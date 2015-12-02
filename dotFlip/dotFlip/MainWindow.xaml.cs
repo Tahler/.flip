@@ -19,11 +19,10 @@ using Xceed.Wpf.Toolkit;
 
 namespace dotFlip
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        // http://stackoverflow.com/questions/1361350/keyboard-shortcuts-in-wpf
+
         private Flipbook _flipbook;
         private Color[] _colorHistory;
         private List<Button> _buttonsForColor;
@@ -44,19 +43,45 @@ namespace dotFlip
             }
             UpdateNavigation();
 
-            clearPageMenuItem.Click += (sender, e) => _flipbook.CurrentPage.Clear();
+            InitializeMenuItemClickEvents();
+            InitializeButtonClickEvents();
+            BindCommands();
+            
+            sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
+        }
+
+        private void BindCommands()
+        {
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo, (sender, e) => _flipbook.CurrentPage.Undo()));
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, (sender, e) => _flipbook.CurrentPage.Redo()));
+            CommandBindings.Add(new CommandBinding(Commands.PreviousPage, (sender, e) => _flipbook.PreviousPage()));
+            CommandBindings.Add(new CommandBinding(Commands.NextPage, (sender, e) => _flipbook.NextPage()));
+            CommandBindings.Add(new CommandBinding(Commands.ShowGhostStrokes, (sender, e) => _flipbook.ShowGhostStrokes = !_flipbook.ShowGhostStrokes));
+        }
+
+        private void InitializeButtonClickEvents()
+        {
             btnNext.Click += (sender, e) => _flipbook.NextPage();
             btnPrev.Click += (sender, e) => _flipbook.PreviousPage();
             btnCopy.Click += (sender, e) => _flipbook.CopyPreviousPage();
-            btnGhost.Click += (sender, e) => { _flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value; _flipbook.RefreshPage(); };
+            btnGhost.Click += (sender, e) => _flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value;
             btnRedo.Click += (sender, e) => _flipbook.CurrentPage.Redo();
             btnUndo.Click += (sender, e) => _flipbook.CurrentPage.Undo();
+        }
+
+        private void InitializeMenuItemClickEvents()
+        {
+
+            clearPageMenuItem.Click += (sender, e) => _flipbook.CurrentPage.Clear();
             btnDelete.Click += (sender, e) =>
             {
-                MessageBoxResult messageBoxResult =
-                    System.Windows.MessageBox.Show("Are you sure you want to delete this page?", "Delete Page",
-                        MessageBoxButton.YesNo);
-                if (messageBoxResult == MessageBoxResult.Yes)
+                Point lowerRightPoint = this.PointToScreen(new Point(0, 0));
+                lowerRightPoint.X += this.ActualWidth;
+                lowerRightPoint.Y += this.ActualHeight - StatusBar.ActualHeight;
+                Notification note = new Notification("Delete Page", "Are you sure you want to delete this page?", lowerRightPoint);
+                var showDialog = note.ShowDialog();
+                Console.WriteLine(showDialog.Value);
+                if (showDialog.Value)
                 {
                     _flipbook.DeletePage(_flipbook.CurrentPage);
                 }
