@@ -44,7 +44,6 @@ namespace dotFlip
             UpdateNavigation();
 
             InitializeMenuItemClickEvents();
-            InitializeButtonClickEvents();
             BindCommands();
             
             sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
@@ -67,22 +66,7 @@ namespace dotFlip
             }));
             CommandBindings.Add(new CommandBinding(Commands.CopyPreviousPage, (sender, e) => _flipbook.CopyPreviousPageToCurrentPage()));
             CommandBindings.Add(new CommandBinding(Commands.ClearPage, (sender, e) => _flipbook.CurrentPage.Clear()));
-            CommandBindings.Add(new CommandBinding(Commands.DeletePage, (sender, e) => _flipbook.DeletePage(_flipbook.CurrentPage)));
-            CommandBindings.Add(new CommandBinding(Commands.Restart, (sender, e) => _flipbook.DeleteAllPages()));
-        }
-
-        private void InitializeButtonClickEvents()
-        {
-            btnNext.Click += (sender, e) => _flipbook.NextPage();
-            btnPrev.Click += (sender, e) => _flipbook.PreviousPage();
-            btnCopy.Click += (sender, e) => _flipbook.CopyPreviousPageToCurrentPage();
-            btnRedo.Click += (sender, e) => _flipbook.CurrentPage.Redo();
-            btnUndo.Click += (sender, e) => _flipbook.CurrentPage.Undo();
-        }
-
-        private void InitializeMenuItemClickEvents()
-        {
-            btnDelete.Click += (sender, e) =>
+            CommandBindings.Add(new CommandBinding(Commands.DeletePage, (sender, e) =>
             {
                 Point lowerRightPoint = this.PointToScreen(new Point(0, 0));
                 lowerRightPoint.X += this.ActualWidth;
@@ -94,7 +78,12 @@ namespace dotFlip
                 {
                     _flipbook.DeletePage(_flipbook.CurrentPage);
                 }
-            };
+            }));
+            CommandBindings.Add(new CommandBinding(Commands.Restart, (sender, e) => _flipbook.DeleteAllPages()));
+        }
+
+        private void InitializeMenuItemClickEvents()
+        {
             sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
             toolThicknessSlider.ValueChanged += (sender, e) => { _flipbook.CurrentTool.Thickness = e.NewValue; };
         }

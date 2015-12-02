@@ -27,8 +27,13 @@
                     Command="local:Commands.PreviousPage"/>
         <KeyBinding Key="Right"
                     Command="local:Commands.NextPage"/>
+        <KeyBinding Key="P"
+                    Command="local:Commands.Play"/>
         <KeyBinding Key="G"
                     Command="local:Commands.ShowGhostStrokes"/>
+        <KeyBinding Modifiers="Ctrl"
+                    Key="D"
+                    Command="local:Commands.DeletePage"/>
     </Window.InputBindings>
     <Window.Resources>
         <Style x:Key="customButtonStyle" TargetType="{x:Type Button}">
@@ -149,39 +154,56 @@
 
             <StatusBarItem Grid.Column="0">
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <Button x:Name="btnPrev"  Margin="5" Style="{StaticResource PreviousPageButton}"  ToolTip="Previous page"/>
+                    <Button x:Name="btnPrev"  
+                            Command="local:Commands.PreviousPage"
+                            Margin="5" 
+                            Style="{StaticResource PreviousPageButton}"  
+                            ToolTip="Previous page"/>
                     <TextBox Width="22" x:Name="txtNavigation" Text="{Binding ElementName=sldrNavigation, Path=Value, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="22"/>
                     <Label Content="of "/>
                     <Label x:Name="lblTotalPages" Content="x"/>
-                    <Button x:Name="btnNext"  Margin="5"  Style="{StaticResource NextPageButton}" ToolTip="Next Page" />
+                    <Button x:Name="btnNext"  
+                            Command="local:Commands.NextPage"
+                            Margin="5"  
+                            Style="{StaticResource NextPageButton}" 
+                            ToolTip="Next Page" />
                 </StackPanel>
             </StatusBarItem>
-            <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Stretch">
+            <StatusBarItem Grid.Column="1" 
+                           HorizontalContentAlignment="Stretch">
                 <DockPanel>
-                    <CheckBox x:Name="chkPlay" Margin="5" Style="{StaticResource PlayButton}"  DockPanel.Dock="Left" Click="chkPlay_Click"/>
+                    <CheckBox x:Name="chkPlay" 
+                              DockPanel.Dock="Left" 
+                              Command="local:Commands.Play"
+                              Margin="5" 
+                              Style="{StaticResource PlayButton}"/>
                     <Slider x:Name="sldrNavigation" Foreground="Green" TickPlacement="BottomRight"  Value="1" Minimum="1" Margin="5" TickFrequency="1" IsSnapToTickEnabled="True"></Slider>
                 </DockPanel>
             </StatusBarItem>
             <StatusBarItem Grid.Column="2" Margin="5">
                 <StackPanel Orientation="Horizontal" >
                     <Button x:Name="btnUndo"  
+                            Command="ApplicationCommands.Undo"
                             Margin="5" 
                             Style="{StaticResource UndoButtonStyle}" 
                             ToolTip="Undo"/>
                     <Button x:Name="btnRedo"
+                            Command="ApplicationCommands.Redo"
                             Margin="5" 
                             Style="{StaticResource RedoButtonStyle}" 
                             ToolTip="Redo"/>
                     <Button x:Name="btnCopy"  
+                            Command="local:Commands.CopyPreviousPage"
                             Margin="5" 
                             Style="{StaticResource CopyButtonStyle}" 
                             ToolTip="Copy Previous Page"/>
-                    <CheckBox x:Name="btnGhost"  
+                    <CheckBox x:Name="btnGhost"
                               Command="local:Commands.ShowGhostStrokes"
                               Margin="5" 
                               Style="{StaticResource GhostButtonStyle}"
                               ToolTip="Toggle Ghost Strokes"/>
                     <Button x:Name="btnDelete" 
+                            Command="local:Commands.DeletePage"
                             Margin="5" 
                             Style="{StaticResource DeleteButtonStyle}"/>
                 </StackPanel>

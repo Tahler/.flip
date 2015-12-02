@@ -11,6 +11,7 @@ namespace dotFlip
     {
         public static RoutedCommand PreviousPage { get; } = new RoutedCommand();
         public static RoutedCommand NextPage { get; } = new RoutedCommand();
+        public static RoutedCommand Play { get; } = new RoutedCommand();
         public static RoutedCommand CopyPreviousPage { get; } = new RoutedCommand();
         public static RoutedCommand ShowGhostStrokes { get; } = new RoutedCommand();
         public static RoutedCommand ClearPage { get; } = new RoutedCommand();
