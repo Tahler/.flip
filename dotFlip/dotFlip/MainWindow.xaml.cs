@@ -53,10 +53,13 @@ namespace dotFlip
             btnUndo.Click += (sender, e) => _flipbook.CurrentPage.Undo();
             btnDelete.Click += (sender, e) =>
             {
-                MessageBoxResult messageBoxResult =
-                    System.Windows.MessageBox.Show("Are you sure you want to delete this page?", "Delete Page",
-                        MessageBoxButton.YesNo);
-                if (messageBoxResult == MessageBoxResult.Yes)
+                Point lowerRightPoint = this.PointToScreen(new Point(0, 0));
+                lowerRightPoint.X += this.ActualWidth;
+                lowerRightPoint.Y += this.ActualHeight - StatusBar.ActualHeight;
+                Notification note = new Notification("Delete Page", "Are you sure you want to delete this page?", lowerRightPoint);
+                var showDialog = note.ShowDialog();
+                Console.WriteLine(showDialog.Value);
+                if (showDialog.Value)
                 {
                     _flipbook.DeletePage(_flipbook.CurrentPage);
                 }

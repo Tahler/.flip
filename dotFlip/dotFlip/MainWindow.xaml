@@ -80,7 +80,7 @@
             </MenuItem>
             <MenuItem Header="View"/>
         </Menu>
-        <StatusBar DockPanel.Dock="Bottom">
+        <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>
