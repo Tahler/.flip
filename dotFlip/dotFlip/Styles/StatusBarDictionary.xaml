@@ -106,6 +106,48 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <Style x:Key="PlayButton" TargetType="{x:Type CheckBox}">
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="Aquamarine"></Setter>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Path Fill="{TemplateBinding Background}" StrokeThickness="1" Stroke="#000" RenderTransformOrigin="0.5, 0.5">
+                                <Path.Data>
+                                    <PathGeometry Figures="M4 4h24v24h-24z" FillRule="NonZero"/>
+                                </Path.Data>
+                                <Path.LayoutTransform>
+                                    <ScaleTransform ScaleX=".65" ScaleY=".65"></ScaleTransform>
+                                </Path.LayoutTransform>
+                            </Path>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Gray"></Setter>
+            </Trigger>
+        </Style.Triggers>
+        <Setter Property="Background" Value="Green"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Path Fill="{TemplateBinding Background}" StrokeThickness="1" Stroke="#000" RenderTransformOrigin="0.5, 0.5">
+                        <Path.Data>
+                            <PathGeometry Figures="M6 4l20 12-20 12z" FillRule="NonZero"/>
+                        </Path.Data>
+                        <Path.LayoutTransform>
+                            <ScaleTransform ScaleX=".70" ScaleY=".70"></ScaleTransform>
+                        </Path.LayoutTransform>
+                    </Path>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="CopyButton" TargetType="{x:Type Button}">
         <Style.Triggers>
