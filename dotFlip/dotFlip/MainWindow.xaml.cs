@@ -87,7 +87,8 @@ namespace dotFlip
         private void UpdateNavigation()
         {
             sldrNavigation.Maximum = _flipbook.PageCount;
-            sldrNavigation.IsEnabled = _flipbook.PageCount > 1;
+            sldrNavigation.IsEnabled = _flipbook.PageCount > 1 && !_flipbook.IsPlaying;
+            chkPlay.IsEnabled = _flipbook.PageCount > 1;
             sldrNavigation.Value = _flipbook.GetPageNumber(_flipbook.CurrentPage);
             lblTotalPages.Content = "of " + _flipbook.PageCount;
         }
@@ -165,9 +166,41 @@ namespace dotFlip
 
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void chkPlay_Click(object sender, RoutedEventArgs e)
         {
-
+            _flipbook.IsPlaying = chkPlay.IsChecked.Value;
+            if (chkPlay.IsChecked.Value)
+            {
+                btnNext.IsEnabled = false;
+                btnPrev.IsEnabled = false;
+                btnUndo.IsEnabled = false;
+                btnUndo.IsEnabled = false;
+                btnCopy.IsEnabled = false;
+                btnRedo.IsEnabled = false;
+                btnDelete.IsEnabled = false;
+                txtNavigation.IsEnabled = false;
+                sldrNavigation.IsEnabled = false;
+                btnGhost.IsChecked = false;
+                btnGhost.IsEnabled = false;
+                _flipbook.ShowGhostStrokes = false;
+                flipbookHolder.IsHitTestVisible = false;
+            }
+            else
+            {
+                btnNext.IsEnabled = true;
+                btnPrev.IsEnabled = true;
+                btnUndo.IsEnabled = true;
+                btnUndo.IsEnabled = true;
+                btnCopy.IsEnabled = true;
+                btnDelete.IsEnabled = true;
+                txtNavigation.IsEnabled = true;
+                sldrNavigation.IsEnabled = true;
+                btnRedo.IsEnabled = true;
+                btnGhost.IsEnabled = true;
+                flipbookHolder.IsHitTestVisible = true;
+            }
+            _flipbook.PlayAnimation(500);
         }
+
     }
 }
