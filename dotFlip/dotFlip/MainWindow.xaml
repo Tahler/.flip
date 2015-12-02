@@ -9,7 +9,27 @@
         mc:Ignorable="d"
         Title=".Flip" 
         Width="1200"
-        Height="800" Loaded="Window_Loaded">
+
+        Height="800" Loaded="Window_Loaded"
+        MinWidth="1200"
+        MinHeight="900">
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl"
+                    Key="Z"
+                    Command="ApplicationCommands.Undo"/>
+        <KeyBinding Modifiers="Ctrl"
+                    Key="Y"
+                    Command="ApplicationCommands.Redo"/>
+        <KeyBinding Modifiers="Ctrl+Shift"
+                    Key="Z"
+                    Command="ApplicationCommands.Redo"/>
+        <KeyBinding Key="Left"
+                    Command="local:Commands.PreviousPage"/>
+        <KeyBinding Key="Right"
+                    Command="local:Commands.NextPage"/>
+        <KeyBinding Key="G"
+                    Command="local:Commands.ShowGhostStrokes"/>
+    </Window.InputBindings>
     <Window.Resources>
         <Style x:Key="customButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
@@ -71,14 +91,36 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Save"/>
+                <MenuItem Header="Export"/>
             </MenuItem>
-            <MenuItem Header="Page">
-                <MenuItem Header="Background">
-                    <xctk:ColorPicker Name="StickyNote_ClrPicker" SelectedColorChanged="StickyNoteClrPcker_Background_SelectedColorChanged" Margin="0,0,-50,0" HorizontalAlignment="Right" Width="161" />
+            <MenuItem Header="Edit">
+                <MenuItem Header="Undo"
+                          Command="ApplicationCommands.Undo"/>
+                <MenuItem Header="Redo"
+                          Command="ApplicationCommands.Redo"/>
+                <MenuItem Header="Clear Page"
+                          x:Name="clearPageMenuItem"/>
+                <MenuItem Header="Delete Page"
+                          x:Name="deletePageMenuItem"/>
+                <MenuItem Header="Set Canvas Background">
+                    <xctk:ColorPicker Name="StickyNote_ClrPicker" 
+                                      SelectedColorChanged="StickyNoteClrPcker_Background_SelectedColorChanged" 
+                                      HorizontalAlignment="Right" 
+                                      Width="161" />
                 </MenuItem>
-                <MenuItem x:Name="clearPageMenuItem" Header="Clear"/>
+                <MenuItem Header="Restart"
+                          x:Name="restartMenuItem"/>
             </MenuItem>
-            <MenuItem Header="View"/>
+            <MenuItem Header="Navigation">
+                <MenuItem Header="Previous Page"
+                          x:Name="previousPageMenuItem"/>
+                <MenuItem Header="Next Page"
+                          x:Name="nextPageMenuItem"/>
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Set Editor Background"
+                          x:Name="editorBackgroundMenuItem"/>
+            </MenuItem>
         </Menu>
         <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom">
             <StatusBar.ItemsPanel>
@@ -104,7 +146,7 @@
             <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Stretch">
                 <DockPanel>
                     <CheckBox x:Name="chkPlay" Margin="5" Style="{StaticResource PlayButton}"  DockPanel.Dock="Left" Click="chkPlay_Click"/>
-                        <Slider x:Name="sldrNavigation" Foreground="Green" TickPlacement="BottomRight"  Value="1" Minimum="1" Margin="5" TickFrequency="1" IsSnapToTickEnabled="True"></Slider>
+                    <Slider x:Name="sldrNavigation" Foreground="Green" TickPlacement="BottomRight"  Value="1" Minimum="1" Margin="5" TickFrequency="1" IsSnapToTickEnabled="True"></Slider>
                 </DockPanel>
             </StatusBarItem>
             <StatusBarItem Grid.Column="2" Margin="5">
@@ -119,136 +161,224 @@
         </StatusBar>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition MinWidth="300" MaxWidth="300"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="1" Margin="10,0,0,0" MinWidth="288" MaxWidth="288" MinHeight="351" MaxHeight="351" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Image Grid.ColumnSpan="5" Source="Image/pouchback.png" Margin="0,60,0.4,140" RenderTransformOrigin="0.463,0.509"/>
-                    <Button x:Name="Pencil" Grid.Column="1" Click="Pencil_Click" Margin="6,46,53.2,29" Grid.ColumnSpan="2">
+                    <Image Source="Image/pouchback.png" Margin="-10,70,0,151"  MaxHeight="150" MinHeight="150"  Grid.Column="0" Grid.ColumnSpan="6"/>
+                    <Button x:Name="Pencil" Grid.Column="1" Click="Pencil_Click" Margin="0,0,0,20">
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/pencil.png"/>
+                                    <Image Source="Image/pencil.png">
+                                        <Image.RenderTransform>
+                                            <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
+                                        </Image.RenderTransform>
+                                        <Image.Triggers>
+                                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                                <BeginStoryboard Name="myBeginStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="0" To="-50" Duration="0:0:.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="Button.MouseLeave">
+                                                <BeginStoryboard Name="myEndStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="-50" To="0" Duration="0:0:.3" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Image.Triggers>
+                                        <Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="0" Color="Yellow" Opacity="1" BlurRadius="20"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Button x:Name="Pen" Grid.Column="1" Margin="54,53,6.2,33" Grid.ColumnSpan="2">
+                    <Button x:Name="Pen" Grid.Column="2" Margin="0,0,0,20" Click="Pen_Click">
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/pen.png"/>
+                                    <Image Source="Image/pen.png">
+                                        <Image.RenderTransform>
+                                            <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
+                                        </Image.RenderTransform>
+                                        <Image.Triggers>
+                                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                                <BeginStoryboard Name="myBeginStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="0" To="-50" Duration="0:0:.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="Button.MouseLeave">
+                                                <BeginStoryboard Name="myEndStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="-50" To="0" Duration="0:0:.3" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Image.Triggers>
+                                        <Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="0" Color="Blue" Opacity="1" BlurRadius="20"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Button x:Name="Highlighter" Grid.Column="2" Grid.ColumnSpan="3" Margin="59.4,41,59.4,46">
+                    <Button x:Name="eraserButton" Grid.Column="3" Margin="0,0,0,121" Click="eraserButton_Click">
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/high.png"/>
+                                    <Image Source="Image/eraser.png">
+                                        <Image.RenderTransform>
+                                            <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
+                                        </Image.RenderTransform>
+                                        <Image.Triggers>
+                                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                                <BeginStoryboard Name="myBeginStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="0" To="-50" Duration="0:0:.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="Button.MouseLeave">
+                                                <BeginStoryboard Name="myEndStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="-50" To="0" Duration="0:0:.3" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Image.Triggers>
+                                        <Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="0" Color="Red" Opacity="1" BlurRadius="20"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Image Grid.ColumnSpan="5" Source="Image/pouch.png" Margin="-14,68,-25.6,-13" RenderTransformOrigin="0.463,0.509"/>
+                    <Button x:Name="highlighterButton" Grid.Column="4" Margin="0,0,0,20" Click="highlighterButton_Click">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Image Source="Image/high.png">
+                                        <Image.RenderTransform>
+                                            <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
+                                        </Image.RenderTransform>
+                                        <Image.Triggers>
+                                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                                <BeginStoryboard Name="myBeginStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="0" To="-50" Duration="0:0:.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                            <EventTrigger RoutedEvent="Button.MouseLeave">
+                                                <BeginStoryboard Name="myEndStoryboard">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
+                                                                         Storyboard.TargetProperty="Y" 
+                                                                         From="-50" To="0" Duration="0:0:.3" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+                                        </Image.Triggers>
+                                        <Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="0" Color="Purple" Opacity="1" BlurRadius="20"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Image Source="Image/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,90,10.4,0" VerticalAlignment="Bottom"/>
                 </Grid>
                 <UniformGrid x:Name="ColorHistory" Columns="3"  Margin="0,20,10,0" Width="128" Height="128" VerticalAlignment="Top" HorizontalAlignment="Right">
-                    <Button x:Name="ColorButton1" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton2" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton3" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton4" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton5" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2" StrokeThickness="46">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton6" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton7" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton8" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="ColorButton9" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
-                        <Button.Content>
-                            <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
-                                <Rectangle.Fill>
-                                    <SolidColorBrush Color="White"/>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                        </Button.Content>
-                    </Button>
+                    <Button x:Name="ColorButton1" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton2" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton3" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton4" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton5" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton6" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton7" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton8" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                    <Button x:Name="ColorButton9" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
                 </UniformGrid>
-                <Button x:Name="button" Style="{StaticResource ColorPickerButton}"  Content="Button" Margin="160,153,0,0" Click="ColorPickerbutton_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Button x:Name="moreColorsButton" Style="{StaticResource ColorPickerButton}" Margin="160,153,0,0" Click="ColorPickerbutton_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Slider x:Name="toolThicknessSlider" HorizontalAlignment="Left" Margin="160,245,0,0" VerticalAlignment="Top" Width="129"/>
+                <Label x:Name="toolThicknessLabel" Content="Thickness" HorizontalAlignment="Left" Margin="180,208,0,0" VerticalAlignment="Top" FontSize="18"/>
 
             </Grid>
             <StackPanel Grid.Column="1" 

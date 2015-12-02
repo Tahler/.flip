@@ -24,7 +24,7 @@ namespace dotFlip
 
             Background = parent.Brush;
             Visuals = new List<Visual>();
-
+                     
             _undoStack = new Stack<int>();
             _redoStack = new Stack<List<Visual>>();
 
