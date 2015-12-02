@@ -88,6 +88,7 @@ namespace dotFlip
         {
             sldrNavigation.Maximum = _flipbook.PageCount;
             sldrNavigation.IsEnabled = _flipbook.PageCount > 1 && !_flipbook.IsPlaying;
+            chkPlay.IsEnabled = _flipbook.PageCount > 1;
             sldrNavigation.Value = _flipbook.GetPageNumber(_flipbook.CurrentPage);
             lblTotalPages.Content = "of " + _flipbook.PageCount;
         }
