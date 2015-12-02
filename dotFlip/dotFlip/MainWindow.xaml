@@ -103,7 +103,7 @@
             </StatusBarItem>
             <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Stretch">
                 <DockPanel>
-                    <CheckBox x:Name="chkPlay" Style="{StaticResource PlayButton}"  DockPanel.Dock="Left" Click="chkPlay_Click"/>
+                    <CheckBox x:Name="chkPlay" Margin="5" Style="{StaticResource PlayButton}"  DockPanel.Dock="Left" Click="chkPlay_Click"/>
                         <Slider x:Name="sldrNavigation" Foreground="Green" TickPlacement="BottomRight"  Value="1" Minimum="1" Margin="5" TickFrequency="1" IsSnapToTickEnabled="True"></Slider>
                 </DockPanel>
             </StatusBarItem>
