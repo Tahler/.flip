@@ -9,7 +9,8 @@
         mc:Ignorable="d"
         Title=".Flip" 
         Width="1200"
-        Height="800" Loaded="Window_Loaded">
+        Height="800" Loaded="Window_Loaded"
+        MinWidth="1000">
     <Window.Resources>
         <Style x:Key="customButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Template">
@@ -119,51 +120,117 @@
         </StatusBar>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition MinWidth="300" MaxWidth="300"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="1" Margin="10,0,0,0" MinWidth="288" MaxWidth="288" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Image Grid.ColumnSpan="5" Source="Image/pouchback.png" Margin="0,60,0.4,140" RenderTransformOrigin="0.463,0.509"/>
-                    <Button x:Name="Pencil" Grid.Column="1" Click="Pencil_Click" Margin="6,46,53.2,29" Grid.ColumnSpan="2">
+                    <Image Source="Image/pouchback.png" Margin="-10,-60,0,0" Grid.Column="0" Grid.ColumnSpan="6"/>
+                    <Button x:Name="Pencil" Grid.Column="1" Click="Pencil_Click" Margin="0,0,0,20">
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/pencil.png"/>
+                                    <Image Source="Image/pencil.png">
+                                        <Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="0" Color="Yellow" Opacity="1" BlurRadius="20"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Button x:Name="Pen" Grid.Column="1" Margin="54,53,6.2,33" Grid.ColumnSpan="2">
+                    <Button x:Name="Pen" Grid.Column="2" Margin="0,0,0,20" Click="Pen_Click">
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/pen.png"/>
+                                    <Image Source="Image/pen.png">
+                                        <Image.Style>
+      <Style TargetType="{x:Type Image}">
+         <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+               <Setter Property="Effect">
+                  <Setter.Value>
+                     <DropShadowEffect ShadowDepth="0" Color="Blue" Opacity="1" BlurRadius="20"/>
+                  </Setter.Value>
+               </Setter>
+            </Trigger>
+         </Style.Triggers>
+      </Style>
+   </Image.Style>
+                                    </Image>
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Button x:Name="Highlighter" Grid.Column="2" Grid.ColumnSpan="3" Margin="59.4,41,59.4,46">
+                    <Button x:Name="eraserButton" Grid.Column="3" Margin="0,0,0,121" Click="eraserButton_Click">
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/high.png"/>
+                                    <Image Source="Image/eraser.png">
+                                        <Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="0" Color="Red" Opacity="1" BlurRadius="20"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Image Grid.ColumnSpan="5" Source="Image/pouch.png" Margin="-14,68,-25.6,-13" RenderTransformOrigin="0.463,0.509"/>
+                    <Button x:Name="highlighterButton" Grid.Column="4" Margin="0,0,0,20" Click="highlighterButton_Click">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <Image Source="Image/high.png">
+                                        <Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect ShadowDepth="0" Color="Purple" Opacity="1" BlurRadius="20"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Image Source="Image/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,90,10.4,0" VerticalAlignment="Bottom"/>
                 </Grid>
                 <UniformGrid x:Name="ColorHistory" Columns="3"  Margin="0,20,10,0" Width="128" Height="128" VerticalAlignment="Top" HorizontalAlignment="Right">
                     <Button x:Name="ColorButton1" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>

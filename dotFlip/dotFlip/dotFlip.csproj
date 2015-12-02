@@ -144,9 +144,6 @@
     <Resource Include="Image\pen.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\pencil.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Image\high.png" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +154,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\pouchback.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\pencil.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\eraser.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
