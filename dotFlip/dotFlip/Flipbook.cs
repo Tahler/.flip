@@ -17,6 +17,7 @@ namespace dotFlip
         private Dictionary<string, ITool> _tools;
 
         public bool ShowGhostStrokes { get; set; }
+        public bool IsPlaying { get; set; }
 
         public Page CurrentPage
         {
@@ -142,11 +143,15 @@ namespace dotFlip
 
         public async void PlayAnimation(int delay)
         {
-            foreach (Page page in _pages)
+            do
             {
-                await Task.Delay(delay);
-                CurrentPage = page;
-            }
+                foreach (Page page in _pages)
+                {
+                    await Task.Delay(delay);
+                    CurrentPage = page;
+                    if (!IsPlaying) break;
+                }
+            } while (IsPlaying);
         }
 
         private Page GetPreviousPage(Page p)
