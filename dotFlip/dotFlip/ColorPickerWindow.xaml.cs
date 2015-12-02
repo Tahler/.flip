@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,13 +31,17 @@ namespace dotFlip
 
         private void colorPickedButton_Click(object sender, RoutedEventArgs e)
         {
-            _parent.changeToolColor(_selectedColor);
             this.Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             colorPicker.SelectedColorChanged += (object s, RoutedPropertyChangedEventArgs<Color?> ev) => { _selectedColor = (Color)colorPicker.SelectedColor; };
+        }
+
+        private void ColorPickerWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            _parent.changeToolColor(_selectedColor);
         }
     }
 }
