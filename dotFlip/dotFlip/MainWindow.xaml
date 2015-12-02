@@ -8,9 +8,11 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title=".Flip" 
+        WindowStartupLocation="Manual" 
+        Left="100" Top="50"
+        Loaded="Window_Loaded"
         Width="1200"
-
-        Height="800" Loaded="Window_Loaded"
+        Height="800" 
         MinWidth="1200"
         MinHeight="900">
     <Window.InputBindings>
@@ -30,7 +32,7 @@
         <KeyBinding Key="P"
                     Command="local:Commands.Play"/>
         <KeyBinding Key="G"
-                    Command="local:Commands.ShowGhostStrokes"/>
+                    Command="local:Commands.ToggleGhostStrokes"/>
         <KeyBinding Modifiers="Ctrl"
                     Key="D"
                     Command="local:Commands.DeletePage"/>
@@ -108,7 +110,7 @@
                           Command="local:Commands.CopyPreviousPage"/>
                 <MenuItem x:Name="ghostStrokesMenuItem"
                           Header="Show Ghost Strokes"
-                          Command="local:Commands.ShowGhostStrokes"/>
+                          Command="local:Commands.ToggleGhostStrokes"/>
                 <MenuItem Header="Clear Page"
                           Command="local:Commands.ClearPage"/>
                 <MenuItem Header="Delete Page"
@@ -198,7 +200,7 @@
                             Style="{StaticResource CopyButtonStyle}" 
                             ToolTip="Copy Previous Page"/>
                     <CheckBox x:Name="btnGhost"
-                              Command="local:Commands.ShowGhostStrokes"
+                              Command="local:Commands.ToggleGhostStrokes"
                               Margin="5" 
                               Style="{StaticResource GhostButtonStyle}"
                               ToolTip="Toggle Ghost Strokes"/>

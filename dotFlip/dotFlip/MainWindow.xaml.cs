@@ -55,7 +55,7 @@ namespace dotFlip
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, (sender, e) => _flipbook.CurrentPage.Redo()));
             CommandBindings.Add(new CommandBinding(Commands.PreviousPage, (sender, e) => _flipbook.PreviousPage()));
             CommandBindings.Add(new CommandBinding(Commands.NextPage, (sender, e) => _flipbook.NextPage()));
-            CommandBindings.Add(new CommandBinding(Commands.ShowGhostStrokes, (sender, e) =>
+            CommandBindings.Add(new CommandBinding(Commands.ToggleGhostStrokes, (sender, e) =>
             {
                 _flipbook.IsShowingGhostStrokes = !_flipbook.IsShowingGhostStrokes;
                 bool isShowing = _flipbook.IsShowingGhostStrokes;
@@ -111,7 +111,7 @@ namespace dotFlip
 
             if (ghostPage != null && _flipbook.IsShowingGhostStrokes)
             {
-                ghostPage.Opacity = 0.05;
+                ghostPage.Opacity = 0.25;
                 ghostPage.IsHitTestVisible = false;
                 flipbookHolder.Children.Add(ghostPage);
             }

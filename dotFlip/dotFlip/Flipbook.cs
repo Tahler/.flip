@@ -16,14 +16,14 @@ namespace dotFlip
         private SolidColorBrush _background;
         private Dictionary<string, ITool> _tools;
 
-        private bool _isShowingGhostStrokes;
+        private bool _shouldIsShowingGhostStrokes;
 
         public bool IsShowingGhostStrokes
         {
-            get { return _isShowingGhostStrokes; }
+            get { return _shouldIsShowingGhostStrokes; }
             set
             {
-                _isShowingGhostStrokes = value;
+                _shouldIsShowingGhostStrokes = value;
                 RefreshPage();
             }
         }
