@@ -387,7 +387,7 @@
                                 <Button x:Name="ColorButton8" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
                                 <Button x:Name="ColorButton9" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
                             </UniformGrid>
-                            <Button x:Name="moreColorsButton" Style="{StaticResource ColorPickerButton}" Click="ColorPickerbutton_Click" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                            <Button x:Name="moreColorsButton" Style="{StaticResource ColorPickerButton}" Click="ColorPickerbutton_Click" HorizontalAlignment="Center" Margin="0 5 0 0" VerticalAlignment="Bottom"/>
                         </StackPanel>
                         <StackPanel Grid.Row="1" Grid.Column="1">
                             <Label x:Name="toolThicknessLabel" Content="Thickness" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="18"/>
