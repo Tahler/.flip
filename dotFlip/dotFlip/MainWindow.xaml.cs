@@ -31,7 +31,7 @@ namespace dotFlip
         public MainWindow()
         {
             InitializeComponent();
-            _colorHistory = new Color[]{ Colors.White, Colors.Black, Colors.Gray, Colors.Blue, Colors.Green, Colors.Red, Colors.Pink, Colors.Orange, Colors.Orchid};
+            _colorHistory = new Color[]{ Colors.Black, Colors.White, Colors.Gray, Colors.Blue, Colors.Green, Colors.Red, Colors.Pink, Colors.Orange, Colors.Orchid};
             _flipbook = new Flipbook(Colors.LightYellow);
             _flipbook.PageChanged += Flipbook_PageChanged;
 
@@ -53,6 +53,7 @@ namespace dotFlip
             btnUndo.Click += (sender, e) => _flipbook.CurrentPage.Undo();
             btnDelete.Click += (sender, e) => _flipbook.DeletePage(_flipbook.CurrentPage);
             sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
+            toolThicknessSlider.ValueChanged += (sender, e) => { _flipbook.CurrentTool.Thickness = e.NewValue; };
         }
 
         private void Flipbook_PageChanged(Page currentPage, Page ghostPage)
@@ -106,13 +107,18 @@ namespace dotFlip
         private void UpdateButtonColors()
         {
             int index = 0;
-            foreach(Button b in _buttonsForColor)
+            foreach(Button button in _buttonsForColor)
             {
-                Rectangle rect = b.Content as Rectangle;
-                if(rect != null)
+                Rectangle rect = button.Template.FindName("ColorHistoryRectangle", button) as Rectangle;
+                if (rect != null)
                 {
                     rect.Fill = new SolidColorBrush(_colorHistory[index]);
                 }
+                //Rectangle rect = b.Content as Rectangle;
+                //if(rect != null)
+                //{
+                //    rect.Fill = new SolidColorBrush(_colorHistory[index]);
+                //}
                 index++;
             }
             //Rectangle innerButton = ColorButton1.Content as Rectangle;
@@ -127,12 +133,12 @@ namespace dotFlip
         {
             UpdateColorHistory(c);
             _flipbook.CurrentTool.ChangeColor(c);
+            ColorButton1.Focus();
         }
 
         private void StickyNoteClrPcker_Background_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            Color color = (Color)e.NewValue;
-            Brush backgroundColor = new SolidColorBrush(color);
+            _flipbook.BackgroundColor = (Color)e.NewValue;
         }
 
         private void ColorButton_Click(object sender, RoutedEventArgs e)
@@ -140,18 +146,25 @@ namespace dotFlip
             Button button = sender as Button;
             if(button != null)
             {
-                Rectangle rect = button.Content as Rectangle;
+                Rectangle rect = button.Template.FindName("ColorHistoryRectangle", button) as Rectangle;
                 if(rect != null)
                 {
                     SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
                     _flipbook.CurrentTool.ChangeColor(rectColor.Color);
                 }
+            //    Rectangle rect = button.Content as Rectangle;
+            //    if(rect != null)
+            //    {
+            //        SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
+            //        _flipbook.CurrentTool.ChangeColor(rectColor.Color);
+            //    }
             }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateButtonColors();
+            ColorButton1.Focus();
         }
 
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
@@ -201,6 +214,5 @@ namespace dotFlip
             }
             _flipbook.PlayAnimation(500);
         }
-
     }
 }
