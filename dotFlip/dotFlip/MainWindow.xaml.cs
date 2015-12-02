@@ -132,13 +132,10 @@ namespace dotFlip
             //}
         }
 
-        private void ToolClrPcker_Background_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        public void changeToolColor(Color c)
         {
-            Color color = (Color)e.NewValue;
-            Brush backgroundColor = new SolidColorBrush(color);
-
-            UpdateColorHistory(color);
-
+            UpdateColorHistory(c);
+            _flipbook.CurrentTool.ChangeColor(c);
         }
 
         private void StickyNoteClrPcker_Background_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
@@ -155,7 +152,8 @@ namespace dotFlip
                 Rectangle rect = button.Content as Rectangle;
                 if(rect != null)
                 {
-                    //ToolColorTester.Background = rect.Fill as SolidColorBrush;
+                    SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
+                    _flipbook.CurrentTool.ChangeColor(rectColor.Color);
                 }
             }
         }
@@ -167,7 +165,8 @@ namespace dotFlip
 
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerWindow clrPickerWindow = new ColorPickerWindow();
+            ColorPickerWindow clrPickerWindow;
+            clrPickerWindow = new ColorPickerWindow(this);
             clrPickerWindow.Show();
         }
 

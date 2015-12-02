@@ -165,7 +165,7 @@
                     </Button>
                     <Image Grid.ColumnSpan="5" Source="Image/pouch.png" Margin="-14,68,-25.6,-13" RenderTransformOrigin="0.463,0.509"/>
                 </Grid>
-                <UniformGrid x:Name="ColorHistory" Columns="3"  Margin="100,20,20,0" Width="128" Height="128" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <UniformGrid x:Name="ColorHistory" Columns="3"  Margin="0,20,10,0" Width="128" Height="128" VerticalAlignment="Top" HorizontalAlignment="Right">
                     <Button x:Name="ColorButton1" Click="ColorButton_Click" BorderBrush="#FF5F400B" Margin="1">
                         <Button.Content>
                             <Rectangle Width="{Binding ElementName=ColorButton1, Path=ActualWidth}" Height="{Binding ElementName=ColorButton1, Path=ActualHeight}" Margin="-2">
@@ -248,6 +248,8 @@
                         </Button.Content>
                     </Button>
                 </UniformGrid>
+                <Button x:Name="button" Style="{StaticResource ColorPickerButton}"  Content="Button" Margin="160,153,0,0" Click="ColorPickerbutton_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
             </Grid>
             <StackPanel Grid.Column="1" 
                         Background="#EEE" 
