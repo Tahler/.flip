@@ -83,6 +83,7 @@
       <DependentUpon>ColorPickerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Bresenham.cs" />
+    <Compile Include="Commands.cs" />
     <Compile Include="SliderConverter.cs" />
     <Compile Include="Tools\Eraser.cs" />
     <Compile Include="Tools\Highlighter.cs" />
