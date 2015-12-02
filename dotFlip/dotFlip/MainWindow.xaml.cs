@@ -183,6 +183,7 @@ namespace dotFlip
                 sldrNavigation.IsEnabled = false;
                 btnGhost.IsChecked = false;
                 btnGhost.IsEnabled = false;
+                _flipbook.ShowGhostStrokes = false;
             }
             else
             {
