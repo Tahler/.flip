@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -170,6 +171,14 @@ namespace dotFlip
             _flipbook.BackgroundColor = (Color)e.NewValue;
         }
 
+        private void ClearColorButtonEffects()
+        {
+            foreach(Button b in _buttonsForColor)
+            {
+                b.Effect = null;
+            }
+        }
+
         private void ColorButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -180,6 +189,14 @@ namespace dotFlip
                 {
                     SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
                     _flipbook.CurrentTool.ChangeColor(rectColor.Color);
+                    ClearColorButtonEffects();
+                    button.Effect = new DropShadowEffect
+                    {
+                        Color = new Color { A = 255, R = 255, G = 255, B = 0 },
+                        Direction = 320,
+                        ShadowDepth = 5,
+                        Opacity = 1
+                    };
                 }
             //    Rectangle rect = button.Content as Rectangle;
             //    if(rect != null)
@@ -193,8 +210,9 @@ namespace dotFlip
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateButtonColors();
-            ColorButton1.Focus();
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+            ClearColorButtonEffects();
+            ColorButton_Click(ColorButton1, null);
         }
 
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
