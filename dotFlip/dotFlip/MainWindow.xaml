@@ -8,9 +8,11 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title=".Flip" 
+        WindowStartupLocation="Manual" 
+        Left="100" Top="50"
+        Loaded="Window_Loaded"
         Width="1200"
-
-        Height="800" Loaded="Window_Loaded"
+        Height="800" 
         MinWidth="1200"
         MinHeight="900">
     <Window.InputBindings>
@@ -27,8 +29,13 @@
                     Command="local:Commands.PreviousPage"/>
         <KeyBinding Key="Right"
                     Command="local:Commands.NextPage"/>
+        <KeyBinding Key="P"
+                    Command="local:Commands.Play"/>
         <KeyBinding Key="G"
-                    Command="local:Commands.ShowGhostStrokes"/>
+                    Command="local:Commands.ToggleGhostStrokes"/>
+        <KeyBinding Modifiers="Ctrl"
+                    Key="D"
+                    Command="local:Commands.DeletePage"/>
     </Window.InputBindings>
     <Window.Resources>
         <Style x:Key="customButtonStyle" TargetType="{x:Type Button}">
@@ -90,7 +97,8 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Save"/>
+                <MenuItem Header="Save"
+                          Command="ApplicationCommands.Save"/>
                 <MenuItem Header="Export"/>
             </MenuItem>
             <MenuItem Header="Edit">
@@ -98,9 +106,15 @@
                           Command="ApplicationCommands.Undo"/>
                 <MenuItem Header="Redo"
                           Command="ApplicationCommands.Redo"/>
+                <MenuItem Header="Copy Previous Page"
+                          Command="local:Commands.CopyPreviousPage"/>
+                <MenuItem x:Name="ghostStrokesMenuItem"
+                          Header="Show Ghost Strokes"
+                          Command="local:Commands.ToggleGhostStrokes"/>
                 <MenuItem Header="Clear Page"
-                          x:Name="clearPageMenuItem"/>
+                          Command="local:Commands.ClearPage"/>
                 <MenuItem Header="Delete Page"
+                          Command="local:Commands.DeletePage"
                           x:Name="deletePageMenuItem"/>
                 <MenuItem Header="Set Canvas Background">
                     <xctk:ColorPicker Name="StickyNote_ClrPicker" 
@@ -109,16 +123,21 @@
                                       Width="161" />
                 </MenuItem>
                 <MenuItem Header="Restart"
+                          Command="local:Commands.Restart"
+                          ToolTip="Delete all existing pages"
                           x:Name="restartMenuItem"/>
             </MenuItem>
             <MenuItem Header="Navigation">
                 <MenuItem Header="Previous Page"
+                          Command="local:Commands.PreviousPage"
                           x:Name="previousPageMenuItem"/>
                 <MenuItem Header="Next Page"
+                          Command="local:Commands.NextPage"
                           x:Name="nextPageMenuItem"/>
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem Header="Set Editor Background"
+                          ToolTip="Set the Background of the Editor Window"
                           x:Name="editorBackgroundMenuItem"/>
             </MenuItem>
         </Menu>
@@ -137,14 +156,24 @@
 
             <StatusBarItem Grid.Column="0" HorizontalContentAlignment="Stretch">
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <Button x:Name="btnPrev"  Margin="5" Style="{StaticResource PrevButton}"  Content="Previous page"/>
-                    <TextBox Width="25" x:Name="txtNavigation" Text="{Binding ElementName=sldrNavigation, Path=Value, Mode=TwoWay}"/>
-                    <Label x:Name="lblTotalPages" Content="of x"/>
-                    <Button x:Name="btnNext"  Margin="5"  Style="{StaticResource NextButton}" Content="Next Page" />
+                    <Button x:Name="btnPrev"  
+                            Command="local:Commands.PreviousPage"
+                            Margin="5" 
+                            Style="{StaticResource PreviousPageButton}"  
+                            ToolTip="Previous page"/>
+                    <TextBox Width="22" x:Name="txtNavigation" Text="{Binding ElementName=sldrNavigation, Path=Value, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="22"/>
+                    <Label Content="of "/>
+                    <Label x:Name="lblTotalPages" Content="x"/>
+                    <Button x:Name="btnNext"  
+                            Command="local:Commands.NextPage"
+                            Margin="5"  
+                            Style="{StaticResource NextPageButton}" 
+                            ToolTip="Next Page" />
                     <Slider x:Name="sldrNavigation" Foreground="Green" TickPlacement="BottomRight"  Value="1" Minimum="1" Margin="5" TickFrequency="1" IsSnapToTickEnabled="True" Width="100"></Slider>
                 </StackPanel>
             </StatusBarItem>
-            <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Stretch">
+            <StatusBarItem Grid.Column="1" 
+                           HorizontalContentAlignment="Stretch">
                 <DockPanel>
                     <CheckBox x:Name="chkPlay" Margin="5" Style="{StaticResource PlayButton}"  DockPanel.Dock="Right" Click="chkPlay_Click"/>
                     <Label x:Name="speedLabel" Content="Speed:" VerticalAlignment="Center"/>
@@ -153,11 +182,30 @@
             </StatusBarItem>
             <StatusBarItem Grid.Column="2" Margin="5">
                 <StackPanel Orientation="Horizontal" >
-                    <Button x:Name="btnUndo"  Margin="5" Style="{StaticResource UndoButton}" />
-                    <Button x:Name="btnRedo"  Margin="5" Style="{StaticResource RedoButton}" />
-                    <Button x:Name="btnCopy"  Margin="5" Style="{StaticResource CopyButton}" />
-                    <Button x:Name="btnDelete" Margin="5" Style="{StaticResource DeleteButton}"/>
-                    <CheckBox x:Name="btnGhost"  Margin="5" Style="{StaticResource GhostButton}"/>
+                    <Button x:Name="btnUndo"  
+                            Command="ApplicationCommands.Undo"
+                            Margin="5" 
+                            Style="{StaticResource UndoButtonStyle}" 
+                            ToolTip="Undo"/>
+                    <Button x:Name="btnRedo"
+                            Command="ApplicationCommands.Redo"
+                            Margin="5" 
+                            Style="{StaticResource RedoButtonStyle}" 
+                            ToolTip="Redo"/>
+                    <Button x:Name="btnCopy"  
+                            Command="local:Commands.CopyPreviousPage"
+                            Margin="5" 
+                            Style="{StaticResource CopyButtonStyle}" 
+                            ToolTip="Copy Previous Page"/>
+                    <CheckBox x:Name="btnGhost"
+                              Command="local:Commands.ToggleGhostStrokes"
+                              Margin="5" 
+                              Style="{StaticResource GhostButtonStyle}"
+                              ToolTip="Toggle Ghost Strokes"/>
+                    <Button x:Name="btnDelete" 
+                            Command="local:Commands.DeletePage"
+                            Margin="5" 
+                            Style="{StaticResource DeleteButtonStyle}"/>
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>
@@ -166,7 +214,7 @@
                 <ColumnDefinition MinWidth="300" MaxWidth="300"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,882,0">
+            <Grid Grid.Column="0" Grid.Row="1" >
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -181,7 +229,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Image Source="Image/pouchback.png" Margin="-10,70,0,151"  MaxHeight="150" MinHeight="150"  Grid.Column="0" Grid.ColumnSpan="6"/>
-                    <Button x:Name="Pencil" Grid.Column="1" Click="Pencil_Click" Margin="0,0,0,20">
+                    <Button x:Name="Pencil" Grid.Column="1" Click="Pencil_Click" Margin="0,0,0,20" BorderThickness="0">
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
@@ -367,23 +415,35 @@
                     </Button>
                     <Image Source="Image/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,90,10.4,0" VerticalAlignment="Bottom"/>
                 </Grid>
-                <Border BorderBrush="Black" BorderThickness="2" Height="300" VerticalAlignment="Top" Margin="0, 10, 0, 0">
-                    <Grid Height="300" VerticalAlignment="Top">
-                        <UniformGrid x:Name="ColorHistory" Columns="3"  Margin="0,20,10,0" Width="128" Height="128" VerticalAlignment="Top" HorizontalAlignment="Right">
-                            <Button x:Name="ColorButton1" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton2" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton3" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton4" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton5" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton6" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton7" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton8" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            <Button x:Name="ColorButton9" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                        </UniformGrid>
-                        <Button x:Name="moreColorsButton" Style="{StaticResource ColorPickerButton}" Margin="160,153,0,0" Click="ColorPickerbutton_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <Slider x:Name="toolThicknessSlider" HorizontalAlignment="Left" Margin="160,245,0,0" VerticalAlignment="Top" Width="129" Value="5" Minimum="2" Maximum="100"/>
-                        <Label x:Name="toolThicknessLabel" Content="Thickness" HorizontalAlignment="Left" Margin="180,208,0,0" VerticalAlignment="Top" FontSize="18"/>
-                        <Image x:Name="currentToolImage" Source="image/pen.png"  HorizontalAlignment="Left" Height="280" Margin="50,10,0,10" VerticalAlignment="Center" Width="63"/>
+                <Border Margin="5" MaxHeight="300" MinHeight="300" MaxWidth="300" MinWidth="290" Grid.Column="0" Grid.Row="0" BorderBrush="Black" BorderThickness="2" CornerRadius="10" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                    <Grid Height="300"  VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Column="1" Grid.Row="0">
+                            <UniformGrid  x:Name="ColorHistory" Columns="3"  Width="128" Height="128" Margin="0 5 0 0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Button x:Name="ColorButton1" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton2" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton3" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton4" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton5" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton6" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton7" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton8" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton9" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                            </UniformGrid>
+                            <Button x:Name="moreColorsButton" Style="{StaticResource ColorPickerButton}" Click="ColorPickerbutton_Click" HorizontalAlignment="Center" Margin="0 5 0 0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="1">
+                            <Label x:Name="toolThicknessLabel" Content="Thickness" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="18"/>
+                            <Slider x:Name="toolThicknessSlider" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="129" Minimum="2" Maximum="100"/>
+                        </StackPanel>
+                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"  x:Name="currentToolImage" Source="image/pen.png"  HorizontalAlignment="Center" Height="280"  VerticalAlignment="Center" Width="63"/>
                     </Grid>
                 </Border>
 

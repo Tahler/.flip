@@ -44,7 +44,6 @@ namespace dotFlip
             UpdateNavigation();
 
             InitializeMenuItemClickEvents();
-            InitializeButtonClickEvents();
             BindCommands();
             
             sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
@@ -56,24 +55,18 @@ namespace dotFlip
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, (sender, e) => _flipbook.CurrentPage.Redo()));
             CommandBindings.Add(new CommandBinding(Commands.PreviousPage, (sender, e) => _flipbook.PreviousPage()));
             CommandBindings.Add(new CommandBinding(Commands.NextPage, (sender, e) => _flipbook.NextPage()));
-            CommandBindings.Add(new CommandBinding(Commands.ShowGhostStrokes, (sender, e) => _flipbook.ShowGhostStrokes = !_flipbook.ShowGhostStrokes));
-        }
-
-        private void InitializeButtonClickEvents()
-        {
-            btnNext.Click += (sender, e) => _flipbook.NextPage();
-            btnPrev.Click += (sender, e) => _flipbook.PreviousPage();
-            btnCopy.Click += (sender, e) => _flipbook.CopyPreviousPage();
-            btnGhost.Click += (sender, e) => _flipbook.ShowGhostStrokes = btnGhost.IsChecked.Value;
-            btnRedo.Click += (sender, e) => _flipbook.CurrentPage.Redo();
-            btnUndo.Click += (sender, e) => _flipbook.CurrentPage.Undo();
-        }
-
-        private void InitializeMenuItemClickEvents()
-        {
-
-            clearPageMenuItem.Click += (sender, e) => _flipbook.CurrentPage.Clear();
-            btnDelete.Click += (sender, e) =>
+            CommandBindings.Add(new CommandBinding(Commands.ToggleGhostStrokes, (sender, e) =>
+            {
+                _flipbook.IsShowingGhostStrokes = !_flipbook.IsShowingGhostStrokes;
+                bool isShowing = _flipbook.IsShowingGhostStrokes;
+                string tooltip = (isShowing ? "Hide" : "Show") + " Ghost Strokes";
+                btnGhost.ToolTip = tooltip;
+                btnGhost.IsChecked = isShowing;
+                ghostStrokesMenuItem.Header = tooltip;
+            }));
+            CommandBindings.Add(new CommandBinding(Commands.CopyPreviousPage, (sender, e) => _flipbook.CopyPreviousPageToCurrentPage()));
+            CommandBindings.Add(new CommandBinding(Commands.ClearPage, (sender, e) => _flipbook.CurrentPage.Clear()));
+            CommandBindings.Add(new CommandBinding(Commands.DeletePage, (sender, e) =>
             {
                 Point lowerRightPoint = this.PointToScreen(new Point(0, 0));
                 lowerRightPoint.X += this.ActualWidth;
@@ -85,7 +78,13 @@ namespace dotFlip
                 {
                     _flipbook.DeletePage(_flipbook.CurrentPage);
                 }
-            };
+            }));
+            CommandBindings.Add(new CommandBinding(Commands.Restart, (sender, e) => _flipbook.DeleteAllPages()));
+            CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) => _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value))));
+        }
+
+        private void InitializeMenuItemClickEvents()
+        {
             sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
             toolThicknessSlider.ValueChanged += (sender, e) => { _flipbook.CurrentTool.Thickness = e.NewValue; };
         }
@@ -110,9 +109,9 @@ namespace dotFlip
             currentPage.IsHitTestVisible = true;
             flipbookHolder.Children.Add(currentPage);
 
-            if (ghostPage != null && _flipbook.ShowGhostStrokes)
+            if (ghostPage != null)
             {
-                ghostPage.Opacity = 0.05;
+                ghostPage.Opacity = 0.25;
                 ghostPage.IsHitTestVisible = false;
                 flipbookHolder.Children.Add(ghostPage);
             }
@@ -125,7 +124,7 @@ namespace dotFlip
             sldrNavigation.IsEnabled = _flipbook.PageCount > 1 && !_flipbook.IsPlaying;
             chkPlay.IsEnabled = _flipbook.PageCount > 1;
             sldrNavigation.Value = _flipbook.GetPageNumber(_flipbook.CurrentPage);
-            lblTotalPages.Content = "of " + _flipbook.PageCount;
+            lblTotalPages.Content = _flipbook.PageCount;
         }
 
         private void UpdateColorHistory(Color c)
@@ -199,13 +198,13 @@ namespace dotFlip
         {
             UpdateButtonColors();
             ColorButton1.Focus();
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
 
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
         {
-            ColorPickerWindow clrPickerWindow;
-            clrPickerWindow = new ColorPickerWindow(this);
-            clrPickerWindow.Show();
+            var clrPickerWindow = new ColorPickerWindow(this);
+            clrPickerWindow.ShowDialog();
         }
 
         private void Pencil_Click(object sender, RoutedEventArgs e)
@@ -238,7 +237,7 @@ namespace dotFlip
                 sldrNavigation.IsEnabled = false;
                 btnGhost.IsChecked = false;
                 btnGhost.IsEnabled = false;
-                _flipbook.ShowGhostStrokes = false;
+                _flipbook.IsShowingGhostStrokes = false;
                 flipbookHolder.IsHitTestVisible = false;
             }
             else
@@ -257,6 +256,7 @@ namespace dotFlip
             }
             _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
         }
+
         private void eraserButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Eraser");
