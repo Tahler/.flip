@@ -88,7 +88,24 @@ namespace dotFlip
                 }
             }));
             CommandBindings.Add(new CommandBinding(Commands.Restart, (sender, e) => _flipbook.DeleteAllPages()));
-            CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) => _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value))));
+            CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) =>
+            {
+                if (_flipbook.PageCount > 1)
+                {
+                    if (_flipbook.IsPlaying)
+                    {
+                        EnableControls();
+                        chkPlay.IsChecked = false;
+                    }
+                    else
+                    {
+                        DisableControls();
+                        chkPlay.IsChecked = true;
+                        _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
+                    }
+                    _flipbook.IsPlaying = !_flipbook.IsPlaying;
+                 }
+            }));
         }
 
         private void InitializeMenuItemClickEvents()
@@ -229,43 +246,38 @@ namespace dotFlip
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
 
-        private void chkPlay_Click(object sender, RoutedEventArgs e)
+        private void EnableControls()
         {
-            _flipbook.IsPlaying = chkPlay.IsChecked.Value;
-            if (chkPlay.IsChecked.Value)
-            {
-                btnNext.IsEnabled = false;
-                btnPrev.IsEnabled = false;
-                btnUndo.IsEnabled = false;
-                btnUndo.IsEnabled = false;
-                btnCopy.IsEnabled = false;
-                btnRedo.IsEnabled = false;
-                btnDelete.IsEnabled = false;
-                txtNavigation.IsEnabled = false;
-                sldrNavigation.IsEnabled = false;
-                btnGhost.IsChecked = false;
-                btnGhost.IsEnabled = false;
-                _flipbook.IsShowingGhostStrokes = false;
-                flipbookHolder.IsHitTestVisible = false;
-            }
-            else
-            {
-                btnNext.IsEnabled = true;
-                btnPrev.IsEnabled = true;
-                btnUndo.IsEnabled = true;
-                btnUndo.IsEnabled = true;
-                btnCopy.IsEnabled = true;
-                btnDelete.IsEnabled = true;
-                txtNavigation.IsEnabled = true;
-                sldrNavigation.IsEnabled = true;
-                btnRedo.IsEnabled = true;
-                btnGhost.IsEnabled = true;
-                flipbookHolder.IsHitTestVisible = true;
-            }
-            _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
+            btnNext.IsEnabled = true;
+            btnPrev.IsEnabled = true;
+            btnUndo.IsEnabled = true;
+            btnUndo.IsEnabled = true;
+            btnCopy.IsEnabled = true;
+            btnDelete.IsEnabled = true;
+            txtNavigation.IsEnabled = true;
+            sldrNavigation.IsEnabled = true;
+            btnRedo.IsEnabled = true;
+            btnGhost.IsEnabled = true;
+            flipbookHolder.IsHitTestVisible = true;
         }
-        
 
+        private void DisableControls()
+        {
+            btnNext.IsEnabled = false;
+            btnPrev.IsEnabled = false;
+            btnUndo.IsEnabled = false;
+            btnUndo.IsEnabled = false;
+            btnCopy.IsEnabled = false;
+            btnRedo.IsEnabled = false;
+            btnDelete.IsEnabled = false;
+            txtNavigation.IsEnabled = false;
+            sldrNavigation.IsEnabled = false;
+            btnGhost.IsChecked = false;
+            btnGhost.IsEnabled = false;
+            _flipbook.IsShowingGhostStrokes = false;
+            flipbookHolder.IsHitTestVisible = false;
+        }        
+   
         private void eraserButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Eraser");
