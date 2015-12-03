@@ -24,19 +24,11 @@ namespace dotFlip
         // http://stackoverflow.com/questions/1361350/keyboard-shortcuts-in-wpf
 
         private Flipbook _flipbook;
-        private Color[] _colorHistory;
         private List<Button> _buttonsForColor;
 
         public MainWindow()
         {
             InitializeComponent();
-
-            _colorHistory = new Color[]
-            {
-                Colors.Black, Colors.White, Colors.Gray,
-                Colors.Blue, Colors.Green, Colors.Red,
-                Colors.Pink, Colors.Orange, Colors.Orchid
-            };
 
             Color backgroundColor = new Color { A = 255, R = 249, G = 237, B = 78 };
             _flipbook = new Flipbook(backgroundColor);
@@ -137,11 +129,7 @@ namespace dotFlip
 
         private void UpdateColorHistory(Color c)
         {
-            for(int index = 7; index > 0; index--)
-            {
-                _colorHistory[index] = _colorHistory[index - 1];
-            }
-            _colorHistory[0] = c;
+            _flipbook.UpdateColorHistory(c);
             UpdateButtonColors();
         }
 
@@ -153,7 +141,7 @@ namespace dotFlip
                 Rectangle rect = button.Template.FindName("ColorHistoryRectangle", button) as Rectangle;
                 if (rect != null)
                 {
-                    rect.Fill = new SolidColorBrush(_colorHistory[index]);
+                    rect.Fill = new SolidColorBrush(_flipbook.ColorHistory[index]);
                 }
                 //Rectangle rect = b.Content as Rectangle;
                 //if(rect != null)
