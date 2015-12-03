@@ -12,7 +12,7 @@
         Left="100" Top="50"
         Loaded="Window_Loaded"
         Width="1200"
-        Height="800" 
+        Height="800"
         MinWidth="1200"
         MinHeight="900">
     <Window.InputBindings>
@@ -80,7 +80,7 @@
                 <EasingColorKeyFrame KeyTime="0:0:1" Value="White"/>
             </ColorAnimationUsingKeyFrames>
         </Storyboard>
-        <system:Double x:Key="FlipbookWidth">600</system:Double>
+        <system:Double x:Key="FlipbookWidth">650</system:Double>
         <Style x:Key="DarkGradientStyle" TargetType="DockPanel">
             <Setter Property="Background">
                 <Setter.Value>
@@ -219,7 +219,65 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="1" Margin="10,0,0,0" MinWidth="288" MaxWidth="288" MinHeight="351" MaxHeight="351" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <Border Grid.Column="0" 
+                        Grid.Row="0" 
+                        Margin="5" 
+                        MaxWidth="300" 
+                        MinWidth="280" 
+                        MaxHeight="300" 
+                        MinHeight="300" 
+                        BorderBrush="Black" 
+                        BorderThickness="1" 
+                        CornerRadius="10" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Column="1" Grid.Row="0">
+                            <UniformGrid  x:Name="ColorHistory" Columns="3"  Width="128" Height="128" Margin="0 5 0 0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Button x:Name="ColorButton1" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton2" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton3" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton4" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton5" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton6" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton7" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton8" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                                <Button x:Name="ColorButton9" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
+                            </UniformGrid>
+                            <Button x:Name="moreColorsButton" 
+                                    Style="{StaticResource ColorPickerButtonStyle}" 
+                                    Content="More Colors"
+                                    Width="120"
+                                    Height="30"
+                                    Click="ColorPickerbutton_Click" 
+                                    Margin="0 5 0 0" 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="1">
+                            <Label x:Name="toolThicknessLabel" Content="Thickness" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="18"/>
+                            <Slider x:Name="toolThicknessSlider" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="129"/>
+                        </StackPanel>
+                        <Image x:Name="currentToolImage" 
+                               Grid.RowSpan="2"  
+                               Grid.Row="0" 
+                               Grid.Column="0" 
+                               Margin="0 10 0 10"
+                               Source="Images/pen.png"  
+                               HorizontalAlignment="Center" 
+                               VerticalAlignment="Center"
+                               MaxWidth="80"/>
+                    </Grid>
+                </Border>
+                <Grid Grid.Row="1" Margin="20,0,0,20" MinWidth="288" MaxWidth="288" MinHeight="351" MaxHeight="351" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
@@ -228,12 +286,12 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Image Source="Image/pouchback.png" Margin="-10,70,0,151"  MaxHeight="150" MinHeight="150"  Grid.Column="0" Grid.ColumnSpan="6"/>
+                    <Image Source="Images/pouchback.png" Margin="-10,70,0,151"  MaxHeight="150" MinHeight="150"  Grid.Column="0" Grid.ColumnSpan="6"/>
                     <Button x:Name="Pencil" Grid.Column="1" Click="Pencil_Click" Margin="0,0,0,20" BorderThickness="0">
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/pencil.png">
+                                    <Image Source="Images/pencil.png">
                                         <Image.RenderTransform>
                                             <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
                                         </Image.RenderTransform>
@@ -279,7 +337,7 @@
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/pen.png">
+                                    <Image Source="Images/pen.png">
                                         <Image.RenderTransform>
                                             <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
                                         </Image.RenderTransform>
@@ -325,7 +383,7 @@
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/eraser.png">
+                                    <Image Source="Images/eraser.png">
                                         <Image.RenderTransform>
                                             <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
                                         </Image.RenderTransform>
@@ -371,7 +429,7 @@
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                    <Image Source="Image/high.png">
+                                    <Image Source="Images/high.png">
                                         <Image.RenderTransform>
                                             <TranslateTransform x:Name="AnimatedTranslateTransform" X="0" Y="0" />
                                         </Image.RenderTransform>
@@ -413,40 +471,8 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Image Source="Image/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,90,10.4,0" VerticalAlignment="Bottom"/>
+                    <Image Source="Images/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,90,10.4,0" VerticalAlignment="Bottom"/>
                 </Grid>
-                <Border Margin="5" MaxHeight="300" MinHeight="300" MaxWidth="300" MinWidth="290" Grid.Column="0" Grid.Row="0" BorderBrush="Black" BorderThickness="2" CornerRadius="10" Height="300" HorizontalAlignment="Center" VerticalAlignment="Center" >
-                    <Grid Height="300"  VerticalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="2*"></RowDefinition>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <StackPanel Grid.Column="1" Grid.Row="0">
-                            <UniformGrid  x:Name="ColorHistory" Columns="3"  Width="128" Height="128" Margin="0 5 0 0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Button x:Name="ColorButton1" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                                <Button x:Name="ColorButton2" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                                <Button x:Name="ColorButton3" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                                <Button x:Name="ColorButton4" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                                <Button x:Name="ColorButton5" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                                <Button x:Name="ColorButton6" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                                <Button x:Name="ColorButton7" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                                <Button x:Name="ColorButton8" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                                <Button x:Name="ColorButton9" Click="ColorButton_Click" Style="{StaticResource ColorHistoryButton}"/>
-                            </UniformGrid>
-                            <Button x:Name="moreColorsButton" Style="{StaticResource ColorPickerButton}" Click="ColorPickerbutton_Click" HorizontalAlignment="Center" Margin="0 5 0 0" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <StackPanel Grid.Row="1" Grid.Column="1">
-                            <Label x:Name="toolThicknessLabel" Content="Thickness" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="18"/>
-                            <Slider x:Name="toolThicknessSlider" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="129" Minimum="2" Maximum="100"/>
-                        </StackPanel>
-                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"  x:Name="currentToolImage" Source="image/pen.png"  HorizontalAlignment="Center" Height="280"  VerticalAlignment="Center" Width="63"/>
-                    </Grid>
-                </Border>
-
             </Grid>
             <StackPanel Grid.Column="1" 
                         Background="#EEE" 
