@@ -232,7 +232,7 @@
                         BorderThickness="1" 
                         CornerRadius="10" 
                         HorizontalAlignment="Center" 
-                        VerticalAlignment="Center" >
+                        VerticalAlignment="Center">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -303,7 +303,7 @@
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
                                                                          Storyboard.TargetProperty="Y" 
-                                                                         From="0" To="-50" Duration="0:0:.2" />
+                                                                         From="0" To="-20" Duration="0:0:.2" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
@@ -312,7 +312,7 @@
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
                                                                          Storyboard.TargetProperty="Y" 
-                                                                         From="-50" To="0" Duration="0:0:.3" />
+                                                                         From="-20" To="0" Duration="0:0:.3" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
@@ -349,7 +349,7 @@
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
                                                                          Storyboard.TargetProperty="Y" 
-                                                                         From="0" To="-50" Duration="0:0:.2" />
+                                                                         From="0" To="-20" Duration="0:0:.2" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
@@ -358,7 +358,7 @@
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
                                                                          Storyboard.TargetProperty="Y" 
-                                                                         From="-50" To="0" Duration="0:0:.3" />
+                                                                         From="-20" To="0" Duration="0:0:.3" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
@@ -395,7 +395,7 @@
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
                                                                          Storyboard.TargetProperty="Y" 
-                                                                         From="0" To="-50" Duration="0:0:.2" />
+                                                                         From="0" To="-20" Duration="0:0:.2" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
@@ -404,7 +404,7 @@
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
                                                                          Storyboard.TargetProperty="Y" 
-                                                                         From="-50" To="0" Duration="0:0:.3" />
+                                                                         From="-20" To="0" Duration="0:0:.3" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
@@ -441,7 +441,7 @@
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
                                                                          Storyboard.TargetProperty="Y" 
-                                                                         From="0" To="-50" Duration="0:0:.2" />
+                                                                         From="0" To="-20" Duration="0:0:.2" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
@@ -450,7 +450,7 @@
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="AnimatedTranslateTransform" 
                                                                          Storyboard.TargetProperty="Y" 
-                                                                         From="-50" To="0" Duration="0:0:.3" />
+                                                                         From="-20" To="0" Duration="0:0:.3" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
