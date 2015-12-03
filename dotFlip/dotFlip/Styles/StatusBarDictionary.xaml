@@ -43,34 +43,16 @@
         </Setter>
     </Style>
 
-    <!--<Style x:Key="ColorPickerButton" TargetType="{x:Type Button}">
-        <Style.Triggers>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="Gray"></Setter>
-            </Trigger>
-        </Style.Triggers>
-        <Setter Property="Background" Value="White"></Setter>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Grid>
-                        <Rectangle RadiusX="5" RadiusY="5" Width="100" Height="30" Stroke="Black" StrokeThickness="2" Fill="{TemplateBinding Background}"/>
-                        <Label Content="More Colors" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
-
+    <!--http://www.wpfhelper.com/index.php/18-styles-in-wpf/button/21-wpf-button-style-->
     <Style x:Key="ColorPickerButtonStyle" TargetType="{x:Type Button}">
-        <!--<Setter Property="FocusVisualStyle" Value="{x:Null}"/>-->
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Background" Value="#ffffff"/>
         <Setter Property="BorderBrush" Value="#cccccc"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Foreground" Value="#333333"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Padding" Value="16,3,16,3"/>
+        <Setter Property="Padding" Value="5"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
