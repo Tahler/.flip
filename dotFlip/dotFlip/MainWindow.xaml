@@ -264,7 +264,7 @@
                         </StackPanel>
                         <StackPanel Grid.Row="1" Grid.Column="1">
                             <Label x:Name="toolThicknessLabel" Content="Thickness" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="18"/>
-                            <Slider x:Name="toolThicknessSlider" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="129"/>
+                            <Slider x:Name="toolThicknessSlider" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="129" Minimum="2" Maximum="100"/>
                         </StackPanel>
                         <Image x:Name="currentToolImage" 
                                Grid.RowSpan="2"  
