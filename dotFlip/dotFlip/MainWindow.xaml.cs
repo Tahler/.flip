@@ -6,7 +6,6 @@ using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -81,7 +80,24 @@ namespace dotFlip
                 }
             }));
             CommandBindings.Add(new CommandBinding(Commands.Restart, (sender, e) => _flipbook.DeleteAllPages()));
-            CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) => _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value))));
+            CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) =>
+            {
+                if (_flipbook.PageCount > 1)
+                {
+                    if (_flipbook.IsPlaying)
+                    {
+                        EnableControls();
+                        chkPlay.IsChecked = false;
+                    }
+                    else
+                    {
+                        DisableControls();
+                        chkPlay.IsChecked = true;
+                        _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
+                    }
+                    _flipbook.IsPlaying = !_flipbook.IsPlaying;
+                 }
+            }));
         }
 
         private void InitializeMenuItemClickEvents()
@@ -130,8 +146,9 @@ namespace dotFlip
 
         private void UpdateColorHistory(Color c)
         {
-            _flipbook.UpdateColorHistory(c);
+            int selectedIndex = _flipbook.UpdateColorHistory(c);
             UpdateButtonColors();
+            ColorButton_Click(_buttonsForColor[selectedIndex], null);
         }
 
         private void UpdateButtonColors()
@@ -163,7 +180,6 @@ namespace dotFlip
         {
             UpdateColorHistory(c);
             _flipbook.CurrentTool.ChangeColor(c);
-            ColorButton1.Focus();
         }
 
         private void StickyNoteClrPcker_Background_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
@@ -221,53 +237,48 @@ namespace dotFlip
             clrPickerWindow.ShowDialog();
         }
 
-        private void chkPlay_Click(object sender, RoutedEventArgs e)
+        private void EnableControls()
         {
-            _flipbook.IsPlaying = chkPlay.IsChecked.Value;
-            if (chkPlay.IsChecked.Value)
-            {
-                btnNext.IsEnabled = false;
-                btnPrev.IsEnabled = false;
-                btnUndo.IsEnabled = false;
-                btnUndo.IsEnabled = false;
-                btnCopy.IsEnabled = false;
-                btnRedo.IsEnabled = false;
-                btnDelete.IsEnabled = false;
-                txtNavigation.IsEnabled = false;
-                sldrNavigation.IsEnabled = false;
-                btnGhost.IsChecked = false;
-                btnGhost.IsEnabled = false;
-                _flipbook.IsShowingGhostStrokes = false;
-                flipbookHolder.IsHitTestVisible = false;
-            }
-            else
-            {
-                btnNext.IsEnabled = true;
-                btnPrev.IsEnabled = true;
-                btnUndo.IsEnabled = true;
-                btnUndo.IsEnabled = true;
-                btnCopy.IsEnabled = true;
-                btnDelete.IsEnabled = true;
-                txtNavigation.IsEnabled = true;
-                sldrNavigation.IsEnabled = true;
-                btnRedo.IsEnabled = true;
-                btnGhost.IsEnabled = true;
-                flipbookHolder.IsHitTestVisible = true;
-            }
-            _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
+            btnNext.IsEnabled = true;
+            btnPrev.IsEnabled = true;
+            btnUndo.IsEnabled = true;
+            btnUndo.IsEnabled = true;
+            btnCopy.IsEnabled = true;
+            btnDelete.IsEnabled = true;
+            txtNavigation.IsEnabled = true;
+            sldrNavigation.IsEnabled = true;
+            btnRedo.IsEnabled = true;
+            btnGhost.IsEnabled = true;
+            flipbookHolder.IsHitTestVisible = true;
         }
-        
         private void UpdateColorFromTool()
         {
             SolidColorBrush brush = _flipbook.CurrentTool.Brush as SolidColorBrush;
             if(brush != null)
             {
                 Color c = brush.Color;
-                c.A = 100;
+                c.A = 255;
                 UpdateColorHistory(c);
             }
         }
 
+        private void DisableControls()
+        {
+            btnNext.IsEnabled = false;
+            btnPrev.IsEnabled = false;
+            btnUndo.IsEnabled = false;
+            btnUndo.IsEnabled = false;
+            btnCopy.IsEnabled = false;
+            btnRedo.IsEnabled = false;
+            btnDelete.IsEnabled = false;
+            txtNavigation.IsEnabled = false;
+            sldrNavigation.IsEnabled = false;
+            btnGhost.IsChecked = false;
+            btnGhost.IsEnabled = false;
+            _flipbook.IsShowingGhostStrokes = false;
+            flipbookHolder.IsHitTestVisible = false;
+        }        
+   
         private void eraserButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Eraser");

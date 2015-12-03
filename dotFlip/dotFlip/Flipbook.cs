@@ -187,25 +187,28 @@ namespace dotFlip
             return prev;
         }
 
-        internal void UpdateColorHistory(Color c)
+        internal int UpdateColorHistory(Color c)
         {
             bool alreadyHasColor = false;
+            int colorIndex = 0;
             for(int index = 0; index < ColorHistory.Length; index++)
             {
                 if (ColorHistory[index].Equals(c))
                 {
                     alreadyHasColor = true;
+                    colorIndex = index;
                     break;
                 }
             }
             if (!alreadyHasColor)
             {
-                for (int index = 8; index > 0; index--)
+                for (int index = 7; index > 0; index--)
                 {
                     ColorHistory[index] = ColorHistory[index - 1];
                 }
                 ColorHistory[0] = c;
             }
+            return colorIndex;
         }
     }
 }
