@@ -203,20 +203,6 @@ namespace dotFlip
             clrPickerWindow.ShowDialog();
         }
 
-        private void Pencil_Click(object sender, RoutedEventArgs e)
-        {
-            _flipbook.UseTool("Pencil");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pencil.png"));
-            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
-        }
-
-        private void Pen_Click(object sender, RoutedEventArgs e)
-        {
-            _flipbook.UseTool("Pen");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pen.png"));
-            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
-        }
-
         private void chkPlay_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.IsPlaying = chkPlay.IsChecked.Value;
@@ -253,6 +239,16 @@ namespace dotFlip
             _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
         }
         
+        private void UpdateColorFromTool()
+        {
+            SolidColorBrush brush = _flipbook.CurrentTool.Brush as SolidColorBrush;
+            if(brush != null)
+            {
+                Color c = brush.Color;
+                c.A = 100;
+                UpdateColorHistory(c);
+            }
+        }
 
         private void eraserButton_Click(object sender, RoutedEventArgs e)
         {
@@ -266,6 +262,23 @@ namespace dotFlip
             _flipbook.UseTool("Highlighter");
             currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/high.png"));
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+            UpdateColorFromTool();
+        }
+
+        private void Pencil_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Pencil");
+            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pencil.png"));
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+            UpdateColorFromTool();
+        }
+
+        private void Pen_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Pen");
+            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pen.png"));
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+            UpdateColorFromTool();
         }
     }
 }
