@@ -88,7 +88,7 @@ namespace dotFlip
                 }
             }));
             CommandBindings.Add(new CommandBinding(Commands.Restart, (sender, e) => _flipbook.DeleteAllPages()));
-            CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) => PlayAnimation()));
+            CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) => _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value))));
         }
 
         private void InitializeMenuItemClickEvents()
@@ -206,6 +206,7 @@ namespace dotFlip
         {
             UpdateButtonColors();
             ColorButton1.Focus();
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
 
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
@@ -214,7 +215,21 @@ namespace dotFlip
             clrPickerWindow.ShowDialog();
         }
 
-        private void PlayAnimation()
+        private void Pencil_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Pencil");
+            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pencil.png"));
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+        }
+
+        private void Pen_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Pen");
+            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pen.png"));
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+        }
+
+        private void chkPlay_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.IsPlaying = chkPlay.IsChecked.Value;
             if (chkPlay.IsChecked.Value)
@@ -247,31 +262,22 @@ namespace dotFlip
                 btnGhost.IsEnabled = true;
                 flipbookHolder.IsHitTestVisible = true;
             }
-            _flipbook.PlayAnimation(500);
+            _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
         }
-
-        private void Pencil_Click(object sender, RoutedEventArgs e)
-        {
-            _flipbook.UseTool("Pencil");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pencil.png"));
-        }
-
-        private void Pen_Click(object sender, RoutedEventArgs e)
-        {
-            _flipbook.UseTool("Pen");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pen.png"));
-        }
+        
 
         private void eraserButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Eraser");
             currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/eraser.png"));
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
 
         private void highlighterButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Highlighter");
             currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/high.png"));
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
     }
 }
