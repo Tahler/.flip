@@ -99,8 +99,8 @@ namespace dotFlip
 
         public void DeleteAllPages()
         {
-            CurrentPage = new Page(this);
-            _pages = new List<Page> { CurrentPage };
+            _pages = new List<Page> { new Page(this) };
+            CurrentPage = _pages[0];
         }
 
         public void RefreshPage()

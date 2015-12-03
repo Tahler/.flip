@@ -160,7 +160,7 @@
                         <ColumnDefinition Width="50"/>
                         <ColumnDefinition Width="25"/>
                         <ColumnDefinition Width="25"/>
-                        <ColumnDefinition Width="15"/>
+                        <ColumnDefinition Width="25"/>
                         <ColumnDefinition Width="50"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
@@ -182,6 +182,7 @@
                            Content="of"
                            VerticalAlignment="Center"/>
                     <Label x:Name="lblTotalPages" 
+                           HorizontalAlignment="Left"
                            VerticalAlignment="Center"
                            Grid.Column="3"
                            Content="x"/>
