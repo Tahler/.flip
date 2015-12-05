@@ -106,6 +106,8 @@ namespace dotFlip
                     _flipbook.IsPlaying = !_flipbook.IsPlaying;
                  }
             }));
+            CommandBindings.Add(new CommandBinding(Commands.Export,
+                (sender, e) => new ExportWindow(_flipbook).ShowDialog()));
         }
 
         private void InitializeMenuItemClickEvents()
@@ -185,9 +187,10 @@ namespace dotFlip
             //    Color c = _colorHistory[0];
             //    innerButton.Fill = new SolidColorBrush(c);
             //}
+            Control c;
         }
 
-        public void changeToolColor(Color c)
+        public void ChangeToolColor(Color c)
         {
             UpdateColorHistory(c);
             _flipbook.CurrentTool.ChangeColor(c);

@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dotFlip"
         mc:Ignorable="d"
-        Title="Notification" Height="300" Width="300" WindowStyle="None" AllowsTransparency="True" Background="Transparent" SizeToContent="Height">
+        Height="300" Width="300" WindowStyle="None" AllowsTransparency="True" Background="Transparent" SizeToContent="Height">
     <Window.Resources>
         <Storyboard x:Key="OnClosingStoryboard">
                 <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:.25" FillBehavior="HoldEnd" />
