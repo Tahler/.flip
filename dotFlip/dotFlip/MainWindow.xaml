@@ -1,4 +1,5 @@
 ﻿<Window x:Class="dotFlip.MainWindow"
+        Icon="images/-flip.ico"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -344,6 +345,7 @@
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
+                                    
                                         </Image.Triggers>
                                         <Image.Style>
                                             <Style TargetType="{x:Type Image}">
@@ -501,7 +503,9 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Image Source="Images/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,90,10.4,0" VerticalAlignment="Bottom"/>
+                    <Image Source="Images/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,0,10,0" VerticalAlignment="Bottom" IsHitTestVisible="True" Height="216"/>
+                    <Image Source="Images/pouch.png" Grid.Column="0" Grid.ColumnSpan="6" Margin="0,90,10.4,0" VerticalAlignment="Bottom" IsHitTestVisible="False"/>
+
                 </Grid>
             </Grid>
             <StackPanel Grid.Column="1" 
