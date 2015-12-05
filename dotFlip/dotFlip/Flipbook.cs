@@ -4,6 +4,7 @@ using System.Windows.Media;
 using dotFlip.Tools;
 using Pen = dotFlip.Tools.Pen;
 using System.Threading.Tasks;
+using System;
 
 namespace dotFlip
 {
@@ -17,6 +18,8 @@ namespace dotFlip
         private Dictionary<string, ITool> _tools;
 
         private bool _isShowingGhostStrokes;
+
+        public Color[] ColorHistory;
 
         public bool IsShowingGhostStrokes
         {
@@ -56,6 +59,12 @@ namespace dotFlip
 
         public Flipbook(Color backgroundColor)
         {
+            ColorHistory = new Color[]
+            {
+                Colors.Black, Colors.White, Colors.Gray,
+                Colors.Blue, Colors.Green, Colors.Red,
+                Colors.Pink, Colors.Orange, Colors.Orchid
+            };
             _background = new SolidColorBrush();
             BackgroundColor = backgroundColor;
             _tools = new Dictionary<string, ITool>
@@ -181,6 +190,30 @@ namespace dotFlip
                 }
             }
             return prev;
+        }
+
+        internal int UpdateColorHistory(Color c)
+        {
+            bool alreadyHasColor = false;
+            int colorIndex = 0;
+            for(int index = 0; index < ColorHistory.Length; index++)
+            {
+                if (ColorHistory[index].Equals(c))
+                {
+                    alreadyHasColor = true;
+                    colorIndex = index;
+                    break;
+                }
+            }
+            if (!alreadyHasColor)
+            {
+                for (int index = 7; index > 0; index--)
+                {
+                    ColorHistory[index] = ColorHistory[index - 1];
+                }
+                ColorHistory[0] = c;
+            }
+            return colorIndex;
         }
     }
 }

@@ -24,19 +24,11 @@ namespace dotFlip
         // http://stackoverflow.com/questions/1361350/keyboard-shortcuts-in-wpf
 
         private Flipbook _flipbook;
-        private Color[] _colorHistory;
         private List<Button> _buttonsForColor;
 
         public MainWindow()
         {
             InitializeComponent();
-
-            _colorHistory = new Color[]
-            {
-                Colors.Black, Colors.White, Colors.Gray,
-                Colors.Blue, Colors.Green, Colors.Red,
-                Colors.Pink, Colors.Orange, Colors.Orchid
-            };
 
             Color backgroundColor = new Color { A = 255, R = 249, G = 237, B = 78 };
             _flipbook = new Flipbook(backgroundColor);
@@ -156,12 +148,9 @@ namespace dotFlip
 
         private void UpdateColorHistory(Color c)
         {
-            for(int index = 7; index > 0; index--)
-            {
-                _colorHistory[index] = _colorHistory[index - 1];
-            }
-            _colorHistory[0] = c;
+            int selectedIndex = _flipbook.UpdateColorHistory(c);
             UpdateButtonColors();
+            ColorButton_Click(_buttonsForColor[selectedIndex], null);
         }
 
         private void UpdateButtonColors()
@@ -172,7 +161,7 @@ namespace dotFlip
                 Rectangle rect = button.Template.FindName("ColorHistoryRectangle", button) as Rectangle;
                 if (rect != null)
                 {
-                    rect.Fill = new SolidColorBrush(_colorHistory[index]);
+                    rect.Fill = new SolidColorBrush(_flipbook.ColorHistory[index]);
                 }
                 //Rectangle rect = b.Content as Rectangle;
                 //if(rect != null)
@@ -192,14 +181,24 @@ namespace dotFlip
 
         public void ChangeToolColor(Color c)
         {
-            UpdateColorHistory(c);
-            _flipbook.CurrentTool.ChangeColor(c);
-            ColorButton1.Focus();
+            Color clr = c;
+            if (clr.ToString() == "#00000000")
+                clr = Colors.White;
+            UpdateColorHistory(clr);
+            _flipbook.CurrentTool.ChangeColor(clr);
         }
 
         private void StickyNoteClrPcker_Background_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             _flipbook.BackgroundColor = (Color)e.NewValue;
+        }
+
+        private void ClearColorButtonEffects()
+        {
+            foreach(Button b in _buttonsForColor)
+            {
+                b.Effect = null;
+            }
         }
 
         private void ColorButton_Click(object sender, RoutedEventArgs e)
@@ -212,6 +211,14 @@ namespace dotFlip
                 {
                     SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
                     _flipbook.CurrentTool.ChangeColor(rectColor.Color);
+                    ClearColorButtonEffects();
+                    button.Effect = new DropShadowEffect
+                    {
+                        Color = new Color { A = 255, R = 255, G = 255, B = 0 },
+                        Direction = 320,
+                        ShadowDepth = 5,
+                        Opacity = 1
+                    };
                 }
             //    Rectangle rect = button.Content as Rectangle;
             //    if(rect != null)
@@ -225,28 +232,15 @@ namespace dotFlip
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateButtonColors();
-            ColorButton1.Focus();
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+            ClearColorButtonEffects();
+            ColorButton_Click(ColorButton1, null);
         }
 
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
         {
             var clrPickerWindow = new ColorPickerWindow(this);
             clrPickerWindow.ShowDialog();
-        }
-
-        private void Pencil_Click(object sender, RoutedEventArgs e)
-        {
-            _flipbook.UseTool("Pencil");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pencil.png"));
-            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
-        }
-
-        private void Pen_Click(object sender, RoutedEventArgs e)
-        {
-            _flipbook.UseTool("Pen");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pen.png"));
-            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
 
         private void EnableControls()
@@ -262,6 +256,16 @@ namespace dotFlip
             btnRedo.IsEnabled = true;
             btnGhost.IsEnabled = true;
             flipbookHolder.IsHitTestVisible = true;
+        }
+        private void UpdateColorFromTool()
+        {
+            SolidColorBrush brush = _flipbook.CurrentTool.Brush as SolidColorBrush;
+            if(brush != null)
+            {
+                Color c = brush.Color;
+                c.A = 255;
+                UpdateColorHistory(c);
+            }
         }
 
         private void DisableControls()
@@ -293,6 +297,23 @@ namespace dotFlip
             _flipbook.UseTool("Highlighter");
             currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/high.png"));
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+            UpdateColorFromTool();
+        }
+
+        private void Pencil_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Pencil");
+            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pencil.png"));
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+            UpdateColorFromTool();
+        }
+
+        private void Pen_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Pen");
+            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pen.png"));
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+            UpdateColorFromTool();
         }
     }
 }
