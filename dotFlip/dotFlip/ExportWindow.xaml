@@ -1,0 +1,43 @@
+﻿<Window x:Class="dotFlip.ExportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dotFlip"
+        mc:Ignorable="d"
+        Title="Export As" Height="207.507" Width="326.542" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0">Export As:</TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="0">Frame:</TextBlock>
+            <ComboBox x:Name="cmbExportType" Grid.Row="1"></ComboBox>
+            <TextBox Grid.Column="1" Grid.Row="1">Frame Picker</TextBox>
+        </Grid>
+        <DockPanel Grid.Row="1">
+            <TextBlock DockPanel.Dock="Left">Location:</TextBlock>
+            <TextBox></TextBox>
+        </DockPanel>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnExport" HorizontalAlignment="Center" Click="btnExport_Click">Export</Button>
+            <Button x:Name="btnCancel" Grid.Column="1" HorizontalAlignment="Center">Cancel</Button>
+        </Grid>
+        
+    </Grid>
+</Window>

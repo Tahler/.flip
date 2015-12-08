@@ -17,5 +17,7 @@ namespace dotFlip
         public static RoutedCommand ClearPage { get; } = new RoutedCommand();
         public static RoutedCommand DeletePage { get; } = new RoutedCommand();
         public static RoutedCommand Restart { get; } = new RoutedCommand();
+        public static RoutedCommand Export { get; } = new RoutedCommand();
+    
     }
 }

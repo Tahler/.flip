@@ -88,7 +88,30 @@ namespace dotFlip
                 }
             }));
             CommandBindings.Add(new CommandBinding(Commands.Restart, (sender, e) => _flipbook.DeleteAllPages()));
+<<<<<<< HEAD
             CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) => _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value))));
+=======
+            CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) =>
+            {
+                if (_flipbook.PageCount > 1)
+                {
+                    if (_flipbook.IsPlaying)
+                    {
+                        EnableControls();
+                        chkPlay.IsChecked = false;
+                    }
+                    else
+                    {
+                        DisableControls();
+                        chkPlay.IsChecked = true;
+                        _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
+                    }
+                    _flipbook.IsPlaying = !_flipbook.IsPlaying;
+                 }
+            }));
+            CommandBindings.Add(new CommandBinding(Commands.Export,
+                (sender, e) => new ExportWindow(_flipbook).ShowDialog()));
+>>>>>>> 498563503dbad5919e2272a18c754cf741b22545
         }
 
         private void InitializeMenuItemClickEvents()
@@ -168,9 +191,10 @@ namespace dotFlip
             //    Color c = _colorHistory[0];
             //    innerButton.Fill = new SolidColorBrush(c);
             //}
+            Control c;
         }
 
-        public void changeToolColor(Color c)
+        public void ChangeToolColor(Color c)
         {
             Color clr = c;
             if (clr.ToString() == "#00000000")

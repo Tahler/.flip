@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Windows.Media;
 using dotFlip.Tools;
 using Pen = dotFlip.Tools.Pen;
@@ -12,7 +13,6 @@ namespace dotFlip
     public class Flipbook
     {
         private IList<Page> _pages;
-
         private Page _currentPage;
         private SolidColorBrush _background;
         private Dictionary<string, ITool> _tools;
@@ -115,6 +115,11 @@ namespace dotFlip
         public void RefreshPage()
         {
             PageChanged(_currentPage, _isShowingGhostStrokes ? GetPreviousPage(_currentPage) : null);
+        }
+
+        public Page GetPageAt(int index)
+        {
+            return _pages[index];
         }
 
         public void MoveToPage(int index)
