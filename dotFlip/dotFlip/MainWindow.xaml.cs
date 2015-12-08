@@ -88,9 +88,7 @@ namespace dotFlip
                 }
             }));
             CommandBindings.Add(new CommandBinding(Commands.Restart, (sender, e) => _flipbook.DeleteAllPages()));
-<<<<<<< HEAD
             CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) => _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value))));
-=======
             CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) =>
             {
                 if (_flipbook.PageCount > 1)
@@ -111,7 +109,6 @@ namespace dotFlip
             }));
             CommandBindings.Add(new CommandBinding(Commands.Export,
                 (sender, e) => new ExportWindow(_flipbook).ShowDialog()));
->>>>>>> 498563503dbad5919e2272a18c754cf741b22545
         }
 
         private void InitializeMenuItemClickEvents()
