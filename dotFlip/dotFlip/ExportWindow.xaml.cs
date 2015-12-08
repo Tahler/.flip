@@ -35,6 +35,7 @@ namespace dotFlip
             btnCancel.Click += (sender, e) => this.Close();
             FramePicker.Maximum = Convert.ToByte(flipbook.PageCount);
             FramePicker.Minimum = 1;
+            PathText.Text = System.AppDomain.CurrentDomain.BaseDirectory + "myProject";
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -45,38 +46,47 @@ namespace dotFlip
 
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
-            string path = "D:\\dotFlipSaves\\test";
-
-            ExportType type = (ExportType) cmbExportType.SelectionBoxItem;
-
-            if (type == ExportType.Gif)
+            string path = PathText.Text;
+            path = path.Substring(0, path.LastIndexOf("."));
+            if (Directory.Exists(path.Substring(0, path.LastIndexOf("\\"))))
             {
-                IList<Bitmap> bitmaps = new List<Bitmap>();
-                for (int ii = 0; ii < _flipbook.PageCount; ii++)
+                ExportType type = (ExportType) cmbExportType.SelectionBoxItem;
+
+                if (type == ExportType.Gif)
                 {
-                    bitmaps.Add(ConvertPageToBitmap(_flipbook.GetPageAt(ii)));
+                    IList<Bitmap> bitmaps = new List<Bitmap>();
+                    for (int ii = 0; ii < _flipbook.PageCount; ii++)
+                    {
+                        bitmaps.Add(ConvertPageToBitmap(_flipbook.GetPageAt(ii)));
+                    }
+                    SaveAsGif(bitmaps, path);
                 }
-                SaveAsGif(bitmaps, path);
+                else
+                {
+                    byte frameNum = FramePicker.Value ?? 0;
+                    Bitmap bitmap = ConvertPageToBitmap(_flipbook.GetPageAt(frameNum - 1));
+                    switch (type)
+                    {
+                        case ExportType.Bmp:
+                            SaveAsBmp(bitmap, path);
+                            break;
+                        case ExportType.Jpg:
+                            SaveAsJpg(bitmap, path);
+                            break;
+                        case ExportType.Png:
+                            SaveAsPng(bitmap, path);
+                            break;
+                    }
+
+                }
+                this.Close();
             }
             else
             {
-                byte frameNum = FramePicker.Value ?? 0;
-                Bitmap bitmap = ConvertPageToBitmap(_flipbook.GetPageAt(frameNum-1));
-                switch (type) 
-                {
-                    case ExportType.Bmp:
-                        SaveAsBmp(bitmap, path);
-                        break;
-                    case ExportType.Jpg:
-                        SaveAsJpg(bitmap, path);
-                        break;
-                    case ExportType.Png:
-                        SaveAsPng(bitmap, path);
-                        break;
-                }
-
+                MessageBox.Show("No such directory exists", "Unable to Export", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
-            this.Close();
+            
         }
 
         private Bitmap ConvertPageToBitmap(Page p)
