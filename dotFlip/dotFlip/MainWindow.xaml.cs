@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -24,6 +25,7 @@ namespace dotFlip
         // http://stackoverflow.com/questions/1361350/keyboard-shortcuts-in-wpf
 
         private Flipbook _flipbook;
+
         private Color[] _colorHistory;
         private List<Button> _buttonsForColor;
 
@@ -238,21 +240,6 @@ namespace dotFlip
             clrPickerWindow.ShowDialog();
         }
 
-        private void Pencil_Click(object sender, RoutedEventArgs e)
-        {
-            _flipbook.UseTool("Pencil");
-
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pencil.png"));
-            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
-        }
-
-        private void Pen_Click(object sender, RoutedEventArgs e)
-        {
-            _flipbook.UseTool("Pen");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pen.png"));
-            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
-        }
-
         private void EnableControls()
         {
             btnNext.IsEnabled = false;
@@ -288,15 +275,68 @@ namespace dotFlip
         private void eraserButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Eraser");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/eraser.png"));
+            showAll();
+            var fadeOutAnimation = new DoubleAnimation(0d, new Duration(TimeSpan.FromSeconds(1)));
+            var fadeInAnimation = new DoubleAnimation(1d, new Duration(TimeSpan.FromSeconds(1)));
+            eraserButton.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
+            fadeTop();
+            currentToolEraser.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
 
         private void highlighterButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Highlighter");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/high.png"));
+            showAll();
+            var fadeOutAnimation = new DoubleAnimation(0d, new Duration(TimeSpan.FromSeconds(1)));
+            var fadeInAnimation = new DoubleAnimation(1d, new Duration(TimeSpan.FromSeconds(1)));
+            highlighterButton.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
+            fadeTop();
+            currentToolHigh.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+        }
+
+
+        private void Pencil_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Pencil");
+            showAll();
+            var fadeOutAnimation = new DoubleAnimation(0d, new Duration(TimeSpan.FromSeconds(1)));
+            var fadeInAnimation = new DoubleAnimation(1d, new Duration(TimeSpan.FromSeconds(1)));
+            Pencil.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
+            fadeTop();
+            currentToolPencil.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+        }
+
+        private void Pen_Click(object sender, RoutedEventArgs e)
+        {
+            _flipbook.UseTool("Pen");
+            showAll();
+            var fadeOutAnimation = new DoubleAnimation(0d, new Duration(TimeSpan.FromSeconds(1)));
+            var fadeInAnimation = new DoubleAnimation(1d, new Duration(TimeSpan.FromSeconds(1)));
+            Pen.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
+            fadeTop();
+            currentToolPen.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+        }
+
+        public void showAll()
+        {
+            var fadeInAnimation = new DoubleAnimation(1d, new Duration(TimeSpan.FromSeconds(1)));
+            Pencil.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
+            Pen.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
+            eraserButton.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
+            highlighterButton.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
+        }
+
+        public void fadeTop()
+        {
+            var fadeoutAnimation = new DoubleAnimation(0d, new Duration(TimeSpan.FromSeconds(1)));
+            currentToolPencil.BeginAnimation(Image.OpacityProperty, fadeoutAnimation);
+            currentToolPen.BeginAnimation(Image.OpacityProperty, fadeoutAnimation);
+            currentToolEraser.BeginAnimation(Image.OpacityProperty, fadeoutAnimation);
+            currentToolHigh.BeginAnimation(Image.OpacityProperty, fadeoutAnimation);
         }
     }
 }
