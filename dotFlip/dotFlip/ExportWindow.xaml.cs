@@ -47,8 +47,9 @@ namespace dotFlip
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
             string path = PathText.Text;
-            path = path.Substring(0, path.LastIndexOf("."));
-            if (Directory.Exists(path.Substring(0, path.LastIndexOf("\\"))))
+            if(path.LastIndexOf(".") != -1) path = path.Substring(0, path.LastIndexOf("."));
+            string pathWithOutEnd = (path.LastIndexOf("\\") != -1) ? path.Substring(0, path.LastIndexOf("\\")) : path;
+            if (Directory.Exists(pathWithOutEnd))
             {
                 ExportType type = (ExportType) cmbExportType.SelectionBoxItem;
 
@@ -85,8 +86,7 @@ namespace dotFlip
             {
                 MessageBox.Show("No such directory exists", "Unable to Export", MessageBoxButton.OK,
                     MessageBoxImage.Error);
-            }
-            
+            }        
         }
 
         private Bitmap ConvertPageToBitmap(Page p)
