@@ -172,9 +172,11 @@ namespace dotFlip
 
         public void changeToolColor(Color c)
         {
-            UpdateColorHistory(c);
-            _flipbook.CurrentTool.ChangeColor(c);
-            ColorButton1.Focus();
+            Color clr = c;
+            if (clr.ToString() == "#00000000")
+                clr = Colors.White;
+            UpdateColorHistory(clr);
+            _flipbook.CurrentTool.ChangeColor(clr);
         }
 
         private void StickyNoteClrPcker_Background_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)

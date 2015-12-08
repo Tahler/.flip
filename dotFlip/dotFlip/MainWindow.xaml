@@ -345,7 +345,7 @@
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger>
-                                    
+                                     
                                         </Image.Triggers>
                                         <Image.Style>
                                             <Style TargetType="{x:Type Image}">
