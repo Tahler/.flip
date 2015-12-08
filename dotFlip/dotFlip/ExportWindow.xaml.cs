@@ -33,6 +33,8 @@ namespace dotFlip
             InitializeComponent();
             _flipbook = flipbook;
             btnCancel.Click += (sender, e) => this.Close();
+            FramePicker.Maximum = Convert.ToByte(flipbook.PageCount);
+            FramePicker.Minimum = 1;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -58,8 +60,8 @@ namespace dotFlip
             }
             else
             {
-                //int frameNum = 0;
-                Bitmap bitmap = ConvertPageToBitmap(_flipbook.CurrentPage);
+                byte frameNum = FramePicker.Value ?? 0;
+                Bitmap bitmap = ConvertPageToBitmap(_flipbook.GetPageAt(frameNum-1));
                 switch (type) 
                 {
                     case ExportType.Bmp:
@@ -74,8 +76,6 @@ namespace dotFlip
                 }
 
             }
-
-
             this.Close();
         }
 
@@ -90,18 +90,16 @@ namespace dotFlip
             encoder.Save(stream);
 
             Bitmap bitmap = new Bitmap(stream);
-//            bitmap.Save("D:\\dotflipsaves\\test.bmp");
             return bitmap;
         }
 
         private void SaveAsGif(IList<Bitmap> bitmaps, string path)
         {
             path += ".gif";
-
            AnimatedGifEncoder encoder = new AnimatedGifEncoder();
             encoder.Start(path);
             encoder.SetRepeat(0);
-            encoder.SetDelay(500);
+            encoder.SetDelay(FrameDelayPicker.Value ?? 500);
             for (int ii = 0; ii < _flipbook.PageCount; ii++)
             {
                 encoder.AddFrame(bitmaps[ii]);
@@ -125,6 +123,20 @@ namespace dotFlip
         {
             path += ".bmp";
             bitmap.Save(path, ImageFormat.Bmp);   
+        }
+
+        private void cmbExportType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbExportType.SelectedItem.Equals(ExportType.Gif))
+            {
+                FramePicker.IsEnabled = false;
+                FrameDelayPicker.IsEnabled = true;
+            }
+            else
+            {
+                FrameDelayPicker.IsEnabled = false;
+                FramePicker.IsEnabled = true;
+            }
         }
     }
 
