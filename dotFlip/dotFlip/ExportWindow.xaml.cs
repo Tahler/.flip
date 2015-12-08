@@ -33,6 +33,9 @@ namespace dotFlip
             InitializeComponent();
             _flipbook = flipbook;
             btnCancel.Click += (sender, e) => this.Close();
+            FramePicker.Maximum = Convert.ToByte(flipbook.PageCount);
+            FramePicker.Minimum = 1;
+            PathText.Text = System.AppDomain.CurrentDomain.BaseDirectory + "myProject";
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -43,40 +46,47 @@ namespace dotFlip
 
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
-            string path = "D:\\dotFlipSaves\\test";
-
-            ExportType type = (ExportType) cmbExportType.SelectionBoxItem;
-
-            if (type == ExportType.Gif)
+            string path = PathText.Text;
+            if(path.LastIndexOf(".") != -1) path = path.Substring(0, path.LastIndexOf("."));
+            string pathWithOutEnd = (path.LastIndexOf("\\") != -1) ? path.Substring(0, path.LastIndexOf("\\")) : path;
+            if (Directory.Exists(pathWithOutEnd))
             {
-                IList<Bitmap> bitmaps = new List<Bitmap>();
-                for (int ii = 0; ii < _flipbook.PageCount; ii++)
+                ExportType type = (ExportType) cmbExportType.SelectionBoxItem;
+
+                if (type == ExportType.Gif)
                 {
-                    bitmaps.Add(ConvertPageToBitmap(_flipbook.GetPageAt(ii)));
+                    IList<Bitmap> bitmaps = new List<Bitmap>();
+                    for (int ii = 0; ii < _flipbook.PageCount; ii++)
+                    {
+                        bitmaps.Add(ConvertPageToBitmap(_flipbook.GetPageAt(ii)));
+                    }
+                    SaveAsGif(bitmaps, path);
                 }
-                SaveAsGif(bitmaps, path);
+                else
+                {
+                    byte frameNum = FramePicker.Value ?? 0;
+                    Bitmap bitmap = ConvertPageToBitmap(_flipbook.GetPageAt(frameNum - 1));
+                    switch (type)
+                    {
+                        case ExportType.Bmp:
+                            SaveAsBmp(bitmap, path);
+                            break;
+                        case ExportType.Jpg:
+                            SaveAsJpg(bitmap, path);
+                            break;
+                        case ExportType.Png:
+                            SaveAsPng(bitmap, path);
+                            break;
+                    }
+
+                }
+                this.Close();
             }
             else
             {
-                //int frameNum = 0;
-                Bitmap bitmap = ConvertPageToBitmap(_flipbook.CurrentPage);
-                switch (type) 
-                {
-                    case ExportType.Bmp:
-                        SaveAsBmp(bitmap, path);
-                        break;
-                    case ExportType.Jpg:
-                        SaveAsJpg(bitmap, path);
-                        break;
-                    case ExportType.Png:
-                        SaveAsPng(bitmap, path);
-                        break;
-                }
-
-            }
-
-
-            this.Close();
+                MessageBox.Show("No such directory exists", "Unable to Export", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }        
         }
 
         private Bitmap ConvertPageToBitmap(Page p)
@@ -90,18 +100,16 @@ namespace dotFlip
             encoder.Save(stream);
 
             Bitmap bitmap = new Bitmap(stream);
-//            bitmap.Save("D:\\dotflipsaves\\test.bmp");
             return bitmap;
         }
 
         private void SaveAsGif(IList<Bitmap> bitmaps, string path)
         {
             path += ".gif";
-
            AnimatedGifEncoder encoder = new AnimatedGifEncoder();
             encoder.Start(path);
             encoder.SetRepeat(0);
-            encoder.SetDelay(500);
+            encoder.SetDelay(FrameDelayPicker.Value ?? 500);
             for (int ii = 0; ii < _flipbook.PageCount; ii++)
             {
                 encoder.AddFrame(bitmaps[ii]);
@@ -125,6 +133,20 @@ namespace dotFlip
         {
             path += ".bmp";
             bitmap.Save(path, ImageFormat.Bmp);   
+        }
+
+        private void cmbExportType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbExportType.SelectedItem.Equals(ExportType.Gif))
+            {
+                FramePicker.IsEnabled = false;
+                FrameDelayPicker.IsEnabled = true;
+            }
+            else
+            {
+                FrameDelayPicker.IsEnabled = false;
+                FramePicker.IsEnabled = true;
+            }
         }
     }
 
