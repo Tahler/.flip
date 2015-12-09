@@ -37,6 +37,7 @@
         </DockPanel>
         <DockPanel Grid.Row="2" Margin="0 0 0 15">
             <TextBlock Margin="5 0" DockPanel.Dock="Left">Location:</TextBlock>
+            <Button DockPanel.Dock="Right" Margin="5 0"  x:Name="BrowseButton" Click="BrowseButton_OnClick">Browse</Button>
             <TextBox x:Name="PathText" Margin="5 0"></TextBox>
         </DockPanel>
         <Grid Grid.Row="3" Margin="0 0 0 15">
