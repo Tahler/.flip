@@ -80,24 +80,23 @@ namespace dotFlip
                 }
             }));
             CommandBindings.Add(new CommandBinding(Commands.Restart, (sender, e) => _flipbook.DeleteAllPages()));
-            CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) => _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value))));
             CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) =>
             {
                 if (_flipbook.PageCount > 1)
                 {
+                    _flipbook.IsPlaying = !_flipbook.IsPlaying;
+                    Console.WriteLine("IsPlaying: " + _flipbook.IsPlaying);
+                    chkPlay.IsChecked = _flipbook.IsPlaying;
                     if (_flipbook.IsPlaying)
                     {
-                        EnableControls();
-                        chkPlay.IsChecked = false;
+                        DisableControls();
+                        _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));                 
                     }
                     else
                     {
-                        DisableControls();
-                        chkPlay.IsChecked = true;
-                        _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
-                    }
-                    _flipbook.IsPlaying = !_flipbook.IsPlaying;
-                 }
+                        EnableControls();
+                    }             
+                }
             }));
             CommandBindings.Add(new CommandBinding(Commands.Export,
                 (sender, e) => new ExportWindow(_flipbook).ShowDialog()));
@@ -144,7 +143,7 @@ namespace dotFlip
 
             if (ghostPage != null)
             {
-                ghostPage.Opacity = 0.25;
+                ghostPage.Opacity = 0.05;
                 ghostPage.IsHitTestVisible = false;
                 flipbookHolder.Children.Add(ghostPage);
             }
