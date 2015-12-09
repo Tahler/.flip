@@ -101,7 +101,12 @@ namespace dotFlip
                 }
             }));
             CommandBindings.Add(new CommandBinding(Commands.Export,
-                (sender, e) => new ExportWindow(_flipbook).ShowDialog()));
+                (sender, e) =>
+                {
+                    _flipbook.IsShowingGhostStrokes = false;
+                    btnGhost.IsChecked = false;
+                    new ExportWindow(_flipbook).ShowDialog();
+                }));
         }
 
         private void InitializeMenuEvents()
