@@ -88,7 +88,6 @@ namespace dotFlip
                 if (_flipbook.PageCount > 1)
                 {
                     _flipbook.IsPlaying = !_flipbook.IsPlaying;
-                    Console.WriteLine("IsPlaying: " + _flipbook.IsPlaying);
                     chkPlay.IsChecked = _flipbook.IsPlaying;
                     if (_flipbook.IsPlaying)
                     {
@@ -102,7 +101,12 @@ namespace dotFlip
                 }
             }));
             CommandBindings.Add(new CommandBinding(Commands.Export,
-                (sender, e) => new ExportWindow(_flipbook).ShowDialog()));
+                (sender, e) =>
+                {
+                    _flipbook.IsShowingGhostStrokes = false;
+                    btnGhost.IsChecked = false;
+                    new ExportWindow(_flipbook).ShowDialog();
+                }));
         }
 
         private void InitializeMenuEvents()
@@ -110,7 +114,12 @@ namespace dotFlip
             sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value - 1));
             toolThicknessSlider.ValueChanged += (sender, e) => { _flipbook.CurrentTool.Thickness = e.NewValue; };
         }
-
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateButtonColors();
+            ColorButton_Click(ColorButton1, null);
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+        }
         private void Save()
         {
             if (File.Exists(_flipbook.FilePath))
@@ -250,13 +259,6 @@ namespace dotFlip
             }
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            UpdateButtonColors();
-            ColorButton_Click(ColorButton1, null);
-            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
-        }
-
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
         {
             var clrPickerWindow = new ColorPickerWindow(this);
@@ -265,21 +267,18 @@ namespace dotFlip
 
         private void EnableControls()
         {
-            btnNext.IsEnabled = false;
-            btnPrev.IsEnabled = false;
-            btnUndo.IsEnabled = false;
-            btnUndo.IsEnabled = false;
-            btnCopy.IsEnabled = false;
-            btnRedo.IsEnabled = false;
-            btnDelete.IsEnabled = false;
-            txtNavigation.IsEnabled = false;
-            sldrNavigation.IsEnabled = false;
-            btnGhost.IsChecked = false;
-            btnGhost.IsEnabled = false;
-            _flipbook.IsShowingGhostStrokes = false;
-            flipbookHolder.IsHitTestVisible = false;
+            btnNext.IsEnabled = true;
+            btnPrev.IsEnabled = true;
+            btnUndo.IsEnabled = true;
+            btnUndo.IsEnabled = true;
+            btnCopy.IsEnabled = true;
+            btnDelete.IsEnabled = true;
+            txtNavigation.IsEnabled = true;
+            sldrNavigation.IsEnabled = true;
+            btnRedo.IsEnabled = true;
+            btnGhost.IsEnabled = true;
+            flipbookHolder.IsHitTestVisible = true;
         }
-
         private void DisableControls()
         {
             btnNext.IsEnabled = true;
@@ -304,7 +303,6 @@ namespace dotFlip
                 UpdateColorHistory(c);
             }
         }
-
         private void eraserButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Eraser");
