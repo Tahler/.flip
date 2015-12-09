@@ -216,6 +216,11 @@ namespace dotFlip
                 {
                     SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
                     _flipbook.CurrentTool.ChangeColor(rectColor.Color);
+                    rect.Effect = new DropShadowEffect
+                    {
+                        ShadowDepth = 5
+                    };
+                    UpdateButtonEffects();
                 }
             //    Rectangle rect = button.Content as Rectangle;
             //    if(rect != null)
@@ -226,10 +231,26 @@ namespace dotFlip
             }
         }
 
+        private void UpdateButtonEffects()
+        {
+            foreach (Button button in ColorHistory.Children)
+            {
+                Rectangle rect = button.Template.FindName("ColorHistoryRectangle", button) as Rectangle;
+                if (rect != null)
+                {
+                    SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
+                    Color currentColor = (_flipbook.CurrentTool.Brush as SolidColorBrush).Color;
+                    if(!rectColor.Color.Equals(currentColor))
+                    rect.Effect = null;
+                }
+
+            }
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateButtonColors();
-            ColorButton1.Focus();
+            ColorButton_Click(ColorButton1, null);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
 
