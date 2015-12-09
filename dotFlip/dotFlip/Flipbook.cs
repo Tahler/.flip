@@ -79,6 +79,83 @@ namespace dotFlip
             _pages = new List<Page> {CurrentPage};
         }
 
+        public void Save()
+        {
+            // Save all drawings
+            if (Directory.Exists(SavePath))
+            {
+                DirectoryInfo savePath = new DirectoryInfo(SavePath);
+                foreach (FileInfo file in savePath.GetFiles())
+                {
+                    file.Delete();
+                }
+                foreach (DirectoryInfo dir in savePath.GetDirectories())
+                {
+                    dir.Delete(true);
+                }
+                Directory.Delete(SavePath, true);
+            }
+            for (int i = 0; i < _pages.Count; i++)
+            {
+                var page = _pages[i];
+                string pageSavePath = SavePath + @"\Page" + i;
+                if (Directory.Exists(pageSavePath))
+                {
+                    Directory.Delete(pageSavePath, true);
+                }
+                Directory.CreateDirectory(pageSavePath);
+
+                for (int j = 0; j < page.Drawings.Count; j++)
+                {
+                    var visual = page.Drawings[j];
+
+                    string drawingSavePath = pageSavePath + @"\Drawing" + j + ".xaml";
+                    using (var stream = File.Create(drawingSavePath))
+                    {
+                        XamlWriter.Save(visual.Drawing, stream);
+                    }
+                }
+            }
+            // save colors eventually too
+        }
+
+        public void Load()
+        {
+            if (Directory.Exists(SavePath))
+            {
+                var flipbookDir = new DirectoryInfo(SavePath);
+                List<Page> pages = new List<Page>();
+                foreach (var pageDir in flipbookDir.GetDirectories())
+                {
+                    var page = new Page(this);
+                    foreach (var drawingFile in pageDir.GetFiles())
+                    {
+                        using (var stream = File.Open(drawingFile.FullName, FileMode.Open))
+                        {
+                            DrawingVisual visual = new DrawingVisual();
+                            using (var context = visual.RenderOpen())
+                            {
+                                context.DrawDrawing((Drawing)XamlReader.Load(stream));
+                            }
+                            page.Drawings.Add(visual);
+                        }
+                    }
+                    pages.Add(page);
+                }
+                // use new pages now
+                _pages = pages;
+                CurrentPage = _pages[0];
+            }
+        }
+
+        public void UseTool(string toolToUse)
+        {
+            if (_tools.ContainsKey(toolToUse))
+            {
+                CurrentTool = _tools[toolToUse];
+            }
+        }
+
         public void UseTool(string toolToUse)
         {
             if (_tools.ContainsKey(toolToUse))

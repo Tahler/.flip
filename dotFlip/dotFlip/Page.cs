@@ -13,9 +13,9 @@ namespace dotFlip
         private Flipbook _parent;
 
         private Stack<int> _undoStack; // Holds the list of indices to "rollback" to in case of an Undo() call
-        private Stack<List<Visual>> _redoStack;
+        private Stack<List<DrawingVisual>> _redoStack;
 
-        public IList<Visual> Visuals { get; private set; }
+        public IList<DrawingVisual> Drawings { get; private set; }
 
         public Page(Flipbook parent)
         {
@@ -23,10 +23,10 @@ namespace dotFlip
             ClipToBounds = true;
 
             Background = parent.Brush;
-            Visuals = new List<Visual>();
+            Drawings = new List<DrawingVisual>();
                      
             _undoStack = new Stack<int>();
-            _redoStack = new Stack<List<Visual>>();
+            _redoStack = new Stack<List<DrawingVisual>>();
 
             MouseDown += (sender, e) => Page_MouseDown(e.GetPosition(this));
             MouseMove += (sender, e) => Page_MouseMove(e.GetPosition(this));
@@ -38,14 +38,14 @@ namespace dotFlip
         {
             if (_undoStack.Count != 0)
             {
-                int startIndex = Visuals.Count - 1;
+                int startIndex = Drawings.Count - 1;
                 int indexToArriveAt = _undoStack.Pop();
 
-                List<Visual> redoList = new List<Visual>();
+                List<DrawingVisual> redoList = new List<DrawingVisual>();
                 for (int i = startIndex; i >= indexToArriveAt; i--)
                 {
-                    redoList.Add(Visuals[i]);
-                    Visuals.RemoveAt(i);
+                    redoList.Add(Drawings[i]);
+                    Drawings.RemoveAt(i);
                 }
                 _redoStack.Push(redoList);
 
@@ -59,10 +59,10 @@ namespace dotFlip
             {
                 SaveCurrentState();
 
-                List<Visual> redoVisuals = _redoStack.Pop();
+                List<DrawingVisual> redoVisuals = _redoStack.Pop();
                 foreach (var visual in redoVisuals)
                 {
-                    Visuals.Add(visual);
+                    Drawings.Add(visual);
                 }
 
                 _parent.RefreshPage();
@@ -71,7 +71,7 @@ namespace dotFlip
 
         private void SaveCurrentState()
         {
-            _undoStack.Push(Visuals.Count);
+            _undoStack.Push(Drawings.Count);
         }
 
         private void Page_MouseDown(Point mousePoint)
@@ -118,7 +118,7 @@ namespace dotFlip
                 context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
             }
 
-            Visuals.Add(path);
+            Drawings.Add(path);
             AddVisualChild(path);
         }
 
@@ -128,17 +128,17 @@ namespace dotFlip
             drawingContext.DrawRectangle(background, null, new Rect(RenderSize));
         }
 
-        protected override int VisualChildrenCount => Visuals.Count;
+        protected override int VisualChildrenCount => Drawings.Count;
 
         protected override Visual GetVisualChild(int index)
         {
-            return Visuals[index];
+            return Drawings[index];
         }
 
         public void CopyPage(Page prevPage)
         {
             SaveCurrentState();
-            foreach (Visual v in prevPage.Visuals)
+            foreach (var v in prevPage.Drawings)
             {
                 DrawingVisual visual = new DrawingVisual();
                 DrawingGroup group = VisualTreeHelper.GetDrawing(v);
@@ -146,7 +146,7 @@ namespace dotFlip
                 {
                     context.DrawDrawing(group);
                 }
-                Visuals.Add(visual);
+                Drawings.Add(visual);
                 AddVisualChild(visual);
             }
         }
@@ -161,7 +161,7 @@ namespace dotFlip
                 context.DrawRectangle(Background, null, new Rect(this.RenderSize));
             }
 
-            Visuals.Add(splash);
+            Drawings.Add(splash);
             AddVisualChild(splash);
         }
     }
