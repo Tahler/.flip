@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -24,11 +25,20 @@ namespace dotFlip
         // http://stackoverflow.com/questions/1361350/keyboard-shortcuts-in-wpf
 
         private Flipbook _flipbook;
+
+        private Color[] _colorHistory;
         private List<Button> _buttonsForColor;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            _colorHistory = new Color[]
+            {
+                Colors.Black, Colors.White, Colors.Gray,
+                Colors.Blue, Colors.Green, Colors.Red,
+                Colors.Pink, Colors.Orange, Colors.Orchid
+            };
 
             Color backgroundColor = new Color { A = 255, R = 249, G = 237, B = 78 };
             _flipbook = new Flipbook(backgroundColor);
@@ -80,6 +90,7 @@ namespace dotFlip
                 }
             }));
             CommandBindings.Add(new CommandBinding(Commands.Restart, (sender, e) => _flipbook.DeleteAllPages()));
+            CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) => _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value))));
             CommandBindings.Add(new CommandBinding(Commands.Play, (sender, e) =>
             {
                 if (_flipbook.PageCount > 1)
@@ -98,6 +109,8 @@ namespace dotFlip
                     _flipbook.IsPlaying = !_flipbook.IsPlaying;
                  }
             }));
+            CommandBindings.Add(new CommandBinding(Commands.Export,
+                (sender, e) => new ExportWindow(_flipbook).ShowDialog()));
         }
 
         private void InitializeMenuItemClickEvents()
@@ -146,9 +159,12 @@ namespace dotFlip
 
         private void UpdateColorHistory(Color c)
         {
-            int selectedIndex = _flipbook.UpdateColorHistory(c);
+            for(int index = 7; index > 0; index--)
+            {
+                _colorHistory[index] = _colorHistory[index - 1];
+            }
+            _colorHistory[0] = c;
             UpdateButtonColors();
-            ColorButton_Click(_buttonsForColor[selectedIndex], null);
         }
 
         private void UpdateButtonColors()
@@ -159,7 +175,7 @@ namespace dotFlip
                 Rectangle rect = button.Template.FindName("ColorHistoryRectangle", button) as Rectangle;
                 if (rect != null)
                 {
-                    rect.Fill = new SolidColorBrush(_flipbook.ColorHistory[index]);
+                    rect.Fill = new SolidColorBrush(_colorHistory[index]);
                 }
                 //Rectangle rect = b.Content as Rectangle;
                 //if(rect != null)
@@ -174,25 +190,21 @@ namespace dotFlip
             //    Color c = _colorHistory[0];
             //    innerButton.Fill = new SolidColorBrush(c);
             //}
+            Control c;
         }
 
-        public void changeToolColor(Color c)
+        public void ChangeToolColor(Color c)
         {
-            UpdateColorHistory(c);
-            _flipbook.CurrentTool.ChangeColor(c);
+            Color clr = c;
+            if (clr.ToString() == "#00000000")
+                clr = Colors.White;
+            UpdateColorHistory(clr);
+            _flipbook.CurrentTool.ChangeColor(clr);
         }
 
         private void StickyNoteClrPcker_Background_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             _flipbook.BackgroundColor = (Color)e.NewValue;
-        }
-
-        private void ClearColorButtonEffects()
-        {
-            foreach(Button b in _buttonsForColor)
-            {
-                b.Effect = null;
-            }
         }
 
         private void ColorButton_Click(object sender, RoutedEventArgs e)
@@ -205,14 +217,6 @@ namespace dotFlip
                 {
                     SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
                     _flipbook.CurrentTool.ChangeColor(rectColor.Color);
-                    ClearColorButtonEffects();
-                    button.Effect = new DropShadowEffect
-                    {
-                        Color = new Color { A = 255, R = 255, G = 255, B = 0 },
-                        Direction = 320,
-                        ShadowDepth = 5,
-                        Opacity = 1
-                    };
                 }
             //    Rectangle rect = button.Content as Rectangle;
             //    if(rect != null)
@@ -226,9 +230,8 @@ namespace dotFlip
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateButtonColors();
+            ColorButton1.Focus();
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
-            ClearColorButtonEffects();
-            ColorButton_Click(ColorButton1, null);
         }
 
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
@@ -238,31 +241,6 @@ namespace dotFlip
         }
 
         private void EnableControls()
-        {
-            btnNext.IsEnabled = true;
-            btnPrev.IsEnabled = true;
-            btnUndo.IsEnabled = true;
-            btnUndo.IsEnabled = true;
-            btnCopy.IsEnabled = true;
-            btnDelete.IsEnabled = true;
-            txtNavigation.IsEnabled = true;
-            sldrNavigation.IsEnabled = true;
-            btnRedo.IsEnabled = true;
-            btnGhost.IsEnabled = true;
-            flipbookHolder.IsHitTestVisible = true;
-        }
-        private void UpdateColorFromTool()
-        {
-            SolidColorBrush brush = _flipbook.CurrentTool.Brush as SolidColorBrush;
-            if(brush != null)
-            {
-                Color c = brush.Color;
-                c.A = 255;
-                UpdateColorHistory(c);
-            }
-        }
-
-        private void DisableControls()
         {
             btnNext.IsEnabled = false;
             btnPrev.IsEnabled = false;
@@ -277,37 +255,88 @@ namespace dotFlip
             btnGhost.IsEnabled = false;
             _flipbook.IsShowingGhostStrokes = false;
             flipbookHolder.IsHitTestVisible = false;
-        }        
-   
+        }
+
+        private void DisableControls()
+        {
+            btnNext.IsEnabled = true;
+            btnPrev.IsEnabled = true;
+            btnUndo.IsEnabled = true;
+            btnUndo.IsEnabled = true;
+            btnCopy.IsEnabled = true;
+            btnDelete.IsEnabled = true;
+            txtNavigation.IsEnabled = true;
+            sldrNavigation.IsEnabled = true;
+            btnRedo.IsEnabled = true;
+            btnGhost.IsEnabled = true;
+            flipbookHolder.IsHitTestVisible = true;
+        }
+        
         private void eraserButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Eraser");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/eraser.png"));
+            showAll();
+            var fadeOutAnimation = new DoubleAnimation(0d, new Duration(TimeSpan.FromSeconds(1)));
+            var fadeInAnimation = new DoubleAnimation(1d, new Duration(TimeSpan.FromSeconds(1)));
+            eraserButton.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
+            fadeTop();
+            currentToolEraser.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
 
         private void highlighterButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Highlighter");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/high.png"));
+            showAll();
+            var fadeOutAnimation = new DoubleAnimation(0d, new Duration(TimeSpan.FromSeconds(1)));
+            var fadeInAnimation = new DoubleAnimation(1d, new Duration(TimeSpan.FromSeconds(1)));
+            highlighterButton.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
+            fadeTop();
+            currentToolHigh.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
-            UpdateColorFromTool();
         }
+
 
         private void Pencil_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Pencil");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pencil.png"));
+            showAll();
+            var fadeOutAnimation = new DoubleAnimation(0d, new Duration(TimeSpan.FromSeconds(1)));
+            var fadeInAnimation = new DoubleAnimation(1d, new Duration(TimeSpan.FromSeconds(1)));
+            Pencil.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
+            fadeTop();
+            currentToolPencil.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
-            UpdateColorFromTool();
         }
 
         private void Pen_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Pen");
-            currentToolImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/pen.png"));
+            showAll();
+            var fadeOutAnimation = new DoubleAnimation(0d, new Duration(TimeSpan.FromSeconds(1)));
+            var fadeInAnimation = new DoubleAnimation(1d, new Duration(TimeSpan.FromSeconds(1)));
+            Pen.BeginAnimation(Image.OpacityProperty, fadeOutAnimation);
+            fadeTop();
+            currentToolPen.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
-            UpdateColorFromTool();
+        }
+
+        public void showAll()
+        {
+            var fadeInAnimation = new DoubleAnimation(1d, new Duration(TimeSpan.FromSeconds(1)));
+            Pencil.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
+            Pen.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
+            eraserButton.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
+            highlighterButton.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
+        }
+
+        public void fadeTop()
+        {
+            var fadeoutAnimation = new DoubleAnimation(0d, new Duration(TimeSpan.FromSeconds(1)));
+            currentToolPencil.BeginAnimation(Image.OpacityProperty, fadeoutAnimation);
+            currentToolPen.BeginAnimation(Image.OpacityProperty, fadeoutAnimation);
+            currentToolEraser.BeginAnimation(Image.OpacityProperty, fadeoutAnimation);
+            currentToolHigh.BeginAnimation(Image.OpacityProperty, fadeoutAnimation);
         }
     }
 }

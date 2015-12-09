@@ -41,7 +41,7 @@ namespace dotFlip
 
         private void ColorPickerWindow_OnClosing(object sender, CancelEventArgs e)
         {
-            _parent.changeToolColor(_selectedColor);
+            _parent.ChangeToolColor(_selectedColor);
         }
     }
 }
