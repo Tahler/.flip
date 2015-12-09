@@ -47,6 +47,15 @@ namespace dotFlip
             BindCommands();
 
             sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value - 1));
+            Closing += (sender, e) =>
+            {
+                if (_flipbook.HasUnsavedChanges &&
+                    GetConfirmation("Unsaved Changes detected. Would you like to save before exiting?",
+                        "Unsaved Changes") == true)
+                {
+                    Save();
+                } 
+            };
         }
 
         private void BindCommands()
@@ -71,13 +80,7 @@ namespace dotFlip
             CommandBindings.Add(new CommandBinding(Commands.ClearPage, (sender, e) => _flipbook.CurrentPage.Clear()));
             CommandBindings.Add(new CommandBinding(Commands.DeletePage, (sender, e) =>
             {
-                Point lowerRightPoint = this.PointToScreen(new Point(0, 0));
-                lowerRightPoint.X += this.ActualWidth;
-                lowerRightPoint.Y += this.ActualHeight - StatusBar.ActualHeight;
-                Notification note = new Notification("Delete Page", "Are you sure you want to delete this page?", lowerRightPoint);
-                var showDialog = note.ShowDialog();
-                Console.WriteLine(showDialog.Value);
-                if (showDialog.Value)
+                if (GetConfirmation("Are you sure you want to delete this page?", "Delete Page") == true)
                 {
                     _flipbook.DeletePage(_flipbook.CurrentPage);
                 }
@@ -107,6 +110,16 @@ namespace dotFlip
                     btnGhost.IsChecked = false;
                     new ExportWindow(_flipbook).ShowDialog();
                 }));
+        }
+
+
+        private bool? GetConfirmation(string prompt, string title)
+        {
+            Point lowerRightPoint = this.PointToScreen(new Point(0, 0));
+            lowerRightPoint.X += this.ActualWidth;
+            lowerRightPoint.Y += this.ActualHeight - StatusBar.ActualHeight;
+            Notification note = new Notification(title, prompt, lowerRightPoint);
+            return note.ShowDialog();
         }
 
         private void InitializeMenuEvents()

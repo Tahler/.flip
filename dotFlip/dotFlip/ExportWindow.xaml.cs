@@ -93,6 +93,7 @@ namespace dotFlip
         private Bitmap ConvertPageToBitmap(Page p)
         {
             p.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            //Magic number same size as the flipbook page
             p.Arrange(new Rect(new Size(650, 650)));
             p.Opacity = 1;
             RenderTargetBitmap rtb = new RenderTargetBitmap((int) p.ActualWidth, (int) p.ActualHeight, 96, 96, PixelFormats.Pbgra32);
