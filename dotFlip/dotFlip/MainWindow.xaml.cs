@@ -88,7 +88,6 @@ namespace dotFlip
                 if (_flipbook.PageCount > 1)
                 {
                     _flipbook.IsPlaying = !_flipbook.IsPlaying;
-                    Console.WriteLine("IsPlaying: " + _flipbook.IsPlaying);
                     chkPlay.IsChecked = _flipbook.IsPlaying;
                     if (_flipbook.IsPlaying)
                     {
@@ -114,7 +113,7 @@ namespace dotFlip
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateButtonColors();
-            ColorButton1.Focus();
+            ColorButton_Click(ColorButton1, null);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
 
@@ -269,13 +268,6 @@ namespace dotFlip
             }
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            UpdateButtonColors();
-            ColorButton_Click(ColorButton1, null);
-            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
-        }
-
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
         {
             var clrPickerWindow = new ColorPickerWindow(this);
@@ -283,6 +275,21 @@ namespace dotFlip
         }
 
         private void EnableControls()
+        {
+            btnNext.IsEnabled = true;
+            btnPrev.IsEnabled = true;
+            btnUndo.IsEnabled = true;
+            btnUndo.IsEnabled = true;
+            btnCopy.IsEnabled = true;
+            btnDelete.IsEnabled = true;
+            txtNavigation.IsEnabled = true;
+            sldrNavigation.IsEnabled = true;
+            btnRedo.IsEnabled = true;
+            btnGhost.IsEnabled = true;
+            flipbookHolder.IsHitTestVisible = true;
+        }
+
+        private void DisableControls()
         {
             btnNext.IsEnabled = false;
             btnPrev.IsEnabled = false;
@@ -297,21 +304,6 @@ namespace dotFlip
             btnGhost.IsEnabled = false;
             _flipbook.IsShowingGhostStrokes = false;
             flipbookHolder.IsHitTestVisible = false;
-        }
-
-        private void DisableControls()
-        {
-            btnNext.IsEnabled = true;
-            btnPrev.IsEnabled = true;
-            btnUndo.IsEnabled = true;
-            btnUndo.IsEnabled = true;
-            btnCopy.IsEnabled = true;
-            btnDelete.IsEnabled = true;
-            txtNavigation.IsEnabled = true;
-            sldrNavigation.IsEnabled = true;
-            btnRedo.IsEnabled = true;
-            btnGhost.IsEnabled = true;
-            flipbookHolder.IsHitTestVisible = true;
         }
 
         private void eraserButton_Click(object sender, RoutedEventArgs e)
