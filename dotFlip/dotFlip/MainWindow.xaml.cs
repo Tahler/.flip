@@ -120,7 +120,12 @@ namespace dotFlip
 
         private void Save()
         {
-            var dialog = new SaveFileDialog();
+            var dialog = new SaveFileDialog
+            {
+                Filter = "Flip Files | *.flip",
+                DefaultExt = "flip",
+                AddExtension = true,
+            };
             if (dialog.ShowDialog() == true)
             {
                 _flipbook.Save(dialog.FileName);
@@ -129,7 +134,10 @@ namespace dotFlip
 
         private void Open()
         {
-            var dialog = new OpenFileDialog();
+            var dialog = new OpenFileDialog
+            {
+                Filter = "Flip Files | *.flip",
+            };
             if (dialog.ShowDialog() == true)
             {
                 _flipbook.Load(dialog.FileName);
