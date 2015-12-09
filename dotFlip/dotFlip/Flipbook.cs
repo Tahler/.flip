@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Drawing.Printing;
 using System.Windows.Media;
 using dotFlip.Tools;
 using Pen = dotFlip.Tools.Pen;
 using System.Threading.Tasks;
-using System;
+using System.IO;
+using System.Windows.Markup;
 
 namespace dotFlip
 {
@@ -12,6 +12,8 @@ namespace dotFlip
 
     public class Flipbook
     {
+        private const string SavePath = @"C:\Users\Tyler Berry\Flipbook";
+
         private IList<Page> _pages;
         private Page _currentPage;
         private SolidColorBrush _background;
@@ -135,7 +137,7 @@ namespace dotFlip
                             DrawingVisual visual = new DrawingVisual();
                             using (var context = visual.RenderOpen())
                             {
-                                context.DrawDrawing((Drawing)XamlReader.Load(stream));
+                                context.DrawDrawing((Drawing) XamlReader.Load(stream));
                             }
                             page.Drawings.Add(visual);
                         }
@@ -147,14 +149,7 @@ namespace dotFlip
                 CurrentPage = _pages[0];
             }
         }
-
-        public void UseTool(string toolToUse)
-        {
-            if (_tools.ContainsKey(toolToUse))
-            {
-                CurrentTool = _tools[toolToUse];
-            }
-        }
+        
 
         public void UseTool(string toolToUse)
         {
