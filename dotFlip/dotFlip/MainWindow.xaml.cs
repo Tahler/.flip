@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace dotFlip
 {
@@ -51,6 +52,8 @@ namespace dotFlip
 
         private void BindCommands()
         {
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.SaveAs, (sender, e) => Save()));
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, (sender, e) => Open()));
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo, (sender, e) => _flipbook.CurrentPage.Undo()));
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, (sender, e) => _flipbook.CurrentPage.Redo()));
             CommandBindings.Add(new CommandBinding(Commands.PreviousPage, (sender, e) => _flipbook.PreviousPage()));
@@ -113,12 +116,24 @@ namespace dotFlip
             UpdateButtonColors();
             ColorButton1.Focus();
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
-            _flipbook.Load();
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Save()
         {
-            _flipbook.Save();
+            var dialog = new SaveFileDialog();
+            if (dialog.ShowDialog() == true)
+            {
+                _flipbook.Save(dialog.FileName);
+            }
+        }
+
+        private void Open()
+        {
+            var dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() == true)
+            {
+                _flipbook.Load(dialog.FileName);
+            }
         }
 
         private void Flipbook_PageChanged(Page currentPage, Page ghostPage)

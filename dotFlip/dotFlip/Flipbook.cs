@@ -14,8 +14,6 @@ namespace dotFlip
 
     public class Flipbook
     {
-        private const string SavePath = @"C:\Users\Tyler Berry\Book.flip";
-
         private IList<Page> _pages;
         private Page _currentPage;
         private SolidColorBrush _background;
@@ -83,15 +81,15 @@ namespace dotFlip
             _pages = new List<Page> {CurrentPage};
         }
 
-        public void Save()
+        public void Save(string path)
         {
             // Save all drawings
-            if (File.Exists(SavePath))
+            if (File.Exists(path))
             {
-                File.Delete(SavePath);
+                File.Delete(path);
             }
 
-            using (var fileStream = new FileStream(SavePath, FileMode.Create))
+            using (var fileStream = new FileStream(path, FileMode.Create))
             {
                 using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Create))
                 {
@@ -117,12 +115,12 @@ namespace dotFlip
             // save colors eventually too
         }
 
-        public void Load()
+        public void Load(string path)
         {
-            if (File.Exists(SavePath))
+            if (File.Exists(path))
             {
                 List<Page> pages = new List<Page>();
-                using (var fileStream = new FileStream(SavePath, FileMode.Open))
+                using (var fileStream = new FileStream(path, FileMode.Open))
                 {
                     using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Read))
                     {
