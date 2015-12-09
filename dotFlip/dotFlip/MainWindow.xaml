@@ -21,11 +21,8 @@
                     Key="S"
                     Command="ApplicationCommands.SaveAs"/>
         <KeyBinding Modifiers="Ctrl"
-                    Key="Z"
-                    Command="ApplicationCommands.Undo"/>
-        <KeyBinding Modifiers="Ctrl"
-                    Key="Y"
-                    Command="ApplicationCommands.Redo"/>
+                    Key="E"
+                    Command="local:Commands.Export"/>
         <KeyBinding Modifiers="Ctrl+Shift"
                     Key="Z"
                     Command="ApplicationCommands.Redo"/>
