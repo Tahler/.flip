@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Gif.Components;
+using Microsoft.Win32;
 using Image = System.Drawing.Image;
 using Size = System.Windows.Size;
 
@@ -146,6 +147,15 @@ namespace dotFlip
             {
                 FrameDelayPicker.IsEnabled = false;
                 FramePicker.IsEnabled = true;
+            }
+        }
+
+        private void BrowseButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                PathText.Text = saveFileDialog.FileName;
             }
         }
     }
