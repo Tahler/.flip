@@ -17,6 +17,9 @@
         MinWidth="1200"
         MinHeight="900">
     <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl+Shift"
+                    Key="S"
+                    Command="ApplicationCommands.SaveAs"/>
         <KeyBinding Modifiers="Ctrl"
                     Key="Z"
                     Command="ApplicationCommands.Undo"/>
@@ -39,33 +42,17 @@
                     Command="local:Commands.DeletePage"/>
     </Window.InputBindings>
     <Window.Resources>
-
-        <Storyboard x:Key="OnMouseDown1">
-            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[3].(GradientStop.Color)" Storyboard.TargetName="button">
-                <EasingColorKeyFrame KeyTime="0" Value="#FFAE3131"/>
-                <EasingColorKeyFrame KeyTime="0:0:0.5" Value="#FFF18A8A"/>
-                <EasingColorKeyFrame KeyTime="0:0:1" Value="White"/>
-            </ColorAnimationUsingKeyFrames>
-        </Storyboard>
         <system:Double x:Key="FlipbookWidth">650</system:Double>
-        <Style x:Key="DarkGradientStyle" TargetType="DockPanel">
-            <Setter Property="Background">
-                <Setter.Value>
-                    <RadialGradientBrush>
-                        <RadialGradientBrush.GradientStops>
-                            <GradientStop Offset="0.33" Color="#494949"/>
-                            <GradientStop Offset="1.0" Color="#1a1a1a"/>
-                        </RadialGradientBrush.GradientStops>
-                    </RadialGradientBrush>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Save"
                           Command="ApplicationCommands.Save"/>
+                <MenuItem Header="Save As"
+                          Command="ApplicationCommands.SaveAs"/>
+                <MenuItem Header="Open"
+                          Command="ApplicationCommands.Open"/>
                 <MenuItem Header="Export"
                           Command="local:Commands.Export"/>
             </MenuItem>

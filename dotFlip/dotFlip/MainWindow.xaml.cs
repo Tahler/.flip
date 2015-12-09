@@ -1,29 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Remoting.Channels;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Xceed.Wpf.Toolkit;
+using Microsoft.Win32;
 
 namespace dotFlip
 {
     public partial class MainWindow : Window
     {
-        // http://stackoverflow.com/questions/1361350/keyboard-shortcuts-in-wpf
-
         private Flipbook _flipbook;
 
         private Color[] _colorHistory;
@@ -53,14 +43,17 @@ namespace dotFlip
             }
             UpdateNavigation();
 
-            InitializeMenuItemClickEvents();
+            InitializeMenuEvents();
             BindCommands();
-            
-            sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
+
+            sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value - 1));
         }
 
         private void BindCommands()
         {
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, (sender, e) => Save()));
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.SaveAs, (sender, e) => SaveAs()));
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, (sender, e) => Open()));
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo, (sender, e) => _flipbook.CurrentPage.Undo()));
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, (sender, e) => _flipbook.CurrentPage.Redo()));
             CommandBindings.Add(new CommandBinding(Commands.PreviousPage, (sender, e) => _flipbook.PreviousPage()));
@@ -100,22 +93,69 @@ namespace dotFlip
                     if (_flipbook.IsPlaying)
                     {
                         DisableControls();
-                        _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));                 
+                        _flipbook.PlayAnimation(Convert.ToInt32(animationSpeedSlider.Value));
                     }
                     else
                     {
                         EnableControls();
-                    }             
+                    }
                 }
             }));
             CommandBindings.Add(new CommandBinding(Commands.Export,
                 (sender, e) => new ExportWindow(_flipbook).ShowDialog()));
         }
 
-        private void InitializeMenuItemClickEvents()
+        private void InitializeMenuEvents()
         {
-            sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
+            sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value - 1));
             toolThicknessSlider.ValueChanged += (sender, e) => { _flipbook.CurrentTool.Thickness = e.NewValue; };
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateButtonColors();
+            ColorButton1.Focus();
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+        }
+
+        private void Save()
+        {
+            if (File.Exists(_flipbook.FilePath))
+            {
+                _flipbook.Save();
+            }
+            else
+            {
+                SaveAs();
+            }
+        }
+
+        private void SaveAs()
+        {
+            var dialog = new SaveFileDialog
+            {
+                Filter = "Flip Files | *.flip",
+                DefaultExt = "flip",
+                AddExtension = true,
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                _flipbook.FilePath = dialog.FileName;
+                _flipbook.Save();
+            }
+        }
+
+        private void Open()
+        {
+            var dialog = new OpenFileDialog
+            {
+                Filter = "Flip Files | *.flip",
+            };
+            if (dialog.ShowDialog() == true)
+            {
+                _flipbook.FilePath = dialog.FileName;
+                _flipbook.Load();
+            }
         }
 
         private void Flipbook_PageChanged(Page currentPage, Page ghostPage)
@@ -158,7 +198,7 @@ namespace dotFlip
 
         private void UpdateColorHistory(Color c)
         {
-            for(int index = 7; index > 0; index--)
+            for (int index = 7; index > 0; index--)
             {
                 _colorHistory[index] = _colorHistory[index - 1];
             }
@@ -169,27 +209,15 @@ namespace dotFlip
         private void UpdateButtonColors()
         {
             int index = 0;
-            foreach(Button button in _buttonsForColor)
+            foreach (Button button in _buttonsForColor)
             {
                 Rectangle rect = button.Template.FindName("ColorHistoryRectangle", button) as Rectangle;
                 if (rect != null)
                 {
                     rect.Fill = new SolidColorBrush(_colorHistory[index]);
                 }
-                //Rectangle rect = b.Content as Rectangle;
-                //if(rect != null)
-                //{
-                //    rect.Fill = new SolidColorBrush(_colorHistory[index]);
-                //}
                 index++;
             }
-            //Rectangle innerButton = ColorButton1.Content as Rectangle;
-            //if (innerButton != null)
-            //{
-            //    Color c = _colorHistory[0];
-            //    innerButton.Fill = new SolidColorBrush(c);
-            //}
-            Control c;
         }
 
         public void ChangeToolColor(Color c)
@@ -209,10 +237,10 @@ namespace dotFlip
         private void ColorButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
-            if(button != null)
+            if (button != null)
             {
                 Rectangle rect = button.Template.FindName("ColorHistoryRectangle", button) as Rectangle;
-                if(rect != null)
+                if (rect != null)
                 {
                     SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
                     _flipbook.CurrentTool.ChangeColor(rectColor.Color);
@@ -222,12 +250,6 @@ namespace dotFlip
                     };
                     UpdateButtonEffects();
                 }
-            //    Rectangle rect = button.Content as Rectangle;
-            //    if(rect != null)
-            //    {
-            //        SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
-            //        _flipbook.CurrentTool.ChangeColor(rectColor.Color);
-            //    }
             }
         }
 
@@ -291,7 +313,7 @@ namespace dotFlip
             btnGhost.IsEnabled = true;
             flipbookHolder.IsHitTestVisible = true;
         }
-        
+
         private void eraserButton_Click(object sender, RoutedEventArgs e)
         {
             _flipbook.UseTool("Eraser");
@@ -315,7 +337,6 @@ namespace dotFlip
             currentToolHigh.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
-
 
         private void Pencil_Click(object sender, RoutedEventArgs e)
         {
