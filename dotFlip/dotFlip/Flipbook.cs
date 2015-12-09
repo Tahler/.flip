@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Media;
 using dotFlip.Tools;
 using Pen = dotFlip.Tools.Pen;
 using System.Threading.Tasks;
 using System.IO;
+using System.IO.Compression;
 using System.Windows.Markup;
 
 namespace dotFlip
@@ -12,7 +14,7 @@ namespace dotFlip
 
     public class Flipbook
     {
-        private const string SavePath = @"C:\Users\Tyler Berry\Flipbook";
+        private const string SavePath = @"C:\Users\Tyler Berry\Book.flip";
 
         private IList<Page> _pages;
         private Page _currentPage;
@@ -84,37 +86,31 @@ namespace dotFlip
         public void Save()
         {
             // Save all drawings
-            if (Directory.Exists(SavePath))
+            if (File.Exists(SavePath))
             {
-                DirectoryInfo savePath = new DirectoryInfo(SavePath);
-                foreach (FileInfo file in savePath.GetFiles())
-                {
-                    file.Delete();
-                }
-                foreach (DirectoryInfo dir in savePath.GetDirectories())
-                {
-                    dir.Delete(true);
-                }
-                Directory.Delete(SavePath, true);
+                File.Delete(SavePath);
             }
-            for (int i = 0; i < _pages.Count; i++)
+
+            using (var fileStream = new FileStream(SavePath, FileMode.Create))
             {
-                var page = _pages[i];
-                string pageSavePath = SavePath + @"\Page" + i;
-                if (Directory.Exists(pageSavePath))
+                using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Create))
                 {
-                    Directory.Delete(pageSavePath, true);
-                }
-                Directory.CreateDirectory(pageSavePath);
-
-                for (int j = 0; j < page.Drawings.Count; j++)
-                {
-                    var visual = page.Drawings[j];
-
-                    string drawingSavePath = pageSavePath + @"\Drawing" + j + ".xaml";
-                    using (var stream = File.Create(drawingSavePath))
+                    for (int i = 0; i < _pages.Count; i++)
                     {
-                        XamlWriter.Save(visual.Drawing, stream);
+                        var page = _pages[i];
+
+                        for (int j = 0; j < page.Drawings.Count; j++)
+                        {
+                            var visual = page.Drawings[j];
+
+                            string drawingSavePath = i + "/" + j + ".xaml";
+
+                            var file = archive.CreateEntry(drawingSavePath);
+                            using (var stream = file.Open())
+                            {
+                                XamlWriter.Save(visual.Drawing, stream);
+                            }
+                        }
                     }
                 }
             }
@@ -123,28 +119,44 @@ namespace dotFlip
 
         public void Load()
         {
-            if (Directory.Exists(SavePath))
+            if (File.Exists(SavePath))
             {
-                var flipbookDir = new DirectoryInfo(SavePath);
                 List<Page> pages = new List<Page>();
-                foreach (var pageDir in flipbookDir.GetDirectories())
+                using (var fileStream = new FileStream(SavePath, FileMode.Open))
                 {
-                    var page = new Page(this);
-                    foreach (var drawingFile in pageDir.GetFiles())
+                    using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Read))
                     {
-                        using (var stream = File.Open(drawingFile.FullName, FileMode.Open))
+                        foreach (var entry in archive.Entries)
                         {
-                            DrawingVisual visual = new DrawingVisual();
-                            using (var context = visual.RenderOpen())
+                            try
                             {
-                                context.DrawDrawing((Drawing) XamlReader.Load(stream));
+                                int pageIndex = Convert.ToInt32(entry.FullName.Split('/')[0]); // try catch
+
+                                // Add necessary new pages (uses a while because there could be blank pages)
+                                while (pageIndex > pages.Count - 1)
+                                {
+                                    pages.Add(new Page(this));
+                                }
+
+                                // Open the drawing
+                                DrawingVisual visual = new DrawingVisual();
+                                using (var stream = entry.Open())
+                                {
+                                    using (var context = visual.RenderOpen())
+                                    {
+                                        context.DrawDrawing((Drawing) XamlReader.Load(stream));
+                                    }
+                                }
+                                pages[pageIndex].Add(visual);
                             }
-                            page.Add(visual);
+                            catch (Exception)
+                            {
+                                Console.WriteLine("Failed to determine page for " + entry);
+                            }
                         }
                     }
-                    pages.Add(page);
                 }
-                // use new pages now
+                // use the loaded pages
                 _pages = pages;
                 CurrentPage = _pages[0];
             }
