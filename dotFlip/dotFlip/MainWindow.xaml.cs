@@ -111,13 +111,6 @@ namespace dotFlip
             toolThicknessSlider.ValueChanged += (sender, e) => { _flipbook.CurrentTool.Thickness = e.NewValue; };
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            UpdateButtonColors();
-            ColorButton1.Focus();
-            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
-        }
-
         private void Save()
         {
             if (File.Exists(_flipbook.FilePath))
@@ -198,11 +191,7 @@ namespace dotFlip
 
         private void UpdateColorHistory(Color c)
         {
-            for (int index = 7; index > 0; index--)
-            {
-                _colorHistory[index] = _colorHistory[index - 1];
-            }
-            _colorHistory[0] = c;
+            ColorButton_Click(_buttonsForColor[_flipbook.UpdateColorHistory(c)], null);
             UpdateButtonColors();
         }
 
@@ -214,7 +203,7 @@ namespace dotFlip
                 Rectangle rect = button.Template.FindName("ColorHistoryRectangle", button) as Rectangle;
                 if (rect != null)
                 {
-                    rect.Fill = new SolidColorBrush(_colorHistory[index]);
+                    rect.Fill = new SolidColorBrush(_flipbook.ColorHistory[index]);
                 }
                 index++;
             }
@@ -244,28 +233,20 @@ namespace dotFlip
                 {
                     SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
                     _flipbook.CurrentTool.ChangeColor(rectColor.Color);
-                    rect.Effect = new DropShadowEffect
+                    ClearButtonEffects();
+                    button.Effect = new DropShadowEffect
                     {
                         ShadowDepth = 5
                     };
-                    UpdateButtonEffects();
                 }
             }
         }
 
-        private void UpdateButtonEffects()
+        private void ClearButtonEffects()
         {
-            foreach (Button button in ColorHistory.Children)
+            foreach (Button button in _buttonsForColor)
             {
-                Rectangle rect = button.Template.FindName("ColorHistoryRectangle", button) as Rectangle;
-                if (rect != null)
-                {
-                    SolidColorBrush rectColor = rect.Fill as SolidColorBrush;
-                    Color currentColor = (_flipbook.CurrentTool.Brush as SolidColorBrush).Color;
-                    if(!rectColor.Color.Equals(currentColor))
-                    rect.Effect = null;
-                }
-
+                button.Effect = null;
             }
         }
 
@@ -313,6 +294,16 @@ namespace dotFlip
             btnGhost.IsEnabled = true;
             flipbookHolder.IsHitTestVisible = true;
         }
+        private void UpdateColorFromTool()
+        {
+            SolidColorBrush brush = _flipbook.CurrentTool.Brush as SolidColorBrush;
+            if (brush != null)
+            {
+                Color c = brush.Color;
+                c.A = 255;
+                UpdateColorHistory(c);
+            }
+        }
 
         private void eraserButton_Click(object sender, RoutedEventArgs e)
         {
@@ -324,6 +315,7 @@ namespace dotFlip
             fadeTop();
             currentToolEraser.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+    ;
         }
 
         private void highlighterButton_Click(object sender, RoutedEventArgs e)
@@ -336,6 +328,7 @@ namespace dotFlip
             fadeTop();
             currentToolHigh.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+            UpdateColorFromTool();
         }
 
         private void Pencil_Click(object sender, RoutedEventArgs e)
@@ -348,6 +341,7 @@ namespace dotFlip
             fadeTop();
             currentToolPencil.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+            UpdateColorFromTool();
         }
 
         private void Pen_Click(object sender, RoutedEventArgs e)
@@ -360,6 +354,7 @@ namespace dotFlip
             fadeTop();
             currentToolPen.BeginAnimation(Image.OpacityProperty, fadeInAnimation);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+            UpdateColorFromTool();
         }
 
         public void showAll()
