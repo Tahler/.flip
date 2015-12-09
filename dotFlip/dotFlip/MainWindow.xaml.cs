@@ -53,7 +53,7 @@ namespace dotFlip
             }
             UpdateNavigation();
 
-            InitializeMenuItemClickEvents();
+            InitializeMenuEvents();
             BindCommands();
             
             sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
@@ -113,10 +113,18 @@ namespace dotFlip
                 (sender, e) => new ExportWindow(_flipbook).ShowDialog()));
         }
 
-        private void InitializeMenuItemClickEvents()
+        private void InitializeMenuEvents()
         {
             sldrNavigation.ValueChanged += (sender, e) => _flipbook.MoveToPage(Convert.ToInt32(sldrNavigation.Value-1));
             toolThicknessSlider.ValueChanged += (sender, e) => { _flipbook.CurrentTool.Thickness = e.NewValue; };
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            UpdateButtonColors();
+            ColorButton1.Focus();
+            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
+            _flipbook.Load();
         }
 
         private void Flipbook_PageChanged(Page currentPage, Page ghostPage)
@@ -225,13 +233,6 @@ namespace dotFlip
             //        _flipbook.CurrentTool.ChangeColor(rectColor.Color);
             //    }
             }
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            UpdateButtonColors();
-            ColorButton1.Focus();
-            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
 
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
