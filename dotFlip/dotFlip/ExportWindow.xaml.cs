@@ -153,9 +153,13 @@ namespace dotFlip
         private void BrowseButton_OnClick(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.OverwritePrompt = true;
+            saveFileDialog.Filter = "Image File | *." + cmbExportType.SelectedItem.ToString().ToLower();
+            saveFileDialog.DefaultExt = cmbExportType.SelectedItem.ToString().ToLower();
             if (saveFileDialog.ShowDialog() == true)
             {
                 PathText.Text = saveFileDialog.FileName;
+                
             }
         }
     }
