@@ -1,22 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Remoting.Channels;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Xceed.Wpf.Toolkit;
 
 namespace dotFlip
 {
@@ -125,6 +115,11 @@ namespace dotFlip
             ColorButton1.Focus();
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
             _flipbook.Load();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _flipbook.Save();
         }
 
         private void Flipbook_PageChanged(Page currentPage, Page ghostPage)

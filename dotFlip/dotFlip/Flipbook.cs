@@ -139,7 +139,7 @@ namespace dotFlip
                             {
                                 context.DrawDrawing((Drawing) XamlReader.Load(stream));
                             }
-                            page.Drawings.Add(visual);
+                            page.Add(visual);
                         }
                     }
                     pages.Add(page);

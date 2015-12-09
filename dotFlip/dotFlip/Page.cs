@@ -24,7 +24,7 @@ namespace dotFlip
 
             Background = parent.Brush;
             Drawings = new List<DrawingVisual>();
-                     
+
             _undoStack = new Stack<int>();
             _redoStack = new Stack<List<DrawingVisual>>();
 
@@ -117,9 +117,7 @@ namespace dotFlip
                 ITool currentTool = _parent.CurrentTool;
                 context.DrawGeometry(currentTool.Brush, null, currentTool.GetGeometry(point));
             }
-
-            Drawings.Add(path);
-            AddVisualChild(path);
+            Add(path);
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -146,8 +144,7 @@ namespace dotFlip
                 {
                     context.DrawDrawing(group);
                 }
-                Drawings.Add(visual);
-                AddVisualChild(visual);
+                Add(visual);
             }
         }
 
@@ -161,8 +158,13 @@ namespace dotFlip
                 context.DrawRectangle(Background, null, new Rect(this.RenderSize));
             }
 
-            Drawings.Add(splash);
-            AddVisualChild(splash);
+            Add(splash);
+        }
+
+        public void Add(DrawingVisual visual)
+        {
+            Drawings.Add(visual);
+            AddVisualChild(visual);
         }
     }
 }
