@@ -23,6 +23,8 @@ namespace dotFlip
 
         public Color[] ColorHistory;
 
+        public string FilePath { get; set; }
+
         public bool IsShowingGhostStrokes
         {
             get { return _isShowingGhostStrokes; }
@@ -81,15 +83,15 @@ namespace dotFlip
             _pages = new List<Page> {CurrentPage};
         }
 
-        public void Save(string path)
+        public void Save()
         {
             // Save all drawings
-            if (File.Exists(path))
+            if (File.Exists(FilePath))
             {
-                File.Delete(path);
+                File.Delete(FilePath);
             }
 
-            using (var fileStream = new FileStream(path, FileMode.Create))
+            using (var fileStream = new FileStream(FilePath, FileMode.Create))
             {
                 using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Create))
                 {
@@ -115,12 +117,12 @@ namespace dotFlip
             // save colors eventually too
         }
 
-        public void Load(string path)
+        public void Load()
         {
-            if (File.Exists(path))
+            if (File.Exists(FilePath))
             {
                 List<Page> pages = new List<Page>();
-                using (var fileStream = new FileStream(path, FileMode.Open))
+                using (var fileStream = new FileStream(FilePath, FileMode.Open))
                 {
                     using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Read))
                     {

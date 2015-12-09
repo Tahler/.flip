@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -52,7 +53,8 @@ namespace dotFlip
 
         private void BindCommands()
         {
-            CommandBindings.Add(new CommandBinding(ApplicationCommands.SaveAs, (sender, e) => Save()));
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, (sender, e) => Save()));
+            CommandBindings.Add(new CommandBinding(ApplicationCommands.SaveAs, (sender, e) => SaveAs()));
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, (sender, e) => Open()));
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Undo, (sender, e) => _flipbook.CurrentPage.Undo()));
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Redo, (sender, e) => _flipbook.CurrentPage.Redo()));
@@ -120,6 +122,18 @@ namespace dotFlip
 
         private void Save()
         {
+            if (File.Exists(_flipbook.FilePath))
+            {
+                _flipbook.Save();
+            }
+            else
+            {
+                SaveAs();
+            }
+        }
+
+        private void SaveAs()
+        {
             var dialog = new SaveFileDialog
             {
                 Filter = "Flip Files | *.flip",
@@ -128,7 +142,8 @@ namespace dotFlip
             };
             if (dialog.ShowDialog() == true)
             {
-                _flipbook.Save(dialog.FileName);
+                _flipbook.FilePath = dialog.FileName;
+                _flipbook.Save();
             }
         }
 
@@ -140,7 +155,8 @@ namespace dotFlip
             };
             if (dialog.ShowDialog() == true)
             {
-                _flipbook.Load(dialog.FileName);
+                _flipbook.FilePath = dialog.FileName;
+                _flipbook.Load();
             }
         }
 
