@@ -97,6 +97,13 @@ namespace dotFlip
             {
                 using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Create))
                 {
+                    // Save the background color
+                    var colorFile = archive.CreateEntry("bgcolor.xaml");
+                    using (var stream = colorFile.Open())
+                    {
+                        XamlWriter.Save(BackgroundColor, stream);
+                    }
+                    // Save the page drawings
                     for (int i = 0; i < _pages.Count; i++)
                     {
                         var page = _pages[i];
@@ -133,24 +140,36 @@ namespace dotFlip
                         {
                             try
                             {
-                                int pageIndex = Convert.ToInt32(entry.FullName.Split('/')[0]); // try catch
+                                string entryName = entry.FullName;
 
-                                // Add necessary new pages (uses a while because there could be blank pages)
-                                while (pageIndex > pages.Count - 1)
+                                if (entryName.Equals("bgcolor.xaml")) // Load background color
                                 {
-                                    pages.Add(new Page(this));
-                                }
-
-                                // Open the drawing
-                                DrawingVisual visual = new DrawingVisual();
-                                using (var stream = entry.Open())
-                                {
-                                    using (var context = visual.RenderOpen())
+                                    using (var stream = entry.Open())
                                     {
-                                        context.DrawDrawing((Drawing) XamlReader.Load(stream));
+                                        BackgroundColor = (Color) XamlReader.Load(stream);
                                     }
                                 }
-                                pages[pageIndex].Add(visual);
+                                else // Load page drawings
+                                {
+                                    int pageIndex = Convert.ToInt32(entryName.Split('/')[0]); // try catch
+
+                                    // Add necessary new pages (uses a while because there could be blank pages)
+                                    while (pageIndex > pages.Count - 1)
+                                    {
+                                        pages.Add(new Page(this));
+                                    }
+
+                                    // Open the drawing
+                                    DrawingVisual visual = new DrawingVisual();
+                                    using (var stream = entry.Open())
+                                    {
+                                        using (var context = visual.RenderOpen())
+                                        {
+                                            context.DrawDrawing((Drawing)XamlReader.Load(stream));
+                                        }
+                                    }
+                                    pages[pageIndex].Add(visual);
+                                }
                             }
                             catch (Exception)
                             {
@@ -162,6 +181,7 @@ namespace dotFlip
                 // use the loaded pages
                 _pages = pages;
                 CurrentPage = _pages[0];
+                HasUnsavedChanges = false;
             }
         }
         
