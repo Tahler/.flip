@@ -51,6 +51,7 @@ namespace dotFlip
 
                 _parent.RefreshPage();
             }
+            _parent.HasUnsavedChanges = true;
         }
 
         public void Redo()
@@ -67,6 +68,7 @@ namespace dotFlip
 
                 _parent.RefreshPage();
             }
+            _parent.HasUnsavedChanges = true;
         }
 
         private void SaveCurrentState()
@@ -165,6 +167,7 @@ namespace dotFlip
         {
             Drawings.Add(visual);
             AddVisualChild(visual);
+            _parent.HasUnsavedChanges = true;
         }
     }
 }

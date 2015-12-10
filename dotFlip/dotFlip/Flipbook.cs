@@ -35,6 +35,8 @@ namespace dotFlip
             }
         }
 
+        public bool HasUnsavedChanges { get; set; }
+
         public bool IsPlaying { get; set; }
 
         public Page CurrentPage
@@ -115,6 +117,7 @@ namespace dotFlip
                 }
             }
             // save colors eventually too
+            HasUnsavedChanges = false;
         }
 
         public void Load()
@@ -188,12 +191,14 @@ namespace dotFlip
             }
             _pages.Remove(page);
             RefreshPage();
+            HasUnsavedChanges = true;
         }
 
         public void DeleteAllPages()
         {
             _pages = new List<Page> { new Page(this) };
             CurrentPage = _pages[0];
+            HasUnsavedChanges = true;
         }
 
         public void RefreshPage()

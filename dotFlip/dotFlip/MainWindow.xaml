@@ -380,7 +380,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Button x:Name="Pen" Grid.Column="2" Margin="0,0,0,20" Click="Pen_Click">
+                    <Button x:Name="Pen" Grid.Column="2" Margin="0,0,0,20" Click="Pen_Click" Opacity="0">
                         <Button.Template>
                             <ControlTemplate>
                                 <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
