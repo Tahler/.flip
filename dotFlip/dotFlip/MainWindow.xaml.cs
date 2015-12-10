@@ -128,7 +128,7 @@ namespace dotFlip
         {
             if (File.Exists(_flipbook.FilePath))
             {
-                _flipbook.Save();
+                SaveFlipbook();
             }
             else
             {
@@ -138,6 +138,8 @@ namespace dotFlip
 
         private void SaveAs()
         {
+            Cursor = Cursors.Wait;
+
             var dialog = new SaveFileDialog
             {
                 Filter = "Flip Files | *.flip",
@@ -147,8 +149,17 @@ namespace dotFlip
             if (dialog.ShowDialog() == true)
             {
                 _flipbook.FilePath = dialog.FileName;
-                _flipbook.Save();
+                SaveFlipbook();
             }
+        }
+
+        private void SaveFlipbook()
+        {
+            DisableControls();
+            Cursor = Cursors.Wait;
+            _flipbook.Save();
+            EnableControls();
+            Cursor = Cursors.Arrow;
         }
 
         private void Open()
@@ -160,8 +171,17 @@ namespace dotFlip
             if (dialog.ShowDialog() == true)
             {
                 _flipbook.FilePath = dialog.FileName;
-                _flipbook.Load();
+                LoadFlipbook();
             }
+        }
+
+        private void LoadFlipbook()
+        {
+            DisableControls();
+            Cursor = Cursors.Wait;
+            _flipbook.Load();
+            EnableControls();
+            Cursor = Cursors.Arrow;
         }
 
         private void Flipbook_PageChanged(Page currentPage, Page ghostPage)
@@ -285,17 +305,17 @@ namespace dotFlip
         }
         private void DisableControls()
         {
-            btnNext.IsEnabled = true;
-            btnPrev.IsEnabled = true;
-            btnUndo.IsEnabled = true;
-            btnUndo.IsEnabled = true;
-            btnCopy.IsEnabled = true;
-            btnDelete.IsEnabled = true;
-            txtNavigation.IsEnabled = true;
-            sldrNavigation.IsEnabled = true;
-            btnRedo.IsEnabled = true;
-            btnGhost.IsEnabled = true;
-            flipbookHolder.IsHitTestVisible = true;
+            btnNext.IsEnabled = false;
+            btnPrev.IsEnabled = false;
+            btnUndo.IsEnabled = false;
+            btnUndo.IsEnabled = false;
+            btnCopy.IsEnabled = false;
+            btnDelete.IsEnabled = false;
+            txtNavigation.IsEnabled = false;
+            sldrNavigation.IsEnabled = false;
+            btnRedo.IsEnabled = false;
+            btnGhost.IsEnabled = false;
+            flipbookHolder.IsHitTestVisible = false;
         }
         private void UpdateColorFromTool()
         {
