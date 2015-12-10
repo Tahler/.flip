@@ -138,8 +138,6 @@ namespace dotFlip
 
         private void SaveAs()
         {
-            Cursor = Cursors.Wait;
-
             var dialog = new SaveFileDialog
             {
                 Filter = "Flip Files | *.flip",
