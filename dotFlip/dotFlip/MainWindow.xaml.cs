@@ -15,20 +15,11 @@ namespace dotFlip
     public partial class MainWindow : Window
     {
         private Flipbook _flipbook;
-
-        private Color[] _colorHistory;
         private List<Button> _buttonsForColor;
 
         public MainWindow()
         {
             InitializeComponent();
-
-            _colorHistory = new Color[]
-            {
-                Colors.Black, Colors.White, Colors.Gray,
-                Colors.Blue, Colors.Green, Colors.Red,
-                Colors.Pink, Colors.Orange, Colors.Orchid
-            };
 
             Color backgroundColor = new Color { A = 255, R = 249, G = 237, B = 78 };
             _flipbook = new Flipbook(backgroundColor);

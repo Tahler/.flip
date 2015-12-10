@@ -21,7 +21,7 @@ namespace dotFlip
 
         private bool _isShowingGhostStrokes;
 
-        public Color[] ColorHistory;
+        public Color[] ColorHistory { get; private set; }
 
         public string FilePath { get; set; }
 
