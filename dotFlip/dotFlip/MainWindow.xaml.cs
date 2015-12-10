@@ -114,7 +114,7 @@ namespace dotFlip
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             UpdateButtonColors();
-            ColorButton1.Focus();
+            ColorButton_Click(ColorButton1, null);
             toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
 
@@ -267,13 +267,6 @@ namespace dotFlip
                 }
 
             }
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            UpdateButtonColors();
-            ColorButton_Click(ColorButton1, null);
-            toolThicknessSlider.Value = _flipbook.CurrentTool.Thickness;
         }
 
         private void ColorPickerbutton_Click(object sender, RoutedEventArgs e)
