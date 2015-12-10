@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Drawing.Printing;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Media;
 using dotFlip.Tools;
 using Pen = dotFlip.Tools.Pen;
 using System.Threading.Tasks;
-using System;
+using System.IO;
+using System.IO.Compression;
+using System.Windows.Markup;
 
 namespace dotFlip
 {
@@ -21,6 +23,8 @@ namespace dotFlip
 
         public Color[] ColorHistory;
 
+        public string FilePath { get; set; }
+
         public bool IsShowingGhostStrokes
         {
             get { return _isShowingGhostStrokes; }
@@ -30,6 +34,8 @@ namespace dotFlip
                 RefreshPage();
             }
         }
+
+        public bool HasUnsavedChanges { get; set; }
 
         public bool IsPlaying { get; set; }
 
@@ -79,6 +85,87 @@ namespace dotFlip
             _pages = new List<Page> {CurrentPage};
         }
 
+        public void Save()
+        {
+            // Save all drawings
+            if (File.Exists(FilePath))
+            {
+                File.Delete(FilePath);
+            }
+
+            using (var fileStream = new FileStream(FilePath, FileMode.Create))
+            {
+                using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Create))
+                {
+                    for (int i = 0; i < _pages.Count; i++)
+                    {
+                        var page = _pages[i];
+
+                        for (int j = 0; j < page.Drawings.Count; j++)
+                        {
+                            var visual = page.Drawings[j];
+
+                            string drawingSavePath = i + "/" + j + ".xaml";
+
+                            var file = archive.CreateEntry(drawingSavePath);
+                            using (var stream = file.Open())
+                            {
+                                XamlWriter.Save(visual.Drawing, stream);
+                            }
+                        }
+                    }
+                }
+            }
+            // save colors eventually too
+            HasUnsavedChanges = false;
+        }
+
+        public void Load()
+        {
+            if (File.Exists(FilePath))
+            {
+                List<Page> pages = new List<Page>();
+                using (var fileStream = new FileStream(FilePath, FileMode.Open))
+                {
+                    using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Read))
+                    {
+                        foreach (var entry in archive.Entries)
+                        {
+                            try
+                            {
+                                int pageIndex = Convert.ToInt32(entry.FullName.Split('/')[0]); // try catch
+
+                                // Add necessary new pages (uses a while because there could be blank pages)
+                                while (pageIndex > pages.Count - 1)
+                                {
+                                    pages.Add(new Page(this));
+                                }
+
+                                // Open the drawing
+                                DrawingVisual visual = new DrawingVisual();
+                                using (var stream = entry.Open())
+                                {
+                                    using (var context = visual.RenderOpen())
+                                    {
+                                        context.DrawDrawing((Drawing) XamlReader.Load(stream));
+                                    }
+                                }
+                                pages[pageIndex].Add(visual);
+                            }
+                            catch (Exception)
+                            {
+                                Console.WriteLine("Failed to determine page for " + entry);
+                            }
+                        }
+                    }
+                }
+                // use the loaded pages
+                _pages = pages;
+                CurrentPage = _pages[0];
+            }
+        }
+        
+
         public void UseTool(string toolToUse)
         {
             if (_tools.ContainsKey(toolToUse))
@@ -104,12 +191,14 @@ namespace dotFlip
             }
             _pages.Remove(page);
             RefreshPage();
+            HasUnsavedChanges = true;
         }
 
         public void DeleteAllPages()
         {
             _pages = new List<Page> { new Page(this) };
             CurrentPage = _pages[0];
+            HasUnsavedChanges = true;
         }
 
         public void RefreshPage()

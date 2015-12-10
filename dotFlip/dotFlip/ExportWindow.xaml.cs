@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Gif.Components;
+using Microsoft.Win32;
 using Image = System.Drawing.Image;
 using Size = System.Windows.Size;
 
@@ -91,6 +92,10 @@ namespace dotFlip
 
         private Bitmap ConvertPageToBitmap(Page p)
         {
+            p.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            //Magic number same size as the flipbook page
+            p.Arrange(new Rect(new Size(650, 650)));
+            p.Opacity = 1;
             RenderTargetBitmap rtb = new RenderTargetBitmap((int) p.ActualWidth, (int) p.ActualHeight, 96, 96, PixelFormats.Pbgra32);
             rtb.Render(p);
 
@@ -146,6 +151,19 @@ namespace dotFlip
             {
                 FrameDelayPicker.IsEnabled = false;
                 FramePicker.IsEnabled = true;
+            }
+        }
+
+        private void BrowseButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.OverwritePrompt = true;
+            saveFileDialog.Filter = "Image File | *." + cmbExportType.SelectedItem.ToString().ToLower();
+            saveFileDialog.DefaultExt = cmbExportType.SelectedItem.ToString().ToLower();
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                PathText.Text = saveFileDialog.FileName;
+                
             }
         }
     }

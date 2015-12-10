@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demoTools", "DemoTools\demoTools.csproj", "{82D1405C-991D-4CD1-A50E-F8428B445B0B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotFlip", "dotFlip\dotFlip.csproj", "{EF8CC3F5-D886-426E-B6F2-50BC57794947}"
 EndProject
 Global
@@ -13,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{82D1405C-991D-4CD1-A50E-F8428B445B0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82D1405C-991D-4CD1-A50E-F8428B445B0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82D1405C-991D-4CD1-A50E-F8428B445B0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82D1405C-991D-4CD1-A50E-F8428B445B0B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF8CC3F5-D886-426E-B6F2-50BC57794947}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF8CC3F5-D886-426E-B6F2-50BC57794947}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF8CC3F5-D886-426E-B6F2-50BC57794947}.Release|Any CPU.ActiveCfg = Release|Any CPU
