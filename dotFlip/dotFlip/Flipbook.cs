@@ -218,7 +218,7 @@ namespace dotFlip
         {
             _pages = new List<Page> { new Page(this) };
             CurrentPage = _pages[0];
-            HasUnsavedChanges = true;
+            HasUnsavedChanges = false;
         }
 
         public void RefreshPage()
