@@ -87,11 +87,6 @@
                           Command="local:Commands.NextPage"
                           x:Name="nextPageMenuItem"/>
             </MenuItem>
-            <MenuItem Header="View">
-                <MenuItem Header="Set Editor Background"
-                          ToolTip="Set the Background of the Editor Window"
-                          x:Name="editorBackgroundMenuItem"/>
-            </MenuItem>
         </Menu>
         <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom">
             <StatusBar.ItemsPanel>
