@@ -316,7 +316,7 @@ namespace dotFlip
             }
             if (!alreadyHasColor)
             {
-                for (int index = 7; index > 0; index--)
+                for (int index = ColorHistory.Length - 1; index > 0; index--)
                 {
                     ColorHistory[index] = ColorHistory[index - 1];
                 }
