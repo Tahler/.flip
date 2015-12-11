@@ -44,6 +44,10 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
+                <MenuItem Header="New"
+                          Command="local:Commands.Restart"
+                          ToolTip="Start a new flipbook project"
+                          x:Name="restartMenuItem"/>
                 <MenuItem Header="Save"
                           Command="ApplicationCommands.Save"/>
                 <MenuItem Header="Save As"
@@ -74,10 +78,6 @@
                                       HorizontalAlignment="Right" 
                                       Width="161" />
                 </MenuItem>
-                <MenuItem Header="Restart"
-                          Command="local:Commands.Restart"
-                          ToolTip="Delete all existing pages"
-                          x:Name="restartMenuItem"/>
             </MenuItem>
             <MenuItem Header="Navigation">
                 <MenuItem Header="Previous Page"
@@ -86,11 +86,6 @@
                 <MenuItem Header="Next Page"
                           Command="local:Commands.NextPage"
                           x:Name="nextPageMenuItem"/>
-            </MenuItem>
-            <MenuItem Header="View">
-                <MenuItem Header="Set Editor Background"
-                          ToolTip="Set the Background of the Editor Window"
-                          x:Name="editorBackgroundMenuItem"/>
             </MenuItem>
         </Menu>
         <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom">
